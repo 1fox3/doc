@@ -1,0 +1,20 @@
+# Bean初始化进行操作,按执行顺序
+
+> 专题：Spring
+> 来源：面试内容汇总/Spring.xmind
+
+## 补充与实践
+
+- 补充：Spring 6 要求 Java 17+ 并迁移到 Jakarta 命名空间，理解 Bean 生命周期仍是排查问题的基础。
+- 实践：复杂初始化逻辑优先使用明确的生命周期回调，避免在构造器里访问尚未注入完成的依赖。
+- 误区：三级缓存只能解决部分单例 setter 循环依赖，构造器循环依赖和原型循环依赖无法靠它解决。
+
+## 脑图内容
+
+## Bean初始化进行操作,按执行顺序
+
+### @PostContrust
+
+### InitializingBean接口
+
+### initMethod方法（@Bean(initMethod="init")）
