@@ -22,26 +22,89 @@
 - 当前后端知识体系更强调工程化闭环：架构设计、性能优化、稳定性、可观测、安全和成本。
 - 复习时建议将每个知识点整理成：原理、适用场景、边界、故障案例、项目落地五段式。
 
-## 章节目录
+## 使用方式
+
+- 本页只保留知识地图和详细文档入口，避免与各专题文档重复。
+- 需要深入复习时，直接进入下方详细专题链接。
+- 原脑图主干保留为概要，帮助快速定位知识范围。
+
+## 详细专题入口
+
+### Java 与 JVM
+
+- [Java 语言基础](../../01-java/java/README.md)
+- [Java 版本新特性](../../01-java/java-version-features/README.md)
+- [JVM](../../01-java/jvm/README.md)
+
+### 数据库
+
+- [MySQL](../../02-database/mysql/README.md)
+- [MongoDB](../../02-database/mongodb.md)
+
+### 缓存
+
+- [Redis](../../03-cache/redis/README.md)
+
+### 搜索
+
+- [Elasticsearch](../../04-search/elasticsearch/README.md)
+
+### 消息队列
+
+- [消息队列总览](../../05-mq/mq-overview/README.md)
+- [Kafka](../../05-mq/kafka/README.md)
+- [RocketMQ](../../05-mq/rocketmq/README.md)
+
+### 开发框架
+
+- [Spring](../../06-framework/spring/README.md)
+- [Spring Boot](../../06-framework/spring-boot/README.md)
+- [Spring Boot 版本新特性](../../06-framework/spring-boot-version-features/README.md)
+- [Spring MVC](../../06-framework/spring-mvc/README.md)
+- [MyBatis](../../06-framework/mybatis/README.md)
+
+### 微服务
+
+- [Spring Cloud](../../07-microservices/spring-cloud/README.md)
+- [Spring Cloud Alibaba](../../07-microservices/spring-cloud-alibaba.md)
+- [Nacos](../../07-microservices/nacos/README.md)
+
+### 分布式与网络
+
+- [Dubbo](../../08-distributed/dubbo/README.md)
+- [ZooKeeper](../../08-distributed/zookeeper/README.md)
+- [Netty](../../09-network/netty/README.md)
+
+### 大数据
+
+- [大数据方向知识库](../../11-bigdata/README.md)
+- [HDFS](../../11-bigdata/hadoop/hdfs.md)
+- [Hive](../../11-bigdata/hive/README.md)
+- [Spark](../../11-bigdata/spark/README.md)
+- [Flink](../../11-bigdata/flink/README.md)
+- [ClickHouse](../../11-bigdata/clickhouse/README.md)
+
+## 原脑图主干
 
 ### 重点汇总.xmind
 
-- [开发语言](01-开发语言/README.md)
-- [数据库](02-数据库/README.md)
-- [缓存](03-缓存/README.md)
-- [消息队列](04-消息队列/README.md)
-- [微服务](05-微服务.md)
-- [配置中心](06-配置中心.md)
-- [网络通信](07-网络通信.md)
-- [全文索引](08-全文索引.md)
-- [服务组件](09-服务组件.md)
-- [开发工具](10-开发工具.md)
-- [分布式](11-分布式.md)
-- [设计模式](12-设计模式.md)
-- [instantiate](13-instantiate.md)
+- 开发语言：Java, PHP
+- 数据库：Mysql
+- 缓存：Redis
+- 消息队列：RabbitMQ, RocketMQ, Kafka
+- 微服务：Dubbo
+- 配置中心：ZooKeeper, Nacos
+- 网络通信：Netty
+- 全文索引：ES
+- 服务组件：Nginx, Docker
+- 开发工具：Maven, Git
+- 分布式：CAP原则, 分布式锁, 分布式事务
+- 设计模式
+- instantiate：1、无覆盖方法，直接实例化, 2、有覆盖方法，则生成cglib子类(动态代理)
+
 ### 技术点.xmind
 
-- [Redis](14-redis.md)
-- [Mysql](15-mysql.md)
-- [Kafka](16-kafka.md)
-- [Java](17-java.md)
+- Redis：数据结构, 子主题 2
+- Mysql
+- Kafka
+- Java

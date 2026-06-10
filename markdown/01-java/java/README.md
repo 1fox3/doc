@@ -29,5 +29,4 @@
 - [集合](02-集合.md)
 - [多线程](03-多线程/README.md)
 - [IO](04-io.md)
-- [新特性](05-新特性.md)
-- [instantiate](06-instantiate.md)
+- [instantiate](05-instantiate.md)

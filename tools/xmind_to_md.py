@@ -89,6 +89,7 @@ SPLIT_DOCS = {
     "SpringMVC",
     "Spring",
     "SpringCloud",
+    "Nacos",
     "Dubbo",
     "ZooKeeper",
     "Netty",
@@ -490,11 +491,20 @@ TOPIC_TRENDS = {
 SECTION_RULES = [
     (
         "Java",
-        ["基础", "语法", "变量", "常量", "final", "包装", "字符串"],
+        ["基础", "语法", "变量", "常量", "包装", "字符串"],
         [
             "补充：现代 Java 基础题更关注语义边界，例如值传递、不可变对象、自动装箱缓存、字符串常量池和泛型擦除。",
             "实践：编码时优先使用清晰的不可变模型和显式类型边界，避免依赖隐式转换或包装类型比较。",
             "误区：`final` 只能保证引用不可变，不能保证引用对象内部状态不可变。",
+        ],
+    ),
+    (
+        "Java",
+        ["try-catch-finally"],
+        [
+            "补充：异常处理要区分业务异常、系统异常和资源清理，重点掌握执行顺序与异常传播。",
+            "实践：资源关闭优先使用 `try-with-resources`，finally 中避免 return 或吞异常。",
+            "误区：finally 通常会执行，但不是绝对保证，例如 JVM 退出、进程被强杀或机器断电时不会执行。",
         ],
     ),
     (
@@ -711,6 +721,1929 @@ SECTION_RULES = [
 DEFAULT_SECTION_NOTES = [
     "补充：建议从问题背景、核心原理、适用场景、边界条件和生产案例五个维度整理该知识点。",
     "实践：学习时结合监控指标、日志、配置参数和故障复盘，避免只停留在概念记忆。",
+]
+
+
+DETAIL_SECTION_RULES = [
+    (
+        "Java",
+        ["equals和hashcode", "equals与hashcode"],
+        [
+            (
+                "核心结论",
+                [
+                    "`equals` 用于判断两个对象在业务语义上是否相等，`hashCode` 用于支持哈希容器快速定位桶位置。",
+                    "只要重写 `equals`，通常就必须同时重写 `hashCode`，否则对象放入 `HashMap`、`HashSet` 等容器后会出现查找失败、重复元素等问题。",
+                ],
+            ),
+            (
+                "基本契约",
+                [
+                    "自反性：`x.equals(x)` 必须为 true。",
+                    "对称性：`x.equals(y)` 为 true 时，`y.equals(x)` 也必须为 true。",
+                    "传递性：`x.equals(y)` 和 `y.equals(z)` 都为 true 时，`x.equals(z)` 必须为 true。",
+                    "一致性：对象参与比较的字段未变化时，多次调用结果应一致。",
+                    "非空性：任何非 null 对象 `x.equals(null)` 都应返回 false。",
+                ],
+            ),
+            (
+                "hashCode 规则",
+                [
+                    "如果两个对象 `equals` 为 true，它们的 `hashCode` 必须相同。",
+                    "如果两个对象 `hashCode` 相同，它们不一定 `equals` 为 true，因为哈希冲突是允许的。",
+                    "`hashCode` 应尽量让不同对象分布均匀，避免哈希桶退化。",
+                ],
+            ),
+            (
+                "工程实践",
+                [
+                    "用于相等判断的字段应尽量稳定，不建议使用会频繁变化的字段作为 `equals/hashCode` 依据。",
+                    "实体类如果使用数据库自增 ID，要注意对象持久化前 ID 为空时的相等性问题。",
+                    "Java 16+ 的 `record` 会自动生成基于组件字段的 `equals/hashCode/toString`，适合不可变值对象。",
+                    "Lombok 的 `@EqualsAndHashCode` 要谨慎配置 `callSuper` 和包含字段，继承层级复杂时尤其容易出错。",
+                ],
+            ),
+            (
+                "面试回答",
+                [
+                    "我会先说明 `equals` 是业务相等，`hashCode` 是哈希容器定位；再强调两者契约：相等对象必须有相同哈希值；最后结合 `HashMap` 说明如果只重写 `equals` 不重写 `hashCode`，相同业务对象可能落到不同桶，导致查不到或去重失败。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["和equals", "==和equals"],
+        [
+            (
+                "核心区别",
+                [
+                    "`==` 比较的是两侧值本身；对于基本类型比较数值，对于引用类型比较对象引用地址。",
+                    "`equals` 是对象方法，默认实现等价于 `==`，但很多类会重写它来表达业务相等。",
+                ],
+            ),
+            (
+                "典型例子",
+                [
+                    "`String` 重写了 `equals`，所以通常用 `equals` 比较字符串内容。",
+                    "包装类型存在缓存，例如 `Integer.valueOf(-128~127)` 通常复用对象，不能用 `==` 判断包装类型数值相等。",
+                    "枚举可以使用 `==`，因为枚举实例天然单例且类型安全。",
+                ],
+            ),
+            (
+                "工程实践",
+                [
+                    '字符串常量比较建议写成 `"OK".equals(value)`，避免 `value` 为 null 时 NPE。',
+                    "业务对象比较应明确相等语义，并保持 `equals/hashCode` 一致。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:final"],
+        [
+            (
+                "使用场景",
+                [
+                    "修饰类：类不能被继承，例如 `String`。",
+                    "修饰方法：方法不能被子类重写。",
+                    "修饰变量：变量只能赋值一次；引用类型变量不可重新指向其他对象，但对象内部状态仍可能变化。",
+                ],
+            ),
+            (
+                "并发语义",
+                [
+                    "`final` 字段在构造完成后具备特殊的安全发布语义，其他线程通常能看到正确初始化后的值。",
+                    "`final` 不等于线程安全，如果引用指向的是可变对象，对象内部仍需要同步或不可变设计。",
+                ],
+            ),
+            (
+                "面试误区",
+                [
+                    "`final List` 不能重新赋值为另一个 List，但仍然可以调用 `add` 修改集合内容。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["try-catch-finally"],
+        [
+            (
+                "核心作用",
+                [
+                    "`try`：包裹可能抛出异常的代码。",
+                    "`catch`：捕获并处理指定类型的异常，可以有多个 catch，顺序应从具体异常到父类异常。",
+                    "`finally`：无论 try/catch 是否抛出异常，通常都会执行，常用于释放资源或做收尾动作。",
+                ],
+            ),
+            (
+                "执行顺序",
+                [
+                    "正常执行：先执行 try，再执行 finally。",
+                    "发生异常且被捕获：先执行 try 中异常前的代码，再执行匹配的 catch，最后执行 finally。",
+                    "发生异常但未被捕获：先执行 try 中异常前的代码，再执行 finally，然后异常继续向外抛出。",
+                    "如果 try 或 catch 中有 return，finally 通常仍会在方法真正返回前执行。",
+                ],
+            ),
+            (
+                "finally 不一定执行的情况",
+                [
+                    "JVM 进程直接退出，例如 `System.exit(0)`。",
+                    "JVM 崩溃或进程被强杀，例如 `kill -9`。",
+                    "执行 finally 前线程被强制终止或机器断电。",
+                    "CPU 关闭这种说法不准确，更准确地说是进程或虚拟机没有机会继续执行字节码。",
+                ],
+            ),
+            (
+                "return 与 finally",
+                [
+                    "如果 try/catch 和 finally 都有 return，finally 的 return 会覆盖前面的 return。",
+                    "不建议在 finally 中写 return，因为它会吞掉异常或覆盖真实返回值，导致排查困难。",
+                    "如果 finally 修改的是返回对象的内部状态，调用方可能看到修改后的对象；如果只是修改局部基本类型变量，通常不会改变已经确定的返回值。",
+                ],
+            ),
+            (
+                "资源释放",
+                [
+                    "传统写法会在 finally 中关闭连接、流、锁等资源。",
+                    "Java 7 后更推荐 `try-with-resources`，由编译器自动生成关闭逻辑。",
+                    "资源类需要实现 `AutoCloseable` 或 `Closeable`。",
+                ],
+            ),
+            (
+                "try-with-resources 示例",
+                [
+                    {
+                        "lang": "java",
+                        "code": """import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TryWithResourcesDemo {
+    public static String readFirstLine(String path) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            return reader.readLine();
+        }
+    }
+}""",
+                    }
+                ],
+            ),
+            (
+                "finally 覆盖 return 示例",
+                [
+                    {
+                        "lang": "java",
+                        "code": """public class FinallyReturnDemo {
+    public static int value() {
+        try {
+            return 1;
+        } finally {
+            return 2; // 不推荐：会覆盖 try 中的 return
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(value()); // 输出 2
+    }
+}""",
+                    }
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "不要用异常控制正常业务流程。",
+                    "catch 中至少要记录关键上下文，不能简单吞掉异常。",
+                    "不要捕获过宽的异常后不处理，例如空 catch 或只打印堆栈。",
+                    "finally 中避免 return、throw 新异常或执行复杂业务逻辑。",
+                    "资源关闭优先使用 try-with-resources。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["语法糖"],
+        [
+            (
+                "核心概念",
+                [
+                    "语法糖是编程语言提供的便捷语法，本身不增加 JVM 的基础能力，通常会在编译期被转换成已有语法或字节码结构。",
+                    "理解语法糖的关键是知道它在编译后变成什么，以及可能带来的边界问题。",
+                ],
+            ),
+            (
+                "switch 支持字符串",
+                [
+                    "Java 7 开始支持 `switch` 使用 `String`。",
+                    "编译后通常会先通过 `hashCode` 分组，再用 `equals` 做精确匹配，最后映射到整数分支。",
+                    "注意：字符串 hash 冲突时仍会用 `equals` 确认，因此语义是正确的。",
+                ],
+            ),
+            (
+                "字符串 + 拼接",
+                [
+                    "早期 Java 中，非编译期常量的字符串拼接通常会被编译成 `StringBuilder` append。",
+                    "Java 9 之后字符串拼接使用 `invokedynamic` 和 `StringConcatFactory` 优化。",
+                    "循环中大量拼接字符串仍建议显式使用 `StringBuilder`，避免产生过多中间对象。",
+                ],
+            ),
+            (
+                "泛型与类型擦除",
+                [
+                    "Java 泛型主要是编译期类型检查，运行期会进行类型擦除。",
+                    "例如 `List<String>` 和 `List<Integer>` 运行期原始类型都是 `List`。",
+                    "泛型擦除会导致不能直接 `new T()`、不能创建泛型数组、运行期无法直接判断具体泛型参数。",
+                ],
+            ),
+            (
+                "自动装箱与拆箱",
+                [
+                    "自动装箱是基本类型自动转换为包装类型，例如 `int` 到 `Integer`。",
+                    "自动拆箱是包装类型自动转换为基本类型。",
+                    "注意：包装类型为 null 时自动拆箱会触发 `NullPointerException`。",
+                    "包装类型比较不要随意使用 `==`，应优先使用 `equals` 或先转基本类型。",
+                ],
+            ),
+            (
+                "变长参数",
+                [
+                    "变长参数本质是数组，方法内部按数组处理。",
+                    "一个方法最多只能有一个变长参数，并且必须放在参数列表最后。",
+                    "重载时变长参数可能造成调用歧义，公共 API 要谨慎设计。",
+                ],
+            ),
+            (
+                "增强 for 循环",
+                [
+                    "增强 for 是遍历数组或 `Iterable` 的简化语法。",
+                    "遍历集合时底层通常使用 `Iterator`。",
+                    "注意：增强 for 遍历集合时不要直接调用集合的 `remove`，否则可能触发 `ConcurrentModificationException`；需要删除时使用迭代器的 `remove`。",
+                ],
+            ),
+            (
+                "内部类",
+                [
+                    "内部类编译后会生成独立的 `.class` 文件，例如 `OuterClass$InnerClass.class`。",
+                    "非静态内部类会持有外部类实例引用。",
+                    "静态内部类不持有外部类实例引用，常用于 Builder、Holder 单例等场景。",
+                ],
+            ),
+            (
+                "枚举类",
+                [
+                    "`enum` 编译后本质上是继承 `java.lang.Enum` 的 final 类。",
+                    "枚举实例是固定数量的静态常量，天然适合单例、状态、类型码等场景。",
+                    "枚举可以定义字段、构造器和方法，也可以实现接口。",
+                ],
+            ),
+            (
+                "断言",
+                [
+                    "`assert` 用于开发和测试阶段校验不变量。",
+                    "默认情况下 JVM 不启用断言，需要通过 `-ea` 或 `-enableassertions` 开启。",
+                    "不要用断言替代业务参数校验，因为生产环境可能未启用断言。",
+                ],
+            ),
+            (
+                "Lambda 表达式",
+                [
+                    "Lambda 依赖函数式接口。",
+                    "它不是简单地编译成匿名内部类，通常通过 `invokedynamic` 和 `LambdaMetafactory.metafactory` 在运行期动态生成调用逻辑。",
+                    "Lambda 可以捕获 effectively final 的局部变量。",
+                ],
+            ),
+            (
+                "try-with-resources",
+                [
+                    "Java 7 引入，用于自动关闭实现 `AutoCloseable` 或 `Closeable` 的资源。",
+                    "编译器会生成等价的 finally 关闭逻辑，并处理 suppressed exception。",
+                    "适合文件流、网络连接、数据库连接等需要关闭的资源。",
+                ],
+            ),
+            (
+                "var 类型推断",
+                [
+                    "Java 10 引入 `var` 局部变量类型推断。",
+                    "`var` 只能用于局部变量，不能用于字段、方法参数和返回值。",
+                    "类型由初始化表达式在编译期确定，并不是动态类型。",
+                    "类型明显时使用 `var` 可以减少冗余；类型不明显时滥用会降低可读性。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
+
+public class SyntaxSugarDemo {
+    public static void main(String[] args) throws IOException {
+        // switch 支持字符串
+        String type = "A";
+        switch (type) {
+            case "A" -> System.out.println("type A");
+            case "B" -> System.out.println("type B");
+            default -> System.out.println("unknown");
+        }
+
+        // 自动装箱与拆箱
+        Integer count = 1; // int -> Integer
+        int value = count; // Integer -> int
+
+        // 增强 for 循环
+        for (String item : List.of("java", "spring")) {
+            System.out.println(item);
+        }
+
+        // try-with-resources
+        try (BufferedReader reader = new BufferedReader(new FileReader("README.md"))) {
+            System.out.println(reader.readLine());
+        }
+
+        // var 局部变量类型推断
+        var message = "hello";
+        System.out.println(message);
+    }
+}""",
+                    }
+                ],
+            ),
+            (
+                "面试回答",
+                [
+                    "回答 Java 语法糖时，可以先说明它是编译器层面的便利语法，再举例说明增强 for、泛型擦除、自动装箱、枚举、try-with-resources、Lambda 等最终会被转换成什么。",
+                    "重点不要只背语法，要能说出边界问题，例如拆箱 NPE、泛型擦除、增强 for 删除元素、finally 资源关闭、Lambda 捕获变量限制。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["反射"],
+        [
+            (
+                "核心概念",
+                [
+                    "反射允许程序在运行期获取类信息并动态创建对象、访问字段、调用方法。",
+                    "常用入口包括 `Class`、`Constructor`、`Field`、`Method`。",
+                ],
+            ),
+            (
+                "典型使用",
+                [
+                    "Spring IoC 根据类元信息创建 Bean 并注入依赖。",
+                    "MyBatis 根据 Mapper 接口和结果映射动态调用。",
+                    "序列化框架通过反射读取字段和构造对象。",
+                ],
+            ),
+            (
+                "注意事项",
+                [
+                    "反射绕过编译期检查，错误更容易在运行期暴露。",
+                    "反射调用通常比直接调用慢，但现代 JVM 已做大量优化，实际要以场景和压测为准。",
+                    "在 Java 9+ 模块系统下，强封装会影响对非公开成员的反射访问。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["注解"],
+        [
+            (
+                "核心概念",
+                [
+                    "注解是附加在代码元素上的元数据，本身不直接改变程序逻辑，需要编译器、框架或运行期反射解析。",
+                    "常见元注解包括 `@Target`、`@Retention`、`@Documented`、`@Inherited`、`@Repeatable`。",
+                ],
+            ),
+            (
+                "Retention",
+                [
+                    "`SOURCE`：只保留在源码，例如 `@Override`。",
+                    "`CLASS`：进入 class 文件，但运行期不可反射读取。",
+                    "`RUNTIME`：运行期可通过反射读取，框架注解通常使用它。",
+                ],
+            ),
+            (
+                "工程实践",
+                [
+                    "自定义注解通常配合 AOP、拦截器、BeanPostProcessor 或编译期处理器使用。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["序列化"],
+        [
+            (
+                "核心概念",
+                [
+                    "序列化是把对象转换为可存储或可传输格式，反序列化是把数据恢复为对象。",
+                    "Java 原生序列化依赖 `Serializable`，但性能、安全性和跨语言能力较弱。",
+                ],
+            ),
+            (
+                "常见方案",
+                [
+                    "JSON：可读性好，常用于 HTTP API，但体积较大。",
+                    "Protobuf：体积小、跨语言、性能好，适合 RPC 和消息。",
+                    "Kryo/Hessian：常见于 Java 生态 RPC 或缓存场景。",
+                ],
+            ),
+            (
+                "风险",
+                [
+                    "反序列化不可信数据可能造成安全漏洞。",
+                    "类结构变更会带来兼容性问题，需要设计 schema 演进策略。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["动态代理"],
+        [
+            (
+                "两类代理",
+                [
+                    "JDK 动态代理：基于接口生成代理类，目标类必须实现接口。",
+                    "CGLIB：基于继承生成子类代理，不能代理 final 类和 final 方法。",
+                ],
+            ),
+            (
+                "典型应用",
+                [
+                    "Spring AOP、声明式事务、RPC 客户端、MyBatis Mapper 都大量使用代理思想。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "Spring 默认在有接口时优先使用 JDK 动态代理，没有接口时使用 CGLIB。",
+                    "代理增强发生在代理对象调用路径上，自调用绕过代理会导致事务、缓存、异步等注解失效。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["cas"],
+        [
+            (
+                "核心概念",
+                [
+                    "CAS 是 Compare And Swap，比较内存中的旧值是否等于期望值，如果相等则更新为新值。",
+                    "它是乐观锁思想，失败后通常自旋重试。",
+                ],
+            ),
+            (
+                "优点与问题",
+                [
+                    "优点：避免阻塞和线程挂起，低竞争下性能好。",
+                    "ABA 问题：值从 A 变 B 又变 A，CAS 误以为没有变化，可用版本号或 `AtomicStampedReference` 解决。",
+                    "自旋成本：高竞争下大量失败重试会浪费 CPU。",
+                    "只能保证单个变量原子更新，复杂条件需要锁或更高层同步机制。",
+                ],
+            ),
+            (
+                "应用",
+                [
+                    "`AtomicInteger`、AQS 状态更新、ConcurrentHashMap 部分更新路径都会使用 CAS。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["volatile"],
+        [
+            (
+                "核心语义",
+                [
+                    "可见性：一个线程修改 volatile 变量后，其他线程能及时看到。",
+                    "有序性：volatile 读写会插入内存屏障，限制指令重排序。",
+                    "不保证复合操作原子性，例如 `i++` 仍不是线程安全。",
+                ],
+            ),
+            (
+                "适用场景",
+                [
+                    "状态标记，例如线程停止标志。",
+                    "双重检查锁中的单例引用，防止对象未初始化完成就被其他线程看到。",
+                    "一写多读且写入不依赖旧值的场景。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "volatile 解决可见性和有序性，不解决互斥。需要互斥修改共享状态时应使用 synchronized、Lock 或原子类。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["synchronized"],
+        [
+            (
+                "核心语义",
+                [
+                    "`synchronized` 提供互斥、可见性和有序性。进入同步块需要获取对象监视器，退出同步块会释放锁。",
+                    "修饰实例方法锁的是当前对象，修饰静态方法锁的是 Class 对象。",
+                ],
+            ),
+            (
+                "锁优化",
+                [
+                    "JVM 曾有偏向锁、轻量级锁、重量级锁等优化路径；新版本中偏向锁已被废弃或移除。",
+                    "锁升级和锁消除、锁粗化等优化都由 JVM 根据运行情况处理。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "锁粒度应尽量小，锁内避免 IO、RPC、数据库访问等慢操作。",
+                    "多把锁同时使用时要固定加锁顺序，降低死锁风险。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["threadlocal"],
+        [
+            (
+                "核心概念",
+                [
+                    "ThreadLocal 为每个线程保存一份独立变量副本，常用于线程上下文、traceId、用户信息、日期格式化对象等。",
+                    "数据实际存放在线程对象的 ThreadLocalMap 中，key 是 ThreadLocal 的弱引用，value 是业务对象。",
+                ],
+            ),
+            (
+                "内存泄漏风险",
+                [
+                    "线程池中的线程会被复用，如果任务结束后不 remove，value 可能长期挂在线程上。",
+                    "最佳实践是在 `finally` 中调用 `remove()`。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "ThreadLocal 不是为了解决共享变量竞争，而是用线程隔离避免共享。在线程池、异步任务和父子线程传递场景要特别谨慎。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["aqs"],
+        [
+            (
+                "核心概念",
+                [
+                    "AQS 是 AbstractQueuedSynchronizer，是构建锁和同步器的基础框架。",
+                    "它用一个 volatile int `state` 表示同步状态，用 CLH 变体队列管理等待线程。",
+                ],
+            ),
+            (
+                "两种模式",
+                [
+                    "独占模式：同一时刻只允许一个线程获取，例如 ReentrantLock。",
+                    "共享模式：允许多个线程同时获取，例如 Semaphore、CountDownLatch。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "理解 AQS 要抓住 state、CAS 更新、等待队列、park/unpark、独占/共享模式这几个关键词。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程池"],
+        [
+            (
+                "核心参数",
+                [
+                    "`corePoolSize`：核心线程数。",
+                    "`maximumPoolSize`：最大线程数。",
+                    "`workQueue`：任务队列。",
+                    "`keepAliveTime`：非核心线程空闲存活时间。",
+                    "`RejectedExecutionHandler`：拒绝策略。",
+                ],
+            ),
+            (
+                "执行流程",
+                [
+                    "线程数小于 core 时创建核心线程。",
+                    "核心线程满后任务进入队列。",
+                    "队列满后创建非核心线程，直到 maximum。",
+                    "线程和队列都满时触发拒绝策略。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "CPU 密集型任务线程数接近 CPU 核数。",
+                    "IO 密集型任务可适当增大线程数，但要受下游容量约束。",
+                    "不要使用无界队列承接不可控流量，否则可能导致内存膨胀和延迟失控。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["completablefuture", "future"],
+        [
+            (
+                "核心区别",
+                [
+                    "Future 只能表示异步结果，组合能力弱，获取结果通常阻塞。",
+                    "CompletableFuture 支持回调、编排、组合、异常处理，适合多个异步任务聚合。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "显式传入业务线程池，避免默认 ForkJoinPool 被阻塞任务耗尽。",
+                    "每个异步分支都要处理异常和超时。",
+                    "聚合多个外部调用时要考虑降级和部分失败。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["simpledateformat"],
+        [
+            (
+                "核心问题",
+                [
+                    "SimpleDateFormat 不是线程安全的，多线程共享同一个实例可能导致解析或格式化结果错误。",
+                ],
+            ),
+            (
+                "解决方案",
+                [
+                    "每次使用创建新实例，简单但有对象创建成本。",
+                    "使用 ThreadLocal 保存每个线程独立实例，但线程池中要注意 remove。",
+                    "优先使用 Java 8+ 的 `DateTimeFormatter`，它是不可变且线程安全的。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["java和c", "java和c的区别"],
+        [
+            (
+                "核心区别",
+                [
+                    "Java 运行在 JVM 上，强调跨平台、自动内存管理和安全边界；C/C++ 更接近底层，允许直接操作内存，性能和控制力更强但风险也更高。",
+                    "Java 不支持多继承类，但支持接口多继承；C++ 支持类多继承，因此也需要处理菱形继承等复杂问题。",
+                    "Java 没有运算符重载和显式指针运算，降低了语言复杂度和内存错误概率。",
+                ],
+            ),
+            (
+                "面试表达",
+                [
+                    "回答时不要只背语法差异，可以从内存管理、运行时平台、继承模型、异常机制、泛型实现和生态定位几个角度比较。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["位移运算符"],
+        [
+            (
+                "三类位移",
+                [
+                    "`<<`：左移，低位补 0，相当于在不溢出的情况下乘以 2 的幂。",
+                    "`>>`：有符号右移，高位补符号位。",
+                    "`>>>`：无符号右移，高位补 0。",
+                ],
+            ),
+            (
+                "注意点",
+                [
+                    "int 位移只取低 5 位，因此移动 32 位等价于移动 0 位；long 位移只取低 6 位。",
+                    "位运算常用于状态标记、权限位、哈希扰动、网络协议和高性能编码。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["构造方法"],
+        [
+            (
+                "核心规则",
+                [
+                    "构造方法名称与类名相同，没有返回值。",
+                    "如果没有显式定义构造方法，编译器会生成默认无参构造。",
+                    "一旦定义了任意构造方法，编译器不再自动生成无参构造。",
+                    "子类构造方法默认先调用父类无参构造，也可以通过 `super(...)` 指定父类构造。",
+                ],
+            ),
+            (
+                "工程实践",
+                [
+                    "框架反射创建对象通常需要无参构造，例如部分 ORM、序列化工具。",
+                    "构造器中不要启动线程或暴露 `this`，避免对象未完成初始化就被外部访问。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["常量"],
+        [
+            (
+                "常量类型",
+                [
+                    '字面量常量：例如 `1`、`"abc"`。',
+                    "`static final` 常量：属于类，常用于全局固定配置或枚举前的常量定义。",
+                    "成员常量：定义在类中、方法外，使用 `final` 修饰，属于对象实例，每个对象都有自己的字段值且只能赋值一次。",
+                    "局部 final 变量：方法内部只能赋值一次。",
+                ],
+            ),
+            (
+                "静态常量（类中）",
+                [
+                    "定义位置：类中、方法外。",
+                    "修饰方式：通常使用 `public static final` 或 `private static final`。",
+                    "归属：属于类本身，不依赖对象实例。",
+                    "使用场景：全局固定配置、错误码、默认值、常量 key。",
+                ],
+            ),
+            (
+                "成员常量（类中）",
+                [
+                    "定义位置：类中、方法外。",
+                    "修饰方式：使用 `final`，但不使用 `static`。",
+                    "归属：属于对象实例。不同对象可以在构造时初始化为不同值，但初始化后不能再修改。",
+                    "使用场景：对象创建后不应改变的实例属性，例如创建时间、业务编号、初始化配置。",
+                ],
+            ),
+            (
+                "局部常量（类方法中）",
+                [
+                    "定义位置：方法、构造器或代码块内部。",
+                    "修饰方式：使用 `final` 修饰局部变量。",
+                    "作用域：只在当前方法或代码块内有效。",
+                    "使用场景：方法内部不希望被重新赋值的临时变量、Lambda 捕获变量。",
+                ],
+            ),
+            (
+                "编译期常量",
+                [
+                    "基本类型和 String 的 `static final` 常量如果在编译期可确定，可能会被编译器内联到使用方。",
+                    "公共常量变更后，如果使用方未重新编译，可能仍然使用旧值。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """public class ConstantDemo {
+    // 静态常量：类中，属于类本身，所有对象共享
+    public static final String SYSTEM_NAME = \"order-service\";
+
+    // 成员常量：类中，属于对象实例，每个对象初始化后不可变
+    private final String orderNo;
+
+    public ConstantDemo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public void printOrder() {
+        // 局部常量：方法中，只在当前方法内有效，赋值后不能再改
+        final int maxRetryTimes = 3;
+
+        System.out.println(\"system=\" + SYSTEM_NAME);
+        System.out.println(\"orderNo=\" + orderNo);
+        System.out.println(\"maxRetryTimes=\" + maxRetryTimes);
+    }
+
+    public static void main(String[] args) {
+        ConstantDemo demo = new ConstantDemo(\"ORDER_1001\");
+        demo.printOrder();
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["object常见方法"],
+        [
+            (
+                "getClass()",
+                [
+                    "签名：`public final native Class<?> getClass()`。",
+                    "作用：返回对象运行时的 `Class` 对象，用于获取类元信息。",
+                    "特点：`final` 方法，子类不能重写；返回的是运行时实际类型，不是声明类型。",
+                    "常见场景：反射、日志打印、框架类型判断、注解解析。",
+                ],
+            ),
+            (
+                "hashCode()",
+                [
+                    "签名：`public native int hashCode()`。",
+                    "作用：返回对象的哈希码，主要服务于 `HashMap`、`HashSet`、`Hashtable` 等哈希容器。",
+                    "默认实现通常与对象地址相关，但规范不要求必须等于内存地址。",
+                    "注意：如果重写 `equals`，通常必须同时重写 `hashCode`，保证相等对象哈希值相同。",
+                ],
+            ),
+            (
+                "equals(Object obj)",
+                [
+                    "签名：`public boolean equals(Object obj)`。",
+                    "作用：判断两个对象是否相等。Object 默认实现等价于 `this == obj`，即比较引用是否相同。",
+                    "常见重写场景：值对象、DTO、业务唯一对象等需要按字段或业务主键判断相等。",
+                    "注意：需要满足自反性、对称性、传递性、一致性和非空性。",
+                ],
+            ),
+            (
+                "clone()",
+                [
+                    "签名：`protected native Object clone() throws CloneNotSupportedException`。",
+                    "作用：创建并返回当前对象的一个副本。",
+                    "使用条件：类通常需要实现 `Cloneable` 接口，否则调用 `Object#clone` 会抛出 `CloneNotSupportedException`。",
+                    "注意：默认是浅拷贝，引用字段仍指向原对象中的引用对象；深拷贝需要手动处理。",
+                    "实践建议：业务代码更推荐拷贝构造器、静态工厂或映射工具，少直接依赖 `clone`。",
+                ],
+            ),
+            (
+                "toString()",
+                [
+                    "签名：`public String toString()`。",
+                    "作用：返回对象的字符串表示。Object 默认格式通常是 `类名@哈希值十六进制`。",
+                    "常见重写场景：日志、调试、错误定位、对象摘要展示。",
+                    "注意：不要在 `toString` 中输出密码、token、身份证等敏感信息，也不要触发复杂远程调用或懒加载风暴。",
+                ],
+            ),
+            (
+                "notify()",
+                [
+                    "签名：`public final native void notify()`。",
+                    "作用：随机唤醒一个正在该对象监视器上等待的线程。",
+                    "使用条件：必须在持有该对象监视器时调用，即在 `synchronized(obj)` 或同步方法中调用。",
+                    "注意：被唤醒线程不会立刻执行，需要重新竞争锁。",
+                ],
+            ),
+            (
+                "notifyAll()",
+                [
+                    "签名：`public final native void notifyAll()`。",
+                    "作用：唤醒所有正在该对象监视器上等待的线程。",
+                    "使用条件：同样必须在持有对象监视器时调用。",
+                    "实践建议：条件复杂或多个线程等待不同条件时，`notifyAll` 通常比 `notify` 更安全，但会带来更多线程竞争。",
+                ],
+            ),
+            (
+                "wait(long timeout)",
+                [
+                    "签名：`public final native void wait(long timeout) throws InterruptedException`。",
+                    "作用：让当前线程释放对象锁并进入等待，直到被唤醒、超时或中断。",
+                    "使用条件：必须在持有对象监视器时调用。",
+                    "注意：`timeout` 为 0 表示无限等待。",
+                ],
+            ),
+            (
+                "wait(long timeout, int nanos)",
+                [
+                    "签名：`public final void wait(long timeout, int nanos) throws InterruptedException`。",
+                    "作用：在毫秒基础上增加纳秒级等待参数。",
+                    "注意：实际唤醒精度受操作系统调度影响，不应依赖它实现严格纳秒级定时。",
+                ],
+            ),
+            (
+                "wait()",
+                [
+                    "签名：`public final void wait() throws InterruptedException`。",
+                    "作用：无限期等待，直到其他线程调用同一对象的 `notify/notifyAll` 或当前线程被中断。",
+                    "实践建议：调用 `wait` 应放在 while 条件循环中，防止虚假唤醒。",
+                ],
+            ),
+            (
+                "finalize()",
+                [
+                    "签名：`protected void finalize() throws Throwable`。",
+                    "作用：对象被垃圾回收前可能被 JVM 调用，用于资源清理。",
+                    "现状：`finalize` 已被废弃，不推荐使用，后续版本中会被移除。",
+                    "原因：执行时机不确定、性能差、容易导致对象复活和资源泄漏。",
+                    "替代方案：使用 `try-with-resources`、`AutoCloseable`、显式 `close`、Cleaner 或框架生命周期回调。",
+                ],
+            ),
+            (
+                "wait/notify 使用示例",
+                [
+                    {
+                        "lang": "java",
+                        "code": """public class WaitNotifyDemo {
+    private final Object lock = new Object();
+    private boolean ready = false;
+
+    public void waitReady() throws InterruptedException {
+        synchronized (lock) {
+            while (!ready) { // 防止虚假唤醒
+                lock.wait();
+            }
+            System.out.println(\"ready\");
+        }
+    }
+
+    public void makeReady() {
+        synchronized (lock) {
+            ready = true;
+            lock.notifyAll();
+        }
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["统计代码耗时"],
+        [
+            (
+                "常用方式",
+                [
+                    "简单场景可用 `System.nanoTime()` 统计相对耗时，避免用 `currentTimeMillis()` 做精细耗时统计。",
+                    "Spring 项目可使用 `StopWatch` 记录多阶段耗时。",
+                    "线上接口耗时应接入 Micrometer、Prometheus、SkyWalking、OpenTelemetry 等监控体系。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "性能测试要预热 JVM，避免 JIT、类加载、缓存冷启动影响结论。",
+                    "微基准测试优先使用 JMH。",
+                ],
+            ),
+            (
+                "StopWatch 示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """import org.springframework.util.StopWatch;
+
+public class StopWatchDemo {
+    public static void main(String[] args) throws InterruptedException {
+        StopWatch stopWatch = new StopWatch(\"order-service-cost\");
+
+        stopWatch.start(\"query-user\");
+        Thread.sleep(80);
+        stopWatch.stop();
+
+        stopWatch.start(\"query-order\");
+        Thread.sleep(120);
+        stopWatch.stop();
+
+        stopWatch.start(\"build-response\");
+        Thread.sleep(30);
+        stopWatch.stop();
+
+        System.out.println(stopWatch.prettyPrint());
+        System.out.println(\"totalMillis=\" + stopWatch.getTotalTimeMillis());
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["s1-1", "s1-", "s1"],
+        [
+            (
+                "类型转换",
+                [
+                    "`s1 += 1` 隐含强制类型转换，等价于 `s1 = (short)(s1 + 1)`。",
+                    "`s1 = s1 + 1` 中 `s1 + 1` 会先提升为 int，因此直接赋值给 short 会编译失败。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "byte、short、char 参与算术运算时通常会提升为 int，这是 Java 数值提升规则的体现。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["跳出多层循环"],
+        [
+            (
+                "常见方式",
+                [
+                    "使用带标签的 `break label` 跳出指定外层循环。",
+                    "将循环逻辑抽成方法，通过 `return` 提前结束。",
+                    "使用状态变量控制外层循环，但可读性通常较差。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "业务代码中不要滥用 label，复杂循环更建议拆函数提升可读性。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """public class BreakOuterLoopDemo {
+    public static void main(String[] args) {
+        outer:
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.println(\"i=\" + i + \", j=\" + j);
+
+                if (i == 1 && j == 1) {
+                    break outer; // 跳出 outer 标记的外层循环
+                }
+            }
+        }
+
+        System.out.println(\"end\");
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["main方法"],
+        [
+            (
+                "基本规则",
+                [
+                    "标准入口是 `public static void main(String[] args)`。",
+                    "`main` 可以重载，但 JVM 启动时只识别标准签名。",
+                    "`main` 是静态方法，可以被继承但不存在运行期多态重写意义。",
+                ],
+            ),
+            (
+                "实践",
+                [
+                    "Spring Boot 的 main 方法主要负责调用 `SpringApplication.run` 启动应用上下文。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["可变长参数"],
+        [
+            (
+                "核心规则",
+                [
+                    "可变长参数本质上是数组，方法内部按数组处理。",
+                    "一个方法最多只能有一个可变长参数，并且必须放在参数列表最后。",
+                    "重载时同时存在数组、固定参数和可变参数可能造成调用歧义。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "公共 API 使用可变参数要注意 null、空数组和重载歧义。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["switch支持的数据类型"],
+        [
+            (
+                "支持类型",
+                [
+                    "传统 switch 支持 byte、short、char、int 及其包装类型、enum、String。",
+                    "不支持 long、float、double、boolean。",
+                    "新版本 Java 引入 switch expression 和模式匹配能力，表达能力更强。",
+                ],
+            ),
+            (
+                "注意点",
+                [
+                    "String switch 底层会结合 hashCode 和 equals 判断，不能只理解成整数跳转。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["静态内部类和普通内部类区别"],
+        [
+            (
+                "核心区别",
+                [
+                    "普通内部类持有外部类实例引用，可以访问外部类实例成员。",
+                    "静态内部类不持有外部类实例引用，只能直接访问外部类静态成员。",
+                    "创建普通内部类需要外部类实例，创建静态内部类不需要。",
+                ],
+            ),
+            (
+                "典型应用",
+                [
+                    "静态内部类常用于 Builder、枚举式分组、静态内部类单例模式。",
+                    "非静态内部类如果被长生命周期对象引用，可能导致外部类实例无法释放。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["判断类或接口的派生关系"],
+        [
+            (
+                "常用 API",
+                [
+                    "`instanceof`：判断对象是否是某类型实例。",
+                    "`Class#isAssignableFrom`：判断一个 Class 是否可由另一个 Class 赋值。",
+                    "`Class#isInstance`：反射版本的 instanceof。",
+                ],
+            ),
+            (
+                "示例理解",
+                [
+                    "`Parent.class.isAssignableFrom(Child.class)` 为 true，表示 Child 可以赋值给 Parent。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["创建对象方法"],
+        [
+            (
+                "常见方式",
+                [
+                    "使用 `new` 调用构造方法。",
+                    "使用反射 `Constructor#newInstance`。",
+                    "使用 clone，但需要实现 `Cloneable` 且语义复杂。",
+                    "通过反序列化恢复对象。",
+                    "通过工厂方法、Builder、Spring 容器创建对象。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "业务代码优先使用构造器、静态工厂或 Builder；框架层才大量使用反射和容器创建。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:变量"],
+        [
+            (
+                "变量分类",
+                [
+                    "局部变量：定义在方法、构造器或代码块中，必须显式初始化后才能使用。",
+                    "成员变量：定义在类中、方法外，属于对象实例，有默认值。",
+                    "静态变量：使用 `static` 修饰，属于类本身，所有实例共享。",
+                ],
+            ),
+            (
+                "作用域与生命周期",
+                [
+                    "局部变量随方法调用入栈创建，方法结束后失效。",
+                    "成员变量随对象创建而存在，对象被 GC 后释放。",
+                    "静态变量随类加载初始化，通常随 Class 卸载才释放。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """public class VariableDemo {
+    private static int staticCount = 0; // 静态变量：类共享
+    private String name;               // 成员变量：对象独有
+
+    public void setName(String name) { // 参数也是局部变量
+        int length = name.length();    // 局部变量：方法内有效
+        this.name = name;
+        staticCount++;
+        System.out.println(length);
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["重写和重载"],
+        [
+            (
+                "重载 Overload",
+                [
+                    "发生在同一个类中，方法名相同，参数列表不同。",
+                    "参数列表不同包括参数个数、类型或顺序不同。",
+                    "仅返回值不同不能构成重载。",
+                    "重载是编译期确定，属于静态分派。",
+                ],
+            ),
+            (
+                "重写 Override",
+                [
+                    "发生在父子类之间，子类重新实现父类可继承的方法。",
+                    "方法名、参数列表需要相同，返回值类型可以是协变返回。",
+                    "访问权限不能比父类更严格，抛出的受检异常不能比父类更宽。",
+                    "重写是运行期根据实际对象类型确定，属于动态分派。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """class Animal {
+    void speak() {
+        System.out.println(\"animal\");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void speak() { // 重写
+        System.out.println(\"dog\");
+    }
+
+    void speak(String prefix) { // 重载
+        System.out.println(prefix + \" dog\");
+    }
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["erro和exception", "error和exception"],
+        [
+            (
+                "Throwable 体系",
+                [
+                    "`Throwable` 是 Java 异常体系根类，下面主要分为 `Error` 和 `Exception`。",
+                    "`Error` 表示严重错误，通常程序无法恢复，例如 `OutOfMemoryError`、`StackOverflowError`。",
+                    "`Exception` 表示程序可以捕获和处理的异常。",
+                ],
+            ),
+            (
+                "受检与非受检异常",
+                [
+                    "受检异常：继承 `Exception` 但不继承 `RuntimeException`，编译器要求处理或声明抛出。",
+                    "非受检异常：`RuntimeException` 及其子类，通常表示编程错误或运行期异常。",
+                    "业务异常通常可以设计为 RuntimeException，但要有统一异常处理和错误码。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "不要捕获 `Throwable` 或 `Error` 后继续正常执行，除非是在框架边界做日志和隔离。",
+                    "不要空 catch，至少记录上下文。",
+                    "对外接口应统一异常响应，避免把内部堆栈直接暴露给调用方。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["包装类"],
+        [
+            (
+                "核心概念",
+                [
+                    "包装类是基本类型的对象形式，例如 `int` 对应 `Integer`，`long` 对应 `Long`。",
+                    "包装类可用于泛型、集合、反射、空值表达等基本类型不能直接使用的场景。",
+                ],
+            ),
+            (
+                "缓存机制",
+                [
+                    "`Integer` 默认缓存 `-128` 到 `127` 范围内的对象。",
+                    "`Byte`、`Short`、`Long`、`Character` 也有类似缓存范围。",
+                    "不要依赖 `==` 比较包装类数值，应使用 `equals` 或转成基本类型。",
+                ],
+            ),
+            (
+                "拆箱 NPE",
+                [
+                    "包装类型为 null 时自动拆箱会抛出 `NullPointerException`。",
+                    "数据库字段、JSON 入参、RPC DTO 中的包装类型要特别注意 null。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """Integer a = 127;
+Integer b = 127;
+System.out.println(a == b); // true，命中缓存
+
+Integer c = 128;
+Integer d = 128;
+System.out.println(c == d); // false，通常未命中缓存
+
+Integer value = null;
+// int n = value; // 自动拆箱会抛 NullPointerException""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:字符串"],
+        [
+            (
+                "不可变性",
+                [
+                    "`String` 是不可变类，内部字符内容创建后不能修改。",
+                    "不可变性带来线程安全、可缓存 hashCode、适合作为 Map key 等优势。",
+                    "字符串拼接会产生新字符串或由编译器/JVM 优化成其他形式。",
+                ],
+            ),
+            (
+                "字符串常量池",
+                [
+                    "字符串字面量会进入字符串常量池。",
+                    '`new String("abc")` 会创建堆对象，字面量 `"abc"` 仍在常量池。',
+                    "`intern()` 会尝试返回常量池中的字符串引用。",
+                ],
+            ),
+            (
+                "String/StringBuilder/StringBuffer",
+                [
+                    "`String`：不可变，适合少量字符串和常量。",
+                    "`StringBuilder`：可变，非线程安全，适合单线程大量拼接。",
+                    "`StringBuffer`：可变，方法加 synchronized，线程安全但性能开销更高。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["接口和抽象类区别"],
+        [
+            (
+                "核心区别",
+                [
+                    "抽象类表达 is-a 关系，适合沉淀公共状态和公共实现。",
+                    "接口表达 can-do 能力，适合定义行为契约和扩展点。",
+                    "Java 类只能继承一个父类，但可以实现多个接口。",
+                ],
+            ),
+            (
+                "成员能力",
+                [
+                    "抽象类可以有成员变量、构造器、普通方法、抽象方法。",
+                    "接口可以有抽象方法、默认方法、静态方法、私有方法，字段默认是 `public static final`。",
+                ],
+            ),
+            (
+                "选择建议",
+                [
+                    "需要共享状态或模板方法时用抽象类。",
+                    "需要定义能力、插件扩展、跨层契约时用接口。",
+                    "面向框架设计时，接口通常更利于解耦和测试。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:泛型"],
+        [
+            (
+                "核心概念",
+                [
+                    "泛型用于把类型参数化，让编译器在编译期做类型检查。",
+                    "Java 泛型通过类型擦除实现，运行期大部分泛型信息不可见。",
+                ],
+            ),
+            (
+                "通配符",
+                [
+                    "`? extends T`：上界通配符，适合读取，表示 T 或 T 的子类。",
+                    "`? super T`：下界通配符，适合写入，表示 T 或 T 的父类。",
+                    "口诀 PECS：Producer Extends，Consumer Super。",
+                ],
+            ),
+            (
+                "常见限制",
+                [
+                    "不能直接 `new T()`。",
+                    "不能创建泛型数组，例如 `new List<String>[10]`。",
+                    "运行期不能直接用 `instanceof List<String>` 判断具体泛型参数。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["jdk8提供的内置的函数式接口"],
+        [
+            (
+                "常见函数式接口",
+                [
+                    "`Function<T,R>`：接收 T，返回 R。",
+                    "`Consumer<T>`：接收 T，无返回值。",
+                    "`Supplier<T>`：无入参，返回 T。",
+                    "`Predicate<T>`：接收 T，返回 boolean。",
+                    "`UnaryOperator<T>`：接收 T，返回 T。",
+                    "`BinaryOperator<T>`：接收两个 T，返回 T。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """Function<String, Integer> length = String::length;
+Predicate<String> notBlank = s -> s != null && !s.isBlank();
+Consumer<String> printer = System.out::println;
+Supplier<Long> now = System::currentTimeMillis;
+
+if (notBlank.test("java")) {
+    printer.accept("len=" + length.apply("java"));
+}""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:stream"],
+        [
+            (
+                "核心概念",
+                [
+                    "Stream 是 Java 8 引入的声明式数据处理 API，用于对集合、数组、IO 等数据源进行流水线处理。",
+                    "Stream 不存储数据，通常由数据源创建，经中间操作转换，最后由终止操作触发执行。",
+                ],
+            ),
+            (
+                "操作类型",
+                [
+                    "中间操作：`map`、`filter`、`flatMap`、`sorted`、`distinct`、`peek`。",
+                    "终止操作：`collect`、`forEach`、`reduce`、`count`、`findFirst`、`anyMatch`。",
+                    "中间操作通常是惰性的，只有遇到终止操作才执行。",
+                ],
+            ),
+            (
+                "实践注意",
+                [
+                    "Stream 只能消费一次。",
+                    "避免在 Stream 中写复杂副作用逻辑。",
+                    "parallelStream 不一定更快，可能带来线程池竞争、顺序问题和上下文丢失。",
+                ],
+            ),
+            (
+                "示例代码",
+                [
+                    {
+                        "lang": "java",
+                        "code": """List<String> names = users.stream()
+    .filter(user -> user.getAge() >= 18)
+    .map(User::getName)
+    .distinct()
+    .sorted()
+    .toList();""",
+                    }
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["exact:unsafe"],
+        [
+            (
+                "核心概念",
+                [
+                    "`Unsafe` 是 JDK 内部提供的底层能力类，可以直接操作内存、对象字段、CAS、线程挂起恢复等。",
+                    "它绕过了 Java 的部分安全检查，因此名字叫 Unsafe。",
+                ],
+            ),
+            (
+                "常见能力",
+                [
+                    "堆外内存分配和释放。",
+                    "CAS 原子操作。",
+                    "按字段偏移量读写对象字段。",
+                    "线程 park/unpark。",
+                    "绕过构造器创建对象。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "业务代码不应直接使用 Unsafe。",
+                    "并发工具、Netty、序列化框架等底层组件可能间接使用它。",
+                    "现代 Java 更推荐使用 VarHandle、ByteBuffer、Foreign Function & Memory API 等替代方向。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["深拷贝浅拷贝"],
+        [
+            (
+                "核心区别",
+                [
+                    "浅拷贝只复制对象本身，引用字段仍指向原来的对象。",
+                    "深拷贝会递归复制引用对象，新旧对象之间不共享可变内部状态。",
+                ],
+            ),
+            (
+                "实现方式",
+                [
+                    "手写拷贝构造或转换方法，最清晰可控。",
+                    "序列化再反序列化可实现深拷贝，但性能和兼容性一般。",
+                    "使用 MapStruct、BeanUtils 等工具时要明确它们默认多为浅层复制。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["yyyy与yyyy", "日期格式"],
+        [
+            (
+                "核心区别",
+                [
+                    "`yyyy` 表示自然年 year-of-era。",
+                    "`YYYY` 表示 week-based-year，即周所属的年份。",
+                    "跨年周附近使用 `YYYY` 可能把日期格式化到相邻年份，导致线上日期分区或报表错误。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "业务日期格式化通常使用 `yyyy-MM-dd`，不要误用 `YYYY-MM-dd`。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["repeatable"],
+        [
+            (
+                "核心概念",
+                [
+                    "`@Repeatable` 允许同一个注解在同一元素上重复使用。",
+                    "需要定义一个容器注解来承载多个重复注解。",
+                ],
+            ),
+            (
+                "典型场景",
+                [
+                    "同一方法配置多条规则、多个权限、多个路由或多个校验条件。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["spi"],
+        [
+            (
+                "核心概念",
+                [
+                    "SPI 是 Service Provider Interface，用于面向接口发现实现类。",
+                    "JDK SPI 通过 `META-INF/services/接口全限定名` 配置实现类，再用 `ServiceLoader` 加载。",
+                ],
+            ),
+            (
+                "应用场景",
+                [
+                    "JDBC Driver、日志框架、Dubbo 扩展点、序列化插件等都体现了 SPI 思想。",
+                ],
+            ),
+            (
+                "注意点",
+                [
+                    "JDK SPI 会一次性加载并实例化实现类，按需加载和扩展能力相对较弱；Dubbo SPI 做了更丰富的增强。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["进程间通信"],
+        [
+            (
+                "常见方式",
+                [
+                    "管道、消息队列、共享内存、信号量、Socket、文件、RPC、HTTP、消息中间件。",
+                    "后端分布式系统中更常见的是 HTTP/RPC、消息队列、数据库和缓存作为进程间协作方式。",
+                ],
+            ),
+            (
+                "面试重点",
+                [
+                    "线程间通信共享同一进程内存，进程间通信需要借助操作系统或网络机制。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["守护线程"],
+        [
+            (
+                "核心概念",
+                [
+                    "守护线程是为用户线程服务的后台线程。",
+                    "当 JVM 中只剩守护线程时，JVM 会退出。",
+                    "典型守护线程包括 GC 相关线程、监控或后台清理线程。",
+                ],
+            ),
+            (
+                "注意点",
+                [
+                    "守护线程不适合承载必须完成的数据写入、文件关闭、事务提交等关键任务。",
+                    "必须在线程启动前调用 `setDaemon(true)`。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程顺序执行的方法"],
+        [
+            (
+                "常见方式",
+                [
+                    "使用 `Thread#join` 等待前一个线程结束。",
+                    "使用 `CountDownLatch` 控制阶段顺序。",
+                    "使用单线程线程池保证任务按提交顺序执行。",
+                    "使用 `CompletableFuture` 编排依赖关系。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "如果只是任务编排，优先使用线程池和 Future/CompletableFuture，而不是手动创建多个 Thread。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程异常处理"],
+        [
+            (
+                "处理方式",
+                [
+                    "线程内部 try-catch，最直接可靠。",
+                    "设置 `UncaughtExceptionHandler` 捕获未处理异常。",
+                    "线程池中通过 `Future#get` 获取任务异常。",
+                    "重写 `ThreadPoolExecutor#afterExecute` 做统一记录。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "线程池任务异常必须记录日志和指标，否则任务失败可能被静默吞掉。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程终止"],
+        [
+            (
+                "推荐方式",
+                [
+                    "使用共享停止标志，例如 volatile boolean。",
+                    "使用 `interrupt` 中断阻塞或协作式停止。",
+                    "线程池使用 `shutdown` 或 `shutdownNow`，并配合超时等待。",
+                ],
+            ),
+            (
+                "不推荐方式",
+                [
+                    "不要使用 `Thread.stop`，它会强制释放锁，可能破坏对象一致性。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程异步"],
+        [
+            (
+                "常见方式",
+                [
+                    "线程池提交任务。",
+                    "Future/CompletableFuture。",
+                    "Spring `@Async`。",
+                    "消息队列异步解耦。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "异步任务必须考虑线程池隔离、异常处理、超时、重试、幂等和上下文传递。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["sleep和wait"],
+        [
+            (
+                "核心区别",
+                [
+                    "`sleep` 是 Thread 的静态方法，不释放对象锁。",
+                    "`wait` 是 Object 方法，必须在 synchronized 中调用，调用后会释放对象锁并进入等待队列。",
+                    "`wait` 需要通过 `notify/notifyAll` 或超时唤醒，唤醒后还要重新竞争锁。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "生产代码中更推荐使用 `CountDownLatch`、`Condition`、BlockingQueue 等更高层并发工具。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["reentrantlock"],
+        [
+            (
+                "核心能力",
+                [
+                    "ReentrantLock 是可重入独占锁，基于 AQS 实现。",
+                    "支持公平锁/非公平锁、可中断加锁、超时加锁和多个 Condition 队列。",
+                ],
+            ),
+            (
+                "与 synchronized",
+                [
+                    "synchronized 语法简单，由 JVM 管理释放。",
+                    "ReentrantLock 功能更丰富，但必须在 finally 中手动 unlock。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["reentrantreadwritelock"],
+        [
+            (
+                "核心概念",
+                [
+                    "读写锁将读和写分离，允许多个读线程并发，写线程独占。",
+                    "适合读多写少且读操作耗时明显的场景。",
+                ],
+            ),
+            (
+                "注意点",
+                [
+                    "写锁可以降级为读锁，读锁不能直接升级为写锁，否则可能死锁。",
+                    "如果写操作频繁，读写锁收益可能不明显，甚至更复杂。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["线程同步"],
+        [
+            (
+                "同步手段",
+                [
+                    "内置锁：synchronized。",
+                    "显式锁：ReentrantLock、ReadWriteLock、StampedLock。",
+                    "原子类：AtomicInteger、AtomicReference。",
+                    "同步器：CountDownLatch、CyclicBarrier、Semaphore。",
+                    "阻塞队列：BlockingQueue。",
+                ],
+            ),
+            (
+                "选择建议",
+                [
+                    "简单互斥优先 synchronized；需要超时、中断、公平性或多个条件队列时考虑 Lock；计数和状态流转考虑 AQS 同步器。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["runnable和callable"],
+        [
+            (
+                "核心区别",
+                [
+                    "Runnable 的 `run` 没有返回值，不能直接抛出受检异常。",
+                    "Callable 的 `call` 有返回值，可以抛出异常，通常配合 Future 使用。",
+                ],
+            ),
+            (
+                "实践",
+                [
+                    "需要异步结果或异常传递时使用 Callable/Future/CompletableFuture。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["execute和submit"],
+        [
+            (
+                "核心区别",
+                [
+                    "`execute` 提交 Runnable，没有返回 Future，异常通常由线程的异常处理器处理。",
+                    "`submit` 返回 Future，任务异常会封装在 Future 中，调用 `get` 时抛出。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "如果使用 submit 但从不调用 Future#get，异常可能不明显，需要统一 afterExecute 或日志处理。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["shutdown和shutdwonnow", "shutdown和shutdownnow"],
+        [
+            (
+                "核心区别",
+                [
+                    "`shutdown`：停止接收新任务，已提交任务继续执行。",
+                    "`shutdownNow`：尝试中断正在执行的任务，并返回队列中尚未执行的任务。",
+                ],
+            ),
+            (
+                "实践建议",
+                [
+                    "优雅停机通常先 shutdown，再 awaitTermination，超时后再 shutdownNow。任务本身也要响应中断。",
+                ],
+            ),
+        ],
+    ),
+    (
+        "Java",
+        ["isterminated和isshutdown"],
+        [
+            (
+                "核心区别",
+                [
+                    "`isShutdown` 表示线程池已经开始关闭，不再接收新任务。",
+                    "`isTerminated` 表示线程池关闭流程完成，所有任务都已结束。",
+                ],
+            ),
+            (
+                "实践",
+                [
+                    "判断线程池是否完全退出应使用 `awaitTermination` 或 `isTerminated`，不能只看 `isShutdown`。",
+                ],
+            ),
+        ],
+    ),
 ]
 
 
@@ -3342,6 +5275,1138 @@ Java 后端不需要一开始掌握所有大数据组件，但要能讲清一条
 ]
 
 
+JAVA_VERSION_DOCS = [
+    (
+        "Java 版本新特性总览",
+        "01-java/java-version-features/README.md",
+        """# Java 版本新特性总览
+
+本目录整理 Java 8 到 Java 21 的关键新特性，重点服务后端面试、老项目升级和新项目技术选型。
+
+## 为什么要掌握版本特性
+
+- Java 8 仍是很多存量系统的基础版本，Lambda、Stream、Optional、CompletableFuture 是高频面试点。
+- Java 11 是长期支持版本，很多企业从 Java 8 升级到 Java 11。
+- Java 17 是 Spring Boot 3/Spring 6 的基线，也是当前后端新项目常见 LTS。
+- Java 21 是新的 LTS，虚拟线程、结构化并发、模式匹配等对服务端开发影响明显。
+
+## 阅读顺序
+
+1. [Java 8](java-8.md)
+2. [Java 9-11](java-9-11.md)
+3. [Java 12-17](java-12-17.md)
+4. [Java 18-21](java-18-21.md)
+5. [LTS 版本选型与升级](lts-upgrade.md)
+
+## 面试重点
+
+- Java 8：Lambda、Stream、Optional、默认方法、CompletableFuture、新时间 API、元空间。
+- Java 9：模块系统、JShell、集合工厂方法。
+- Java 10：`var` 局部变量类型推断。
+- Java 11：HTTP Client、标准化运行单文件源码、ZGC 实验特性。
+- Java 14/16：Switch 表达式、Record。
+- Java 15/17：Text Blocks、Sealed Classes、Java 17 LTS。
+- Java 21：Virtual Threads、Record Patterns、Pattern Matching for switch、Sequenced Collections。
+
+## 原脑图新特性摘要
+
+- Java 8：接口 default/static 方法、函数式接口、Stream/parallelStream、Optional、Date Time API。
+- Java 9：JShell、模块系统 `module-info.java`、G1 默认垃圾收集器、`List.of/Set.of/Map.of`、String 存储优化、接口私有方法、进程 API、Reactive Streams、VarHandle。
+- Java 10：局部变量类型推断 `var`、垃圾回收器接口。
+- Java 11：HTTP Client 标准化、单文件源代码运行。
+- Java 12：Shenandoah GC、预览特性开关 `--enable-preview`。
+- Java 14：空指针精准提示、Switch 支持 `yield` 和箭头表达式。
+- Java 15：ZGC 转正、Hidden Classes、Text Blocks。
+- Java 16：`jpackage`、`instanceof` 模式匹配。
+- Java 17：Sealed Classes。
+- Java 18：默认字符集改为 UTF-8。
+
+## 找工作建议
+
+- 面试 Java 后端，至少要能讲清 Java 8、11、17、21 的代表性变化。
+- 如果目标 Spring Boot 3，需要重点掌握 Java 17、Jakarta 迁移、Record、Pattern Matching、文本块等。
+- 如果目标高并发服务，Java 21 虚拟线程是加分项，但要能讲清适用场景和限制。
+""",
+    ),
+    (
+        "Java 8 新特性",
+        "01-java/java-version-features/java-8.md",
+        """# Java 8 新特性
+
+Java 8 是现代 Java 的分水岭，引入函数式编程能力，并显著改变集合处理、异步编程和日期时间 API。
+
+## Lambda 表达式
+
+Lambda 用于把行为作为参数传递，简化匿名内部类。
+
+```java
+List<String> names = List.of("a", "bb", "ccc");
+names.sort((a, b) -> Integer.compare(a.length(), b.length()));
+```
+
+### 面试重点
+
+- Lambda 依赖函数式接口，即只有一个抽象方法的接口。
+- Lambda 可以捕获 effectively final 的局部变量。
+- Lambda 不是简单语法糖，底层通常通过 `invokedynamic` 实现。
+
+## 函数式接口
+
+常见接口：
+
+- `Function<T, R>`：输入 T，输出 R。
+- `Consumer<T>`：消费 T，无返回值。
+- `Supplier<T>`：无输入，提供 T。
+- `Predicate<T>`：输入 T，输出 boolean。
+- `Runnable`、`Callable` 也可以用于函数式场景。
+
+## Stream API
+
+Stream 用于声明式处理集合和数据流。
+
+```java
+List<String> result = users.stream()
+    .filter(u -> u.getAge() >= 18)
+    .map(User::getName)
+    .distinct()
+    .toList();
+```
+
+### 常见操作
+
+- 中间操作：`map`、`filter`、`flatMap`、`distinct`、`sorted`、`peek`。
+- 终止操作：`collect`、`forEach`、`reduce`、`count`、`anyMatch`、`findFirst`。
+
+### 注意事项
+
+- Stream 只能消费一次。
+- 并行流不一定更快，可能引入线程池竞争和顺序问题。
+- 避免在 Stream 中写复杂副作用逻辑。
+
+## Optional
+
+Optional 用于表达“可能没有值”，减少空指针判断。
+
+```java
+String city = Optional.ofNullable(user)
+    .map(User::getAddress)
+    .map(Address::getCity)
+    .orElse("unknown");
+```
+
+### 实践建议
+
+- Optional 适合作为返回值，不建议作为实体字段或方法参数滥用。
+- 不要直接 `get()`，应使用 `orElse`、`orElseGet`、`orElseThrow`。
+
+## 默认方法和静态接口方法
+
+接口可以定义 `default` 方法和 `static` 方法。
+
+作用：
+
+- 在不破坏已有实现类的情况下扩展接口能力。
+- Java 集合框架大量使用默认方法增强 API。
+
+## 新日期时间 API
+
+Java 8 引入 `java.time` 包：
+
+- `LocalDate`
+- `LocalTime`
+- `LocalDateTime`
+- `Instant`
+- `Duration`
+- `Period`
+- `DateTimeFormatter`
+
+优势：
+
+- 不可变。
+- 线程安全。
+- API 语义清晰。
+- 替代 `Date`、`Calendar`、`SimpleDateFormat` 的很多场景。
+
+## CompletableFuture
+
+CompletableFuture 提供异步编排能力。
+
+```java
+CompletableFuture<User> userFuture = CompletableFuture.supplyAsync(() -> queryUser(id), executor);
+CompletableFuture<Order> orderFuture = CompletableFuture.supplyAsync(() -> queryOrder(id), executor);
+
+CompletableFuture<Result> result = userFuture.thenCombine(orderFuture, Result::new);
+```
+
+实践重点：
+
+- 显式指定业务线程池。
+- 处理异常：`exceptionally`、`handle`、`whenComplete`。
+- 控制超时：`orTimeout`、`completeOnTimeout` 是 Java 9 后增强。
+
+## 元空间替代永久代
+
+Java 8 移除了永久代 PermGen，使用 Metaspace 存储类元数据。
+
+区别：
+
+- PermGen 在 JVM 堆内存逻辑区域中，大小固定，容易 OOM。
+- Metaspace 使用本地内存，默认可增长，但仍需要限制和监控。
+
+常见参数：
+
+- `-XX:MetaspaceSize`
+- `-XX:MaxMetaspaceSize`
+
+## 面试回答模板
+
+Java 8 的核心变化是引入函数式编程和更现代的 API。Lambda、函数式接口和 Stream 改变了集合处理方式；Optional 改善空值表达；CompletableFuture 增强异步编排；java.time 替代旧日期 API；JVM 层面用 Metaspace 替代永久代。
+""",
+    ),
+    (
+        "Java 9-11 新特性",
+        "01-java/java-version-features/java-9-11.md",
+        """# Java 9-11 新特性
+
+Java 9 到 Java 11 主要围绕模块化、工具增强、API 增强和长期支持版本演进。Java 11 是 LTS，很多企业从 Java 8 升级时会直接选择 Java 11。
+
+## Java 9：模块系统 JPMS
+
+Java 9 引入 Java Platform Module System，也称 JPMS。
+
+模块通过 `module-info.java` 声明：
+
+```java
+module com.example.app {
+    requires java.sql;
+    exports com.example.api;
+}
+```
+
+核心能力：
+
+- 明确依赖关系。
+- 强封装内部包。
+- 减少运行时镜像体积。
+- 改善大型系统模块边界。
+
+面试重点：
+
+- 模块系统不是 Maven 依赖管理的替代品，而是 JDK 层面的可读性和封装机制。
+- 强封装会影响反射访问，很多老框架升级时会遇到非法反射警告或失败。
+
+## Java 9：集合工厂方法
+
+```java
+List<String> list = List.of("a", "b");
+Set<String> set = Set.of("a", "b");
+Map<String, Integer> map = Map.of("a", 1, "b", 2);
+```
+
+注意：
+
+- 返回不可变集合。
+- 不允许 null 元素或 null key/value。
+
+## Java 9：JShell
+
+JShell 是交互式 Java REPL 工具，适合快速验证代码片段。
+
+## Java 9：Stream/Optional 增强
+
+Stream 增强：
+
+- `takeWhile`
+- `dropWhile`
+- `ofNullable`
+- `iterate` 增强
+
+Optional 增强：
+
+- `ifPresentOrElse`
+- `or`
+- `stream`
+
+## Java 10：var 局部变量类型推断
+
+```java
+var name = "fox";
+var list = new ArrayList<String>();
+```
+
+限制：
+
+- 只能用于局部变量。
+- 不能用于字段、方法参数、返回值。
+- 必须能从初始化表达式推断出类型。
+
+实践建议：
+
+- 类型明显时使用 var 可以减少冗余。
+- 类型不明显时不要滥用，否则降低可读性。
+
+## Java 11：HTTP Client 标准化
+
+Java 11 标准化 `java.net.http.HttpClient`。
+
+```java
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://example.com"))
+    .build();
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+```
+
+能力：
+
+- 支持 HTTP/1.1 和 HTTP/2。
+- 支持同步和异步调用。
+- 替代部分 `HttpURLConnection` 使用场景。
+
+## Java 11：String API 增强
+
+常用方法：
+
+- `isBlank()`
+- `lines()`
+- `strip()`
+- `stripLeading()`
+- `stripTrailing()`
+- `repeat(int)`
+
+## Java 11：单文件源码运行
+
+```bash
+java Hello.java
+```
+
+适合脚本化、小工具和教学场景。
+
+## Java 11：移除 Java EE/CORBA 模块
+
+Java 11 移除了部分 Java EE 和 CORBA 模块，例如 JAXB、JAX-WS 等。老项目升级时如果依赖这些 API，需要显式引入第三方依赖。
+
+## 面试回答模板
+
+Java 9 到 11 的重点是模块系统、不可变集合工厂、Stream/Optional 增强、var 类型推断、标准 HTTP Client、String API 增强和 Java 11 LTS。升级 Java 11 时要特别关注模块封装、非法反射和 Java EE 模块移除。
+""",
+    ),
+    (
+        "Java 12-17 新特性",
+        "01-java/java-version-features/java-12-17.md",
+        """# Java 12-17 新特性
+
+Java 12 到 Java 17 引入了很多现代语法能力。Java 17 是 LTS，也是 Spring Boot 3 和 Spring Framework 6 的最低 Java 版本要求。
+
+## Switch 表达式
+
+Java 14 标准化 Switch 表达式。
+
+```java
+String type = switch (status) {
+    case 1 -> "NEW";
+    case 2 -> "PAID";
+    case 3 -> "CLOSED";
+    default -> "UNKNOWN";
+};
+```
+
+优势：
+
+- 可以作为表达式返回值。
+- 避免传统 switch 忘记 `break` 的问题。
+- 语义更清晰。
+
+## Text Blocks 文本块
+
+Java 15 标准化文本块。
+
+```java
+String sql = \"\"\"
+    select id, name
+    from user
+    where status = 'ACTIVE'
+    \"\"\";
+```
+
+适合：
+
+- SQL。
+- JSON。
+- HTML。
+- 多行模板。
+
+## Record
+
+Java 16 标准化 Record。
+
+```java
+public record UserDTO(Long id, String name) {}
+```
+
+自动生成：
+
+- 构造方法。
+- accessor。
+- `equals`
+- `hashCode`
+- `toString`
+
+适合：
+
+- DTO。
+- 值对象。
+- 查询结果投影。
+- 不可变数据载体。
+
+不适合：
+
+- JPA Entity 这类需要无参构造、延迟加载和可变状态的对象。
+
+## instanceof 模式匹配
+
+Java 16 标准化 instanceof 模式匹配。
+
+```java
+if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+```
+
+优势：
+
+- 减少强制类型转换。
+- 降低样板代码。
+
+## Sealed Classes
+
+Java 17 标准化密封类。
+
+```java
+public sealed interface PayCommand permits CreatePay, CancelPay {}
+public final class CreatePay implements PayCommand {}
+public final class CancelPay implements PayCommand {}
+```
+
+作用：
+
+- 限制继承层级。
+- 让编译器知道所有可能子类型。
+- 适合领域模型、状态机、指令类型建模。
+
+## Java 17 LTS 意义
+
+Java 17 是重要长期支持版本。
+
+对后端影响：
+
+- Spring Boot 3 要求 Java 17+。
+- 很多中间件和框架开始以 Java 17 为新基线。
+- G1、ZGC 等 JVM 能力更成熟。
+- 现代语法提升 DTO、状态模型和配置代码可读性。
+
+## 面试回答模板
+
+Java 12 到 17 的重点是现代语法和 Java 17 LTS。Switch 表达式、文本块、Record、instanceof 模式匹配、Sealed Classes 都在减少样板代码并增强建模能力。Java 17 也是 Spring Boot 3 的基础版本，升级时要关注依赖兼容和 Jakarta 迁移。
+""",
+    ),
+    (
+        "Java 18-21 新特性",
+        "01-java/java-version-features/java-18-21.md",
+        """# Java 18-21 新特性
+
+Java 18 到 Java 21 的重点是虚拟线程、模式匹配增强、Record Pattern、Sequenced Collections 和新一代并发编程模型。Java 21 是 LTS。
+
+## Java 21：虚拟线程 Virtual Threads
+
+虚拟线程是 Java 21 最重要的服务端特性之一，来自 Project Loom。
+
+```java
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    IntStream.range(0, 1000).forEach(i -> executor.submit(() -> callRemote(i)));
+}
+```
+
+### 解决什么问题
+
+传统平台线程与操作系统线程一一对应，数量昂贵。大量阻塞 IO 会占用大量线程资源。
+
+虚拟线程由 JVM 调度，创建和切换成本低，适合大量阻塞 IO 任务。
+
+### 适合场景
+
+- HTTP/RPC 阻塞调用。
+- 数据库访问。
+- 文件/网络 IO。
+- 高并发但大部分时间在等待外部系统的业务接口。
+
+### 不适合场景
+
+- CPU 密集型任务。
+- 需要严格限制下游并发的场景，仍然需要连接池、限流和舱壁隔离。
+- 长时间持有 synchronized 或 native 阻塞导致 pinning 的场景需要关注。
+
+### 面试重点
+
+虚拟线程提升的是阻塞 IO 场景的并发承载能力，不会让 CPU 计算变快，也不能替代限流、连接池和超时控制。
+
+## 结构化并发 Structured Concurrency
+
+结构化并发用于把一组相关并发任务作为一个整体管理，便于取消、异常传播和生命周期控制。
+
+它仍处于预览/孵化阶段，需要关注具体 JDK 版本状态。
+
+## Scoped Values
+
+Scoped Values 用于在线程调用链中安全传递上下文，被视为 ThreadLocal 的现代替代方向之一。
+
+优势：
+
+- 不易泄漏。
+- 适合虚拟线程。
+- 作用域明确。
+
+## Pattern Matching for switch
+
+Java 21 标准化 switch 模式匹配。
+
+```java
+String text = switch (obj) {
+    case Integer i -> "int: " + i;
+    case String s -> "str: " + s;
+    case null -> "null";
+    default -> "unknown";
+};
+```
+
+价值：
+
+- 按类型分支更清晰。
+- 与 sealed class 搭配可做穷尽性检查。
+- 适合领域模型和状态机分发。
+
+## Record Patterns
+
+Java 21 标准化 Record Patterns。
+
+```java
+record Point(int x, int y) {}
+
+if (obj instanceof Point(int x, int y)) {
+    System.out.println(x + y);
+}
+```
+
+价值：
+
+- 解构 record。
+- 与模式匹配组合，减少样板代码。
+
+## Sequenced Collections
+
+Java 21 引入有序集合统一接口。
+
+核心接口：
+
+- `SequencedCollection`
+- `SequencedSet`
+- `SequencedMap`
+
+常用能力：
+
+- 获取第一个元素。
+- 获取最后一个元素。
+- 反向视图。
+
+## Java 21 LTS 意义
+
+Java 21 是继 Java 17 后的新 LTS。
+
+对后端影响：
+
+- 虚拟线程可能改变传统“一请求一线程”的成本模型。
+- 现代模式匹配能力增强领域建模表达力。
+- Spring Boot 3.2+ 已开始支持虚拟线程相关配置。
+
+## 面试回答模板
+
+Java 21 最值得关注的是虚拟线程，它让阻塞 IO 场景能以更低线程成本承载高并发；但它不是性能银弹，CPU 密集型任务、连接池容量、限流和超时仍然要治理。同时 Java 21 的模式匹配、Record Patterns、Sequenced Collections 提升了代码表达力。
+""",
+    ),
+    (
+        "LTS 版本选型与升级",
+        "01-java/java-version-features/lts-upgrade.md",
+        """# LTS 版本选型与升级
+
+Java 后端项目常见 LTS 版本是 Java 8、11、17、21。找工作时不只要知道新特性，还要理解版本选型和升级风险。
+
+## LTS 版本对比
+
+### Java 8
+
+优势：
+
+- 存量系统最多。
+- 生态兼容性好。
+- Lambda、Stream、CompletableFuture 已足够现代化。
+
+问题：
+
+- 版本较老。
+- 新框架逐步不再支持。
+- JVM 和 GC 新能力不足。
+
+### Java 11
+
+优势：
+
+- LTS。
+- 从 Java 8 升级成本相对可控。
+- HTTP Client、String API、容器感知等能力增强。
+
+问题：
+
+- 相比 Java 17，现代语言特性少。
+
+### Java 17
+
+优势：
+
+- LTS。
+- Spring Boot 3/Spring 6 基线。
+- Record、Sealed Classes、Pattern Matching 等能力成熟。
+- JVM 性能和 GC 能力更好。
+
+问题：
+
+- 从 Java 8 升级跨度大，需要处理依赖、反射、模块封装、Jakarta 迁移等问题。",
+
+### Java 21
+
+优势：
+
+- LTS。
+- 虚拟线程正式可用。
+- 现代模式匹配能力增强。
+- 适合新项目和高并发 IO 服务探索。
+
+问题：
+
+- 部分企业生态仍在验证中。
+- 老中间件、Agent、监控工具需要确认兼容性。
+
+## Java 8 升级到 Java 17 常见问题
+
+- 依赖库版本过旧。
+- 非法反射访问失败或告警。
+- JAXB/JAX-WS 等 Java EE 模块被移除，需要显式依赖。
+- Spring Boot 2 到 3 涉及 `javax.*` 到 `jakarta.*` 迁移。
+- Lombok、Mockito、ByteBuddy、ASM 等字节码工具需要升级。
+- GC 参数变化，部分旧参数废弃。
+
+## 升级步骤建议
+
+1. 梳理当前 JDK、框架、中间件、构建插件和 Agent 版本。
+2. 先升级依赖到支持目标 JDK 的版本。
+3. 本地编译和单元测试。
+4. 处理非法反射、废弃 API 和模块缺失。
+5. 压测关键接口，比较 GC、RT、CPU、内存。
+6. 灰度发布，观察错误率、延迟和资源指标。
+7. 完成回滚预案。
+
+## 版本选型建议
+
+- 存量保守系统：Java 8 或 Java 11，优先稳定。
+- 新 Spring Boot 项目：Java 17 起步。
+- 高并发 IO 新服务：可评估 Java 21 虚拟线程。
+- 中间件/基础设施项目：根据生态兼容性选择 17 或 21。
+
+## 面试表达
+
+如果被问“为什么升级 Java 17/21”，不要只说新特性。要从 LTS 支持、框架基线、性能、GC、语言表达力、安全更新和生态兼容性回答，并说明升级前要做依赖扫描、兼容性测试、压测和灰度。
+""",
+    ),
+]
+
+
+SPRING_BOOT_VERSION_DOCS = [
+    (
+        "Spring Boot 版本新特性总览",
+        "06-framework/spring-boot-version-features/README.md",
+        """# Spring Boot 版本新特性总览
+
+本目录整理 Spring Boot 1.x、2.x、3.x 的关键变化，重点服务后端面试、项目升级和技术选型。
+
+## 为什么要单独整理版本特性
+
+- Spring Boot 1.x 是早期自动配置和 Starter 体系的成型阶段，很多老系统仍能看到它的影子。
+- Spring Boot 2.x 是企业存量项目最常见版本线，包含 WebFlux、Actuator 2、Micrometer、配置机制变化等重要内容。
+- Spring Boot 3.x 基于 Spring Framework 6 和 Java 17，涉及 Jakarta EE 迁移、AOT、Native Image、Observability 等重大变化。
+
+## 阅读顺序
+
+1. [Spring Boot 1.x 到 2.x](spring-boot-1-to-2.md)
+2. [Spring Boot 2.0 到 2.3](spring-boot-2-0-to-2-3.md)
+3. [Spring Boot 2.4 到 2.7](spring-boot-2-4-to-2-7.md)
+4. [Spring Boot 3.x](spring-boot-3.md)
+5. [版本升级路线](upgrade-guide.md)
+
+## 面试重点
+
+- Spring Boot 的核心价值：自动配置、Starter、外部化配置、Actuator、内嵌容器。
+- Spring Boot 2.x：响应式 WebFlux、Micrometer、Actuator 端点模型变化、配置加载机制调整。
+- Spring Boot 2.4：`ConfigData` 配置加载机制，引入 `spring.config.import`。
+- Spring Boot 2.6：默认禁止循环依赖，路径匹配策略变化。
+- Spring Boot 3.x：Java 17、Spring 6、Jakarta EE、AOT、GraalVM Native Image、Observability。
+
+## 找工作建议
+
+- 存量项目面试：重点准备 Spring Boot 2.x、自动配置原理、Actuator、配置加载、循环依赖变化。
+- 新项目面试：重点准备 Spring Boot 3.x、Java 17、Jakarta 迁移、Micrometer Tracing、AOT/Native。
+- 如果简历写过升级项目，要能讲清依赖兼容、配置变更、自动配置差异、压测和灰度方案。
+""",
+    ),
+    (
+        "Spring Boot 1.x 到 2.x",
+        "06-framework/spring-boot-version-features/spring-boot-1-to-2.md",
+        """# Spring Boot 1.x 到 2.x
+
+Spring Boot 2.0 是一次重要版本升级，底层升级到 Spring Framework 5，引入响应式编程支持，并重构了 Actuator 和监控体系。
+
+## 基线变化
+
+- Spring Boot 1.x 基于 Spring Framework 4.x。
+- Spring Boot 2.0 基于 Spring Framework 5.x。
+- Java 基线从 Java 7/8 时代逐步转向 Java 8+。
+
+## WebFlux
+
+Spring Boot 2.0 引入对 Spring WebFlux 的自动配置支持。
+
+WebFlux 特点：
+
+- 基于 Reactor。
+- 支持非阻塞响应式编程模型。
+- 可运行在 Netty、Servlet 3.1+ 容器上。
+
+适合场景：
+
+- 高并发 IO。
+- 流式响应。
+- API Gateway。
+
+不适合场景：
+
+- 传统阻塞 JDBC 调用较多的业务系统。
+- 团队不熟悉响应式链路和调试方式。
+
+## Actuator 2 重构
+
+Spring Boot 2 对 Actuator 做了较大调整：
+
+- endpoint 路径从 `/metrics` 等变化为 `/actuator/metrics` 等。
+- 暴露端点需要显式配置。
+- Endpoint 注解模型变化。
+- 安全配置方式变化。
+
+常用配置：
+
+```properties
+management.endpoints.web.exposure.include=health,info,metrics,prometheus
+```
+
+## Micrometer
+
+Spring Boot 2 引入 Micrometer 作为指标门面。
+
+它的定位类似日志中的 SLF4J：
+
+- 应用使用统一指标 API。
+- 后端可接 Prometheus、Datadog、Graphite、InfluxDB 等。
+
+## 配置属性绑定变化
+
+Spring Boot 2 增强了 Binder 机制和类型安全配置绑定。
+
+常用方式：
+
+```java
+@ConfigurationProperties(prefix = "app")
+public class AppProperties {
+    private String name;
+}
+```
+
+## 迁移注意事项
+
+- Actuator endpoint 路径和暴露配置变化。
+- Spring Security 配置方式变化。
+- 部分自动配置属性名变化。
+- 第三方 Starter 需要确认是否兼容 Boot 2。
+- 响应式和 Servlet 栈不要混用到难以维护。
+
+## 面试回答模板
+
+Spring Boot 2 相比 1.x 的核心变化是升级到 Spring 5，引入 WebFlux 响应式支持，Actuator 端点模型重构，并引入 Micrometer 作为统一指标门面。升级时要重点检查 Actuator 路径、安全配置、配置属性和第三方 Starter 兼容性。
+""",
+    ),
+    (
+        "Spring Boot 2.0 到 2.3",
+        "06-framework/spring-boot-version-features/spring-boot-2-0-to-2-3.md",
+        """# Spring Boot 2.0 到 2.3
+
+Spring Boot 2.0 到 2.3 主要围绕响应式体系、可观测性、容器化和优雅停机增强。
+
+## Spring Boot 2.1
+
+重点变化：
+
+- 支持 Java 11。
+- 改进应用启动性能和自动配置报告。
+- Bean 覆盖默认被禁用，避免无意覆盖同名 Bean。
+
+相关配置：
+
+```properties
+spring.main.allow-bean-definition-overriding=true
+```
+
+实践意义：
+
+- 老项目中如果存在同名 Bean，升级后可能启动失败。
+- 需要通过重命名、条件装配或显式允许覆盖解决。
+
+## Spring Boot 2.2
+
+重点变化：
+
+- 支持 Java 13。
+- 延迟初始化支持。
+- Actuator 和 Micrometer 持续增强。
+
+延迟初始化：
+
+```properties
+spring.main.lazy-initialization=true
+```
+
+优点：
+
+- 减少启动时间。
+- 开发和测试环境更轻量。
+
+风险：
+
+- 部分 Bean 初始化错误会延迟到运行期暴露。
+- 首次请求可能变慢。
+
+## Spring Boot 2.3
+
+重点变化：
+
+- 支持构建 OCI 镜像。
+- 引入 graceful shutdown 优雅停机。
+- 健康检查增强，支持 Kubernetes probes。
+
+优雅停机：
+
+```properties
+server.shutdown=graceful
+spring.lifecycle.timeout-per-shutdown-phase=30s
+```
+
+Kubernetes 探针：
+
+```properties
+management.endpoint.health.probes.enabled=true
+```
+
+## 容器化支持
+
+Spring Boot 2.3 开始强化云原生部署体验：
+
+- Buildpacks 构建镜像。
+- 分层 jar，提升 Docker 镜像缓存效率。
+- readiness/liveness 健康检查。
+
+## 面试重点
+
+Spring Boot 2.0 到 2.3 的变化重点是：Bean 覆盖保护、延迟初始化、Micrometer 增强、优雅停机、Kubernetes 探针和容器镜像构建支持。这些变化体现了 Spring Boot 从单体快速开发走向云原生运行治理。
+""",
+    ),
+    (
+        "Spring Boot 2.4 到 2.7",
+        "06-framework/spring-boot-version-features/spring-boot-2-4-to-2-7.md",
+        """# Spring Boot 2.4 到 2.7
+
+Spring Boot 2.4 到 2.7 是从 2.x 走向 3.x 的过渡阶段，配置加载机制、循环依赖、路径匹配和安全配置都有重要变化。
+
+## Spring Boot 2.4：ConfigData
+
+Spring Boot 2.4 引入新的配置加载机制 `ConfigData`。
+
+核心变化：
+
+- 支持 `spring.config.import`。
+- 更清晰地处理 profile 配置。
+- 对配置文件加载顺序做了调整。
+
+示例：
+
+```properties
+spring.config.import=optional:nacos:example.yaml
+```
+
+升级风险：
+
+- 老项目依赖旧的 profile 激活方式时，配置加载顺序可能变化。
+- Spring Cloud 配置中心需要匹配对应版本。
+
+## Spring Boot 2.5
+
+重点变化：
+
+- SQL 初始化配置调整。
+- Docker 镜像构建增强。
+- Actuator 和 metrics 持续增强。
+
+SQL 初始化相关配置从早期 `spring.datasource.initialization-mode` 逐步迁移到：
+
+```properties
+spring.sql.init.mode=always
+```
+
+## Spring Boot 2.6：循环依赖默认禁用
+
+Spring Boot 2.6 默认不允许 Bean 循环依赖。
+
+如果存在循环依赖，可能启动失败。
+
+临时兼容配置：
+
+```properties
+spring.main.allow-circular-references=true
+```
+
+实践建议：
+
+- 不建议长期依赖该开关。
+- 应通过拆分职责、事件、懒加载或重构依赖方向解决。
+
+## Spring Boot 2.6：路径匹配策略变化
+
+Spring MVC 默认路径匹配从 `AntPathMatcher` 转向 `PathPatternParser`。
+
+可能影响：
+
+- Swagger/Springfox 兼容问题。
+- 部分路径匹配规则行为变化。
+
+兼容配置：
+
+```properties
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+```
+
+## Spring Boot 2.7
+
+Spring Boot 2.7 是 2.x 到 3.x 的过渡版本。
+
+重点：
+
+- 提前适配部分 3.x 迁移路径。
+- Spring Security 新配置方式更常见。
+- 建议用它作为升级到 3.x 前的中间版本。
+
+## 面试重点
+
+Spring Boot 2.4 到 2.7 最容易问的是配置加载机制变化、循环依赖默认禁用、路径匹配策略变化，以及 2.7 作为升级 3.x 的过渡版本。回答时要能结合真实升级问题说明风险和解决方案。
+""",
+    ),
+    (
+        "Spring Boot 3.x",
+        "06-framework/spring-boot-version-features/spring-boot-3.md",
+        """# Spring Boot 3.x
+
+Spring Boot 3 是一次重大升级，基于 Spring Framework 6，要求 Java 17+，并迁移到 Jakarta EE 9+ 命名空间。
+
+## 基线变化
+
+- Java 17+。
+- Spring Framework 6+。
+- Jakarta EE 9+。
+- GraalVM Native Image 支持增强。
+
+## javax 到 jakarta 迁移
+
+最重要的破坏性变化是包名迁移：
+
+```java
+import javax.servlet.http.HttpServletRequest;
+```
+
+变为：
+
+```java
+import jakarta.servlet.http.HttpServletRequest;
+```
+
+影响范围：
+
+- Servlet API。
+- JPA。
+- Validation。
+- JAXB。
+- WebSocket。
+- 第三方库和 Starter。
+
+## AOT 与 Native Image
+
+Spring Boot 3 强化 AOT 编译和 GraalVM Native Image 支持。
+
+收益：
+
+- 启动更快。
+- 内存占用更低。
+- 适合 Serverless、CLI、小型微服务。
+
+限制：
+
+- 反射、动态代理、资源加载需要元数据提示。
+- 部分第三方库兼容性需要验证。
+- 构建链路更复杂。
+
+## Observability
+
+Spring Boot 3 用 Micrometer Observation 统一指标、日志、Tracing 的观测模型。
+
+相关组件：
+
+- Micrometer Metrics。
+- Micrometer Tracing。
+- OpenTelemetry Bridge。
+- Actuator。
+
+迁移注意：
+
+- Spring Cloud Sleuth 不再作为新版本主线。
+- 新项目通常使用 Micrometer Tracing + OpenTelemetry。
+
+## 自动配置机制变化
+
+Spring Boot 3 使用新的自动配置声明方式：
+
+```text
+META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+```
+
+旧的 `spring.factories` 仍在部分场景中存在，但自动配置主路径已变化。
+
+## Spring Security 配置变化
+
+老式 `WebSecurityConfigurerAdapter` 已被移除。
+
+新方式通常声明 `SecurityFilterChain` Bean：
+
+```java
+@Bean
+SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http.authorizeHttpRequests(auth -> auth.anyRequest().authenticated()).build();
+}
+```
+
+## Java 17 带来的影响
+
+可以更自然使用：
+
+- Record。
+- Sealed Classes。
+- Pattern Matching。
+- Text Blocks。
+
+## 面试重点
+
+Spring Boot 3 的核心变化可以概括为：Java 17 基线、Spring 6、Jakarta 迁移、AOT/Native Image、Observability、自动配置声明变化和 Spring Security 新配置模型。升级时最大风险是第三方依赖和 `javax` 包兼容性。
+""",
+    ),
+    (
+        "Spring Boot 升级路线",
+        "06-framework/spring-boot-version-features/upgrade-guide.md",
+        """# Spring Boot 升级路线
+
+Spring Boot 升级不能只改版本号，要按依赖、配置、代码、测试、压测和灰度逐步推进。
+
+## 推荐路线
+
+### 1.x 到 2.x
+
+重点检查：
+
+- Spring Framework 5 兼容性。
+- Actuator endpoint 变化。
+- Spring Security 配置。
+- 第三方 Starter 版本。
+- Micrometer 指标接入。
+
+### 2.0-2.3 到 2.7
+
+建议先升级到 2.7，作为进入 3.x 前的过渡版本。
+
+重点检查：
+
+- 配置属性废弃项。
+- 循环依赖。
+- 路径匹配策略。
+- Spring Security 新写法。
+- Spring Cloud 版本矩阵。
+
+### 2.7 到 3.x
+
+重点检查：
+
+- JDK 升级到 17+。
+- `javax.*` 到 `jakarta.*`。
+- 第三方库是否支持 Jakarta。
+- Spring Security 配置迁移。
+- 自动配置声明方式。
+- 观测链路从 Sleuth 迁移到 Micrometer Tracing/OpenTelemetry。
+
+## 升级前清单
+
+- 梳理 Spring Boot、Spring Cloud、JDK、Tomcat/Jetty、ORM、连接池、日志、监控 Agent 版本。
+- 检查 Spring Boot 官方 compatibility matrix。
+- 扫描废弃配置和废弃 API。
+- 梳理自定义 Starter 和自动配置。
+- 准备回滚方案。
+
+## 升级中检查
+
+- 编译错误。
+- 单元测试和集成测试。
+- 启动日志中的 deprecated 配置。
+- 自动配置条件报告。
+- Actuator endpoint 是否正常。
+- 接口兼容性。
+
+## 升级后验证
+
+- 核心接口 P95/P99。
+- JVM GC 和内存。
+- 线程池、连接池和请求错误率。
+- 日志、指标、链路追踪。
+- 灰度流量和回滚演练。
+
+## 面试回答模板
+
+如果被问 Spring Boot 升级，我会先说明目标版本和原因，再讲风险点：依赖兼容、配置变化、自动配置变化、Jakarta 迁移、Security 迁移和观测链路变化。执行上按“依赖扫描 -> 编译修复 -> 自动化测试 -> 压测 -> 灰度 -> 回滚预案”推进。
+""",
+    ),
+]
+
+
+STATIC_DOCS = BIGDATA_DOCS + JAVA_VERSION_DOCS + SPRING_BOOT_VERSION_DOCS
+
+
 def slug(text):
     text = text.strip().lower()
     text = re.sub(r"[\s_/&]+", "-", text)
@@ -3475,6 +6540,141 @@ def render_notes(key):
     return lines
 
 
+OVERVIEW_LINKS = [
+    (
+        "Java 与 JVM",
+        [
+            ("Java 语言基础", "../../01-java/java/README.md"),
+            ("Java 版本新特性", "../../01-java/java-version-features/README.md"),
+            ("JVM", "../../01-java/jvm/README.md"),
+        ],
+    ),
+    (
+        "数据库",
+        [
+            ("MySQL", "../../02-database/mysql/README.md"),
+            ("MongoDB", "../../02-database/mongodb.md"),
+        ],
+    ),
+    (
+        "缓存",
+        [
+            ("Redis", "../../03-cache/redis/README.md"),
+        ],
+    ),
+    (
+        "搜索",
+        [
+            ("Elasticsearch", "../../04-search/elasticsearch/README.md"),
+        ],
+    ),
+    (
+        "消息队列",
+        [
+            ("消息队列总览", "../../05-mq/mq-overview/README.md"),
+            ("Kafka", "../../05-mq/kafka/README.md"),
+            ("RocketMQ", "../../05-mq/rocketmq/README.md"),
+        ],
+    ),
+    (
+        "开发框架",
+        [
+            ("Spring", "../../06-framework/spring/README.md"),
+            ("Spring Boot", "../../06-framework/spring-boot/README.md"),
+            (
+                "Spring Boot 版本新特性",
+                "../../06-framework/spring-boot-version-features/README.md",
+            ),
+            ("Spring MVC", "../../06-framework/spring-mvc/README.md"),
+            ("MyBatis", "../../06-framework/mybatis/README.md"),
+        ],
+    ),
+    (
+        "微服务",
+        [
+            ("Spring Cloud", "../../07-microservices/spring-cloud/README.md"),
+            ("Spring Cloud Alibaba", "../../07-microservices/spring-cloud-alibaba.md"),
+            ("Nacos", "../../07-microservices/nacos/README.md"),
+        ],
+    ),
+    (
+        "分布式与网络",
+        [
+            ("Dubbo", "../../08-distributed/dubbo/README.md"),
+            ("ZooKeeper", "../../08-distributed/zookeeper/README.md"),
+            ("Netty", "../../09-network/netty/README.md"),
+        ],
+    ),
+    (
+        "大数据",
+        [
+            ("大数据方向知识库", "../../11-bigdata/README.md"),
+            ("HDFS", "../../11-bigdata/hadoop/hdfs.md"),
+            ("Hive", "../../11-bigdata/hive/README.md"),
+            ("Spark", "../../11-bigdata/spark/README.md"),
+            ("Flink", "../../11-bigdata/flink/README.md"),
+            ("ClickHouse", "../../11-bigdata/clickhouse/README.md"),
+        ],
+    ),
+]
+
+
+def render_overview_outline(sources):
+    lines = []
+    for source in sources:
+        roots = parse_xmind(source)
+        if not roots:
+            continue
+        lines.append(f"### {source}")
+        lines.append("")
+        for root in roots:
+            for child in root.get("children", []):
+                title = clean_title(child.get("title"))
+                if not title:
+                    continue
+                children = [
+                    clean_title(c.get("title")) for c in child.get("children", [])
+                ]
+                children = [c for c in children if c]
+                if children:
+                    lines.append(f"- {title}：{', '.join(children[:12])}")
+                else:
+                    lines.append(f"- {title}")
+        lines.append("")
+    return lines
+
+
+def write_overview_doc(key, folder, title, sources):
+    base_dir = OUT / folder / FILE_NAMES.get(key, slug(title))
+    base_dir.mkdir(parents=True, exist_ok=True)
+    readme = base_dir / "README.md"
+
+    lines = [f"# {title}", "", f"> 来源：{', '.join(sources)}", ""]
+    lines.extend(render_notes(key))
+    lines.extend(
+        [
+            "## 使用方式",
+            "",
+            "- 本页只保留知识地图和详细文档入口，避免与各专题文档重复。",
+            "- 需要深入复习时，直接进入下方详细专题链接。",
+            "- 原脑图主干保留为概要，帮助快速定位知识范围。",
+            "",
+            "## 详细专题入口",
+            "",
+        ]
+    )
+    for group, links in OVERVIEW_LINKS:
+        lines.append(f"### {group}")
+        lines.append("")
+        for text, href in links:
+            lines.append(f"- [{text}]({href})")
+        lines.append("")
+    lines.extend(["## 原脑图主干", ""])
+    lines.extend(render_overview_outline(sources))
+    readme.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    return readme
+
+
 def normalize_match_text(text):
     return str(text or "").lower().replace(" ", "")
 
@@ -3490,11 +6690,90 @@ def section_notes(topic_title, section_title):
     return DEFAULT_SECTION_NOTES
 
 
+def detail_sections(topic_title, section_title):
+    topic = normalize_match_text(topic_title)
+    section = normalize_match_text(section_title)
+    matched = []
+    for rule_topic, keywords, blocks in DETAIL_SECTION_RULES:
+        if normalize_match_text(rule_topic) not in topic:
+            continue
+        matched_keyword = False
+        for keyword in keywords:
+            keyword_text = normalize_match_text(keyword)
+            if keyword_text.startswith("exact:"):
+                matched_keyword = section == keyword_text.removeprefix("exact:")
+            else:
+                matched_keyword = keyword_text in section
+            if matched_keyword:
+                break
+        if matched_keyword:
+            matched.extend(blocks)
+    if matched:
+        return matched
+
+    title = clean_title(section_title)
+    topic_name = clean_title(topic_title)
+    return [
+        (
+            "是什么",
+            [
+                f"`{title}` 是 `{topic_name}` 体系中的一个具体知识点，建议先明确它解决的问题、参与的核心对象以及在整体链路中的位置。",
+                "如果原脑图只记录了标题，复习时应补齐定义、适用场景、关键流程和边界条件，避免面试时只能说概念名。",
+            ],
+        ),
+        (
+            "为什么重要",
+            [
+                "这类知识点通常会连接到源码机制、工程实践或线上故障，面试官更关注你能否把概念落到实际问题。",
+                "准备时不要只背结论，要能说明它和相邻知识点的区别、取舍以及常见误用。",
+            ],
+        ),
+        (
+            "实践关注",
+            [
+                "整理至少一个业务或框架中的使用场景。",
+                "补充常见坑点、异常表现、排查手段和优化方向。",
+                "如果涉及配置或参数，记录默认值、调优依据和风险边界。",
+            ],
+        ),
+        (
+            "面试表达",
+            [
+                f"回答 `{title}` 时，可以按“定义 -> 原理/流程 -> 使用场景 -> 常见问题 -> 项目经验”的顺序展开。",
+                "如果不确定细节，优先讲清边界和排查思路，不要把不同组件或不同版本的行为混在一起。",
+            ],
+        ),
+    ]
+
+
 def render_section_notes(topic_title, section_title):
     lines = ["## 补充与实践", ""]
     for item in section_notes(topic_title, section_title):
         lines.append(f"- {item}")
     lines.append("")
+    details = detail_sections(topic_title, section_title)
+    if details:
+        lines.append("## 详细说明")
+        lines.append("")
+        for heading, items in details:
+            lines.append(f"### {heading}")
+            lines.append("")
+            for item in items:
+                if isinstance(item, dict) and "code" in item:
+                    lang = item.get("lang", "")
+                    lines.append(f"```{lang}")
+                    lines.append(item["code"].rstrip())
+                    lines.append("```")
+                else:
+                    lines.append(f"- {item}")
+            lines.append("")
+        lines.append("### 复习检查")
+        lines.append("")
+        lines.append(
+            f"- 能用自己的话解释 `{clean_title(section_title)}`，而不是只复述标题。"
+        )
+        lines.append("- 能说出至少一个生产场景、一个常见坑点和一个排查方向。")
+        lines.append("")
     return lines
 
 
@@ -3527,7 +6806,10 @@ def collect_sections(title, sources):
         for root in roots:
             children = root.get("children", [])
             for child in children:
-                sections.append((clean_title(child.get("title")), source, [child]))
+                child_title = clean_title(child.get("title"))
+                if title == "Java 语言基础" and child_title == "新特性":
+                    continue
+                sections.append((child_title, source, [child]))
     return sections
 
 
@@ -3537,6 +6819,65 @@ def render_nodes(nodes):
         lines.extend(render_tree(node, 2))
         if lines and lines[-1] != "":
             lines.append("")
+    return lines
+
+
+def collect_node_titles(node, depth=0, max_depth=3, limit=40):
+    titles = []
+    if depth > 0:
+        title = clean_title(node.get("title"))
+        if title:
+            titles.append((depth, title))
+    if depth >= max_depth or len(titles) >= limit:
+        return titles[:limit]
+    for child in node.get("children", []):
+        titles.extend(
+            collect_node_titles(child, depth + 1, max_depth, limit - len(titles))
+        )
+        if len(titles) >= limit:
+            break
+    return titles[:limit]
+
+
+def render_mindmap_insights(topic_title, section_title, nodes):
+    extracted = []
+    for node in nodes:
+        extracted.extend(collect_node_titles(node))
+    seen = set()
+    titles = []
+    for depth, title in extracted:
+        if title == section_title or title in seen:
+            continue
+        seen.add(title)
+        titles.append((depth, title))
+
+    if not titles:
+        return []
+
+    top = [title for depth, title in titles if depth == 1]
+    second = [title for depth, title in titles if depth == 2]
+    third = [title for depth, title in titles if depth >= 3]
+    focus = (top or second or [title for _, title in titles])[:8]
+
+    lines = ["## 脑图解读", ""]
+    lines.append(
+        f"- 本节脑图围绕 `{clean_title(section_title)}` 展开，属于 `{clean_title(topic_title)}` 的复习范围。"
+    )
+    lines.append(f"- 建议优先掌握：{', '.join(focus)}。")
+    if second:
+        lines.append(f"- 二级节点提示了主要拆分角度：{', '.join(second[:10])}。")
+    if third:
+        lines.append(
+            f"- 三级节点通常对应具体细节、API、机制或易错点：{', '.join(third[:10])}。"
+        )
+    lines.append("")
+    lines.append("### 复习追问")
+    lines.append("")
+    for title in focus[:5]:
+        lines.append(
+            f"- `{title}` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？"
+        )
+    lines.append("")
     return lines
 
 
@@ -3592,6 +6933,7 @@ def write_section_entry(
         "",
     ]
     lines.extend(render_section_notes(topic_title, section_title))
+    lines.extend(render_mindmap_insights(topic_title, section_title, nodes))
     lines.extend(["## 脑图内容", ""])
     lines.extend(content)
     target.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
@@ -3635,6 +6977,9 @@ def write_split_doc(key, folder, title, sources):
 
 
 def write_doc(key, folder, title, sources):
+    if key == "Summary":
+        return write_overview_doc(key, folder, title, sources)
+
     if key in SPLIT_DOCS:
         return write_split_doc(key, folder, title, sources)
 
@@ -3669,6 +7014,7 @@ def write_doc(key, folder, title, sources):
                 child_title = clean_title(child.get("title"))
                 if child_title:
                     lines.extend(render_section_notes(title, child_title))
+                    lines.extend(render_mindmap_insights(title, child_title, [child]))
                 lines.extend(render_tree(child, tree_level))
                 if lines and lines[-1] != "":
                     lines.append("")
@@ -3730,7 +7076,7 @@ def write_index(files):
 
 def write_static_docs():
     files = []
-    for title, rel_path, content in BIGDATA_DOCS:
+    for title, rel_path, content in STATIC_DOCS:
         target = OUT / rel_path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(content.rstrip() + "\n", encoding="utf-8")

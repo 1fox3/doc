@@ -17,7 +17,13 @@
 ### Java 与 JVM
 
 - [JVM](01-java/jvm/README.md)
+- [Java 12-17 新特性](01-java/java-version-features/java-12-17.md)
+- [Java 18-21 新特性](01-java/java-version-features/java-18-21.md)
+- [Java 8 新特性](01-java/java-version-features/java-8.md)
+- [Java 9-11 新特性](01-java/java-version-features/java-9-11.md)
+- [Java 版本新特性总览](01-java/java-version-features/README.md)
 - [Java 语言基础](01-java/java/README.md)
+- [LTS 版本选型与升级](01-java/java-version-features/lts-upgrade.md)
 
 ### 数据库
 
@@ -43,11 +49,17 @@
 - [MyBatis](06-framework/mybatis/README.md)
 - [Spring](06-framework/spring/README.md)
 - [Spring Boot](06-framework/spring-boot/README.md)
+- [Spring Boot 1.x 到 2.x](06-framework/spring-boot-version-features/spring-boot-1-to-2.md)
+- [Spring Boot 2.0 到 2.3](06-framework/spring-boot-version-features/spring-boot-2-0-to-2-3.md)
+- [Spring Boot 2.4 到 2.7](06-framework/spring-boot-version-features/spring-boot-2-4-to-2-7.md)
+- [Spring Boot 3.x](06-framework/spring-boot-version-features/spring-boot-3.md)
+- [Spring Boot 升级路线](06-framework/spring-boot-version-features/upgrade-guide.md)
+- [Spring Boot 版本新特性总览](06-framework/spring-boot-version-features/README.md)
 - [Spring MVC](06-framework/spring-mvc/README.md)
 
 ### 微服务
 
-- [Nacos](07-microservices/nacos.md)
+- [Nacos](07-microservices/nacos/README.md)
 - [Spring Cloud](07-microservices/spring-cloud/README.md)
 - [Spring Cloud Alibaba](07-microservices/spring-cloud-alibaba.md)
 
