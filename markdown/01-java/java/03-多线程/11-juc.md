@@ -1,83 +1,213 @@
-# JUC
+# JUC 原子类：AtomicInteger / LongAdder / LongAccumulator
 
-> 专题：Java 语言基础
-> 来源：面试内容汇总/Java.xmind
+## 概述
 
-## 补充与实践
+JUC（`java.util.concurrent`）原子类提供了无锁（lock-free）的线程安全操作，底层依赖 CPU 的 CAS（Compare-And-Swap）指令，避免了 `synchronized` 带来的上下文切换开销。
 
-- 补充：JDK 21 的虚拟线程适合大量阻塞 IO 场景，但不适合 CPU 密集型任务，也不能消除共享状态同步问题。
-- 实践：线程池参数应结合任务类型、队列长度、拒绝策略、监控指标和下游容量一起设计。
-- 排障：线程问题优先看 `jstack`、线程池队列、活跃线程数、锁等待和上下文切换。
+三个核心类解决的问题层次不同：`AtomicInteger` 适合低并发的单变量原子操作；`LongAdder` 通过分段思想大幅降低高并发下的 CAS 竞争；`LongAccumulator` 是 `LongAdder` 的泛化版本，支持自定义累积函数。
 
-## 详细说明
-
-### 是什么
-
-- `JUC` 是 `Java 语言基础` 体系中的一个具体知识点，建议先明确它解决的问题、参与的核心对象以及在整体链路中的位置。
-- 如果原脑图只记录了标题，复习时应补齐定义、适用场景、关键流程和边界条件，避免面试时只能说概念名。
-
-### 为什么重要
-
-- 这类知识点通常会连接到源码机制、工程实践或线上故障，面试官更关注你能否把概念落到实际问题。
-- 准备时不要只背结论，要能说明它和相邻知识点的区别、取舍以及常见误用。
-
-### 实践关注
-
-- 整理至少一个业务或框架中的使用场景。
-- 补充常见坑点、异常表现、排查手段和优化方向。
-- 如果涉及配置或参数，记录默认值、调优依据和风险边界。
-
-### 面试表达
-
-- 回答 `JUC` 时，可以按“定义 -> 原理/流程 -> 使用场景 -> 常见问题 -> 项目经验”的顺序展开。
-- 如果不确定细节，优先讲清边界和排查思路，不要把不同组件或不同版本的行为混在一起。
-
-### 复习检查
-
-- 能用自己的话解释 `JUC`，而不是只复述标题。
-- 能说出至少一个生产场景、一个常见坑点和一个排查方向。
-
-## 脑图解读
-
-- 本节脑图围绕 `JUC` 展开，属于 `Java 语言基础` 的复习范围。
-- 建议优先掌握：AtomicInteger, LongAdder, LongAccumulator。
-- 二级节点提示了主要拆分角度：底层实现, 存在问题, 维护了一个Cell数组，长度为2的次幂大小，每个Cell都有一个初始值为0的long变量，用来存储每个Cell的值, sum方法对Cell数组求和再加上base基础值返回, 缺点, 可以指定数据变化方式，加减多少，或乘除多少, LongBinaryOperator。
-- 三级节点通常对应具体细节、API、机制或易错点：Unsafe的CAS算法, 并发数很高的话，会造成很多不必要的循环，影响CPU性能, Cell数组仅当CAS更新失败时才进行创建或扩容, 维护了Cell数组，占用更多的内存空间。
-
-### 复习追问
-
-- `AtomicInteger` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `LongAdder` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `LongAccumulator` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-
-## 脑图内容
-
-## JUC
+## 核心概念
 
 ### AtomicInteger
 
-#### 底层实现
+底层通过 `sun.misc.Unsafe` 提供的 `compareAndSwapInt` 实现原子性。核心流程：读取内存中的当前值 → 与期望值比对 → 若相等则写入新值，否则自旋重试。
 
-- Unsafe的CAS算法
+关键方法：
+- `getAndIncrement()` — 原子自增，返回旧值，等价于 `i++`
+- `incrementAndGet()` — 原子自增，返回新值，等价于 `++i`
+- `compareAndSet(expect, update)` — 暴露 CAS 语义，失败返回 false
 
-#### 存在问题
+**问题**：高并发场景下大量线程自旋重试，CPU 空转严重。例如 1000 个线程同时对同一个 `AtomicInteger` 执行 `incrementAndGet()`，只有一个线程能成功 CAS，其余 999 个全部重试，竞争越激烈性能越差。
 
-- 并发数很高的话，会造成很多不必要的循环，影响CPU性能
+---
 
 ### LongAdder
 
-#### 维护了一个Cell数组，长度为2的次幂大小，每个Cell都有一个初始值为0的long变量，用来存储每个Cell的值
+为解决 `AtomicInteger` 在高并发下的自旋瓶颈，`LongAdder` 引入**分段累加**思路：
 
-- Cell数组仅当CAS更新失败时才进行创建或扩容
+- 内部维护一个 `base` 基础值和一个 `Cell[]` 数组（`Striped64` 父类实现）
+- 无竞争时，所有更新直接 CAS 到 `base`
+- CAS 失败（发生竞争）时，将当前线程映射到某个 `Cell`，对该 `Cell` 单独 CAS
+- `Cell[]` 长度始终是 2 的次幂，上限为 CPU 核数，**仅在 CAS 失败时才创建或扩容**
+- `sum()` 返回 `base + 所有 Cell 的值之和`（非强一致，读取期间可能有并发写入）
 
-#### sum方法对Cell数组求和再加上base基础值返回
+**分段原理**：多线程分散到不同 Cell，单个 Cell 的竞争压力远低于单个变量，整体吞吐量大幅提升。
 
-#### 缺点
+**代价**：Cell 数组占用额外内存；`sum()` 不保证强一致性，只适合统计计数场景。
 
-- 维护了Cell数组，占用更多的内存空间
+---
 
 ### LongAccumulator
 
-#### 可以指定数据变化方式，加减多少，或乘除多少
+`LongAccumulator` 是 `LongAdder` 的泛化版本，允许自定义累积函数：
 
-#### LongBinaryOperator
+```
+LongAccumulator(LongBinaryOperator accumulatorFunction, long identity)
+```
+
+- `accumulatorFunction`：二元函数 `(currentValue, delta) -> newValue`，必须满足结合律和交换律
+- `identity`：累积初始值（相当于 `LongAdder` 的 0）
+- 内部同样使用 `Striped64` 的 Cell 分段机制
+
+适用场景：
+- 求最大值：`(a, b) -> Math.max(a, b)`，identity 为 `Long.MIN_VALUE`
+- 求乘积：`(a, b) -> a * b`，identity 为 1
+- 自定义递减：`(a, b) -> a - b`，identity 为初始值
+
+## 示例代码
+
+```java
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAccumulator;
+import java.util.concurrent.atomic.LongAdder;
+
+public class AtomicDemo {
+
+    static final int THREAD_COUNT = 50;
+    static final int INC_PER_THREAD = 10_000;
+
+    public static void main(String[] args) throws InterruptedException {
+        demoAtomicInteger();
+        demoLongAdder();
+        demoLongAccumulator();
+    }
+
+    // AtomicInteger：低并发单变量自增
+    static void demoAtomicInteger() throws InterruptedException {
+        AtomicInteger counter = new AtomicInteger(0);
+        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < INC_PER_THREAD; j++) {
+                    counter.incrementAndGet();
+                }
+                latch.countDown();
+            }).start();
+        }
+        latch.await();
+        System.out.println("AtomicInteger result: " + counter.get());
+        // 期望：500000
+
+        // CAS 手动控制示例
+        AtomicInteger cas = new AtomicInteger(10);
+        boolean success = cas.compareAndSet(10, 20); // true，值变为 20
+        boolean fail    = cas.compareAndSet(10, 30); // false，当前值已是 20
+        System.out.println("CAS success=" + success + ", fail=" + fail + ", val=" + cas.get());
+    }
+
+    // LongAdder：高并发计数，分段减少竞争
+    static void demoLongAdder() throws InterruptedException {
+        LongAdder adder = new LongAdder();
+        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            new Thread(() -> {
+                for (int j = 0; j < INC_PER_THREAD; j++) {
+                    adder.increment(); // 等价于 add(1)
+                }
+                latch.countDown();
+            }).start();
+        }
+        latch.await();
+        System.out.println("LongAdder result: " + adder.sum());
+        // sum() 读取 base + 所有 Cell 之和，非强一致
+
+        adder.reset(); // 将 base 和所有 Cell 清零
+        System.out.println("After reset: " + adder.sum()); // 0
+    }
+
+    // LongAccumulator：自定义累积函数（此处演示求最大值）
+    static void demoLongAccumulator() throws InterruptedException {
+        // identity = Long.MIN_VALUE，函数取最大值
+        LongAccumulator maxAcc = new LongAccumulator(Math::max, Long.MIN_VALUE);
+        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            final long val = i * 7L; // 各线程提交不同值
+            new Thread(() -> {
+                maxAcc.accumulate(val);
+                latch.countDown();
+            }).start();
+        }
+        latch.await();
+        System.out.println("Max value: " + maxAcc.get());
+        // 期望：(50-1)*7 = 343
+
+        // 乘积累加器
+        LongAccumulator mulAcc = new LongAccumulator((a, b) -> a * b, 1L);
+        mulAcc.accumulate(2);
+        mulAcc.accumulate(3);
+        mulAcc.accumulate(5);
+        System.out.println("Product: " + mulAcc.get()); // 30
+    }
+}
+```
+
+```java
+// 对比：AtomicInteger vs LongAdder 高并发吞吐量测试
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAdder;
+
+public class ThroughputComparison {
+
+    public static void main(String[] args) throws InterruptedException {
+        int threads = Runtime.getRuntime().availableProcessors() * 4;
+        long duration = 2_000; // ms
+
+        // AtomicLong
+        AtomicLong atomicLong = new AtomicLong();
+        long atomicOps = benchmark(threads, duration, atomicLong::incrementAndGet);
+
+        // LongAdder
+        LongAdder longAdder = new LongAdder();
+        long adderOps = benchmark(threads, duration, () -> { longAdder.increment(); return 0L; });
+
+        System.out.printf("AtomicLong ops/s: %,d%n", atomicOps * 1000 / duration);
+        System.out.printf("LongAdder  ops/s: %,d%n", adderOps  * 1000 / duration);
+        // 高并发下 LongAdder 通常领先 AtomicLong 数倍
+    }
+
+    static long benchmark(int threads, long durationMs,
+                          java.util.concurrent.Callable<Long> op) throws InterruptedException {
+        java.util.concurrent.atomic.AtomicLong total = new java.util.concurrent.atomic.AtomicLong();
+        Thread[] ts = new Thread[threads];
+        volatile boolean[] running = {true};
+
+        for (int i = 0; i < threads; i++) {
+            ts[i] = new Thread(() -> {
+                long count = 0;
+                while (running[0]) {
+                    try { op.call(); } catch (Exception ignored) {}
+                    count++;
+                }
+                total.addAndGet(count);
+            });
+            ts[i].start();
+        }
+        Thread.sleep(durationMs);
+        running[0] = false;
+        for (Thread t : ts) t.join();
+        return total.get();
+    }
+}
+```
+
+## 常见问题
+
+**1. LongAdder.sum() 不是强一致的**
+
+`sum()` 遍历 Cell 数组时不加锁，读取期间其他线程可能继续写入，导致返回值不精确。若需要精确快照（如生成报表），应在业务层加锁或改用 `AtomicLong`。`LongAdder` 只适合"近似统计"场景，如 QPS 计数、事件累计。
+
+**2. LongAccumulator 的函数必须满足结合律和交换律**
+
+`accumulate()` 的执行顺序不确定（多线程分散到不同 Cell），若函数不满足交换律（如减法 `a - b`），结果将不确定。例如三个线程分别提交 1、2、3，减法结果可能是 `1-2-3 = -4` 也可能是 `3-1-2 = 0`，取决于执行顺序。
+
+**3. AtomicInteger 的 ABA 问题**
+
+CAS 只比较值，不追踪版本。若值从 A 变为 B 再变回 A，CAS 会误判为"未修改"。需要版本号时应改用 `AtomicStampedReference<Integer>`，它在比较时同时校验 stamp（版本号）。
+
+**4. Cell 数组的内存开销不可忽视**
+
+每个 `Cell` 使用 `@Contended` 注解填充缓存行（64 字节），防止伪共享（false sharing）。在核数较多的机器上，Cell 数组最大可达 CPU 核数个 Cell，每个占 64 字节，整体内存开销需纳入考量。若应用中存在大量 `LongAdder` 实例且核数高，内存压力不可忽视。

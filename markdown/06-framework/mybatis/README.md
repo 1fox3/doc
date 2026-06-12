@@ -1,30 +1,27 @@
 # MyBatis
 
-> 来源：面试内容汇总/MyBatis.xmind
+MyBatis 是半自动 ORM 框架，核心是把 Java 方法调用映射为 SQL 执行，并把结果集映射回 Java 对象。它不隐藏 SQL，适合复杂查询、强 SQL 控制和需要精细优化的业务场景。
 
-## 核心认知
+## 技术专题
 
-- MyBatis 是半自动 ORM，重点是 SQL 映射、Executor、缓存、插件和动态 SQL。
-- 它适合 SQL 可控、复杂查询多的场景，但需要团队治理 SQL 质量。
+- [核心架构与执行流程](01-architecture-flow.md)
+- [映射、参数与动态 SQL](02-mapping-dynamic-sql.md)
+- [缓存与事务](03-cache-transaction.md)
+- [插件机制与生产实践](04-plugin-practice.md)
 
-## 面试重点
+## 核心链路
 
-- 一级缓存、二级缓存、Mapper 代理、Executor、StatementHandler、ResultSetHandler。
-- 插件拦截链、动态 SQL、`#{} / ${}` 区别和 SQL 注入风险。
+1. Mapper 接口方法被代理对象拦截。
+2. 根据接口方法定位 `MappedStatement`。
+3. 解析参数并生成 `BoundSql`。
+4. Executor 调度查询或更新。
+5. StatementHandler 创建并预编译 SQL。
+6. ParameterHandler 设置参数。
+7. JDBC 执行 SQL。
+8. ResultSetHandler 映射结果集。
 
-## 实践检查点
+## 适用边界
 
-- 能实现分页、审计字段、慢 SQL 记录等插件，并说明拦截点选择。
-- 能处理 N+1 查询、结果映射错误和缓存脏读问题。
-
-## 版本与趋势
-
-- MyBatis 仍适合 SQL 可控场景，MyBatis-Plus 等增强工具可提升效率但不能替代 SQL 与索引能力。
-- 生产问题常集中在动态 SQL 失控、N+1 查询、分页性能、慢 SQL 和 Mapper 映射不一致。
-
-## 章节目录
-
-- [基础](01-基础/README.md)
-- [Executor](02-executor.md)
-- [插件](03-插件.md)
-- [instantiate](04-instantiate.md)
+- 适合 SQL 复杂、查询性能要求高、需要显式控制 SQL 的系统。
+- 不适合希望完全屏蔽 SQL、以对象关系自动同步为主的场景。
+- 动态 SQL、分页、批处理和缓存需要明确治理，否则容易出现性能和一致性问题。

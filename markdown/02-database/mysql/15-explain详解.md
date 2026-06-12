@@ -1,118 +1,53 @@
 # EXPLAIN详解
 
-> 专题：MySQL
-> 来源：Mysql.xmind
+## 核心字段
 
-## 补充与实践
+- `id` 表示查询块执行层级，复杂查询中用于区分子查询和派生表。
+- `select_type` 表示查询类型，例如 `SIMPLE`、`PRIMARY`、`SUBQUERY`、`DERIVED`。
+- `table` 表示当前访问的表或派生表。
+- `type` 表示访问方法，例如 `const`、`ref`、`range`、`index`、`ALL`。
+- `possible_keys` 是候选索引，`key` 是最终选择索引，`key_len` 是使用到的索引长度。
+- `rows` 是预计扫描行数，`filtered` 是预计过滤比例。
+- `Extra` 展示额外操作，如 `Using index`、`Using where`、`Using filesort`、`Using temporary`。
 
-- 补充：建议从问题背景、核心原理、适用场景、边界条件和生产案例五个维度整理该知识点。
-- 实践：学习时结合监控指标、日志、配置参数和故障复盘，避免只停留在概念记忆。
+## 常见 Extra
 
-## 详细说明
+- `Using index`：覆盖索引，不需要回表。
+- `Using index condition`：索引下推，先在存储引擎层过滤可用索引列。
+- `Using filesort`：无法完全利用索引顺序，需要额外排序。
+- `Using temporary`：需要临时表处理分组、去重或排序。
+- `Using where`：服务层或引擎层还需要应用过滤条件。
 
-### 是什么
+## 推荐用法
 
-- `EXPLAIN详解` 是 `MySQL` 体系中的一个具体知识点，建议先明确它解决的问题、参与的核心对象以及在整体链路中的位置。
-- 如果原脑图只记录了标题，复习时应补齐定义、适用场景、关键流程和边界条件，避免面试时只能说概念名。
+```sql
+EXPLAIN SELECT * FROM t WHERE a = 1 ORDER BY b LIMIT 10;
+EXPLAIN FORMAT=JSON SELECT * FROM t WHERE a = 1 ORDER BY b LIMIT 10;
+EXPLAIN ANALYZE SELECT * FROM t WHERE a = 1 ORDER BY b LIMIT 10;
+```
 
-### 为什么重要
+## 实践要点
 
-- 这类知识点通常会连接到源码机制、工程实践或线上故障，面试官更关注你能否把概念落到实际问题。
-- 准备时不要只背结论，要能说明它和相邻知识点的区别、取舍以及常见误用。
+- `EXPLAIN` 是估算计划，MySQL 8.0 可用 `EXPLAIN ANALYZE` 查看实际执行耗时和行数。
+- 看到 `Using filesort` 不一定有问题，关键看排序数据量、是否有 LIMIT、是否可用索引顺序优化。
+- 看到命中索引也不代表快，需要结合扫描行数、回表次数和排序/临时表成本判断。
 
-### 实践关注
+## 分析顺序
 
-- 整理至少一个业务或框架中的使用场景。
-- 补充常见坑点、异常表现、排查手段和优化方向。
-- 如果涉及配置或参数，记录默认值、调优依据和风险边界。
+- 先看表访问顺序，确认驱动表是否能被有效过滤。
+- 再看每张表的 `type`、`key`、`rows`，判断访问方法和扫描规模。
+- 看 `Extra` 是否出现 `Using temporary`、`Using filesort`、`Using join buffer`。
+- 对比 `possible_keys` 和 `key`，判断优化器为什么没选预期索引。
+- 使用 `FORMAT=JSON` 查看成本、过滤条件和嵌套循环结构。
 
-### 面试表达
+## `key_len` 的意义
 
-- 回答 `EXPLAIN详解` 时，可以按“定义 -> 原理/流程 -> 使用场景 -> 常见问题 -> 项目经验”的顺序展开。
-- 如果不确定细节，优先讲清边界和排查思路，不要把不同组件或不同版本的行为混在一起。
+- `key_len` 表示优化器决定使用的索引字节长度，可反推联合索引用到了哪些前缀列。
+- 变长字段、字符集、NULL 标记都会影响 `key_len`。
+- `key_len` 不是越长越好，关键是是否覆盖了有效过滤列。
 
-### 复习检查
+## `EXPLAIN ANALYZE` 注意事项
 
-- 能用自己的话解释 `EXPLAIN详解`，而不是只复述标题。
-- 能说出至少一个生产场景、一个常见坑点和一个排查方向。
-
-## 脑图解读
-
-- 本节脑图围绕 `EXPLAIN详解` 展开，属于 `MySQL` 的复习范围。
-- 建议优先掌握：结果结构, JSON格式的执行计划, SHOW WARRINGS。
-- 二级节点提示了主要拆分角度：id, select_type, table, partitions, type, possible_keys, key, key_len, ref, rows。
-- 三级节点通常对应具体细节、API、机制或易错点：在一个大的查询中，每个SELECT关键字都对应一个唯一的id, SELECT关键字对应的查询类型, 表名, 匹配的分区信息, 针对单表的访问方法, 可能使用到的索引, 实际使用的索引, 实际使用的索引长度, 当使用索引列等值查询时，与索引列进行等值匹配的对象, 预估的需要读取的记录条数。
-
-### 复习追问
-
-- `结果结构` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `JSON格式的执行计划` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `SHOW WARRINGS` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-
-## 脑图内容
-
-## EXPLAIN详解
-
-### 结果结构
-
-#### id
-
-- 在一个大的查询中，每个SELECT关键字都对应一个唯一的id
-
-#### select_type
-
-- SELECT关键字对应的查询类型
-
-#### table
-
-- 表名
-
-#### partitions
-
-- 匹配的分区信息
-
-#### type
-
-- 针对单表的访问方法
-
-#### possible_keys
-
-- 可能使用到的索引
-
-#### key
-
-- 实际使用的索引
-
-#### key_len
-
-- 实际使用的索引长度
-
-#### ref
-
-- 当使用索引列等值查询时，与索引列进行等值匹配的对象
-
-#### rows
-
-- 预估的需要读取的记录条数
-
-#### filtered
-
-- 针对预估的需要读取的记录，经过搜索条件过滤后剩余记录条数的百分比
-
-#### Extra
-
-- 一些额外信息
-
-### JSON格式的执行计划
-
-#### EXPLAIN FORMAT=JSON sql
-
-### SHOW WARRINGS
-
-#### Level
-
-#### Code
-
-#### Message
-
-- Code为1003时，Message里的内容为查询优化器重写之后的语句
+- 它会真实执行 SQL，线上对写 SQL 或大查询要谨慎。
+- 它能展示实际行数和耗时，有助于发现统计信息估算偏差。
+- 分析后应结合慢日志中的 `Rows_examined`、`Rows_sent` 和执行耗时判断收益。

@@ -1,51 +1,25 @@
 # ZooKeeper
 
-> 来源：ZooKeeper.xmind, 面试内容汇总/ZooKeeper.xmind
+ZooKeeper 是面向分布式协调的小数据强一致系统，适合命名服务、配置元数据、选主、分布式锁、组成员管理和状态协调。不适合作为大数据存储、高频业务数据库或大对象配置中心。
 
-## 核心认知
+## 章节
 
-- ZooKeeper 提供一致性元数据协调，适合配置、命名、选主、分布式锁等小数据强一致场景。
-- 不要把 ZooKeeper 当作大数据存储或高频业务读写数据库。
+- [01-核心模型与适用场景](01-核心模型与适用场景.md)
+- [02-ZNode Session Watcher ACL](02-znode-session-watcher-acl.md)
+- [03-ZAB Leader选举与一致性](03-zab-leader选举与一致性.md)
+- [04-客户端 Curator 与典型应用](04-客户端curator与典型应用.md)
+- [05-部署运维与故障排查](05-部署运维与故障排查.md)
 
-## 面试重点
+## 技术重点
 
-- ZNode、Watcher、Session、ACL、ZXID、Leader 选举、ZAB、过半机制。
-- 临时节点、顺序节点、分布式锁、羊群效应和 Curator 封装。
+- ZooKeeper 通过内存数据树、事务日志和快照提供低延迟元数据协调。
+- ZNode 支持持久节点、临时节点、顺序节点和容器节点等类型。
+- Watcher 是一次性通知机制，客户端收到事件后需要重新注册。
+- Session 决定临时节点生命周期，连接断开不等于会话过期。
+- ZAB 保证写请求顺序一致和 Leader 崩溃后的数据恢复。
 
-## 实践检查点
+## 使用边界
 
-- 能解释会话过期与连接断开的区别，以及对临时节点的影响。
-- 能设计可重入、公平、可超时的分布式锁，并处理锁释放异常。
-
-## 版本与趋势
-
-- ZooKeeper 仍常用于协调与元数据，但新系统应谨慎评估是否可由 etcd、Nacos、KRaft 或云服务替代。
-- 使用 ZooKeeper 时要控制节点数量、watcher 数量、会话超时和磁盘延迟。
-
-## 章节目录
-
-### ZooKeeper.xmind
-
-- [简介](01-简介.md)
-- [了解](02-了解.md)
-- [使用API](03-使用api.md)
-- [处理状态变化](04-处理状态变化.md)
-- [故障处理](05-故障处理.md)
-- [注意事项](06-注意事项.md)
-- [C语言客户端](07-c语言客户端.md)
-- [Curator](08-curator.md)
-- [内部原理](09-内部原理.md)
-- [运行ZooKeeper](10-运行zookeeper.md)
-### 面试内容汇总/ZooKeeper.xmind
-
-- [端口](11-端口.md)
-- [节点](12-节点.md)
-- [会话](13-会话.md)
-- [Watcher](14-watcher.md)
-- [事务ID](15-事务id.md)
-- [ACL](16-acl.md)
-- [Leader选举](17-leader选举.md)
-- [ZAB](18-zab.md)
-- [Java客户端](19-java客户端.md)
-- [四字母命令](20-四字母命令.md)
-- [instantiate](21-instantiate.md)
+- 控制节点数量、节点数据大小和 Watcher 数量。
+- 避免把 ZooKeeper 放在高频业务读写链路上。
+- 关注磁盘延迟、事务日志目录、快照、会话超时和 GC 暂停。

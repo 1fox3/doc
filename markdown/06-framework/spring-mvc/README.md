@@ -1,31 +1,21 @@
 # Spring MVC
 
-> 来源：面试内容汇总/Spring MVC.xmind
+Spring MVC 是基于 Servlet API 的 Web MVC 框架，核心是 `DispatcherServlet` 前端控制器和一组可插拔策略组件。请求从 Servlet 容器进入后，由 HandlerMapping 定位处理器，由 HandlerAdapter 调用目标方法，再经过参数解析、类型转换、数据绑定、返回值处理和视图或响应体渲染完成响应。
 
-## 核心认知
+## 技术专题
 
-- Spring MVC 围绕 DispatcherServlet 组织请求分发、参数绑定、调用控制器和视图/响应渲染。
-- 理解 HandlerMapping、HandlerAdapter、Interceptor、MessageConverter 是排查 Web 问题的关键。
+- [请求处理链路](01-request-flow.md)
+- [核心组件](02-core-components.md)
+- [参数绑定与返回值处理](03-binding-return.md)
+- [异常处理、校验与拦截](04-validation-exception.md)
 
-## 面试重点
+## 基本链路
 
-- 请求处理链路、参数解析、数据绑定、异常处理、拦截器和过滤器区别。
-- REST 接口返回、内容协商、JSON 序列化和统一响应/异常封装。
-
-## 实践检查点
-
-- 能定位接口 404、415、参数绑定失败和序列化异常。
-- 能设计全局异常处理和请求链路日志。
-
-## 版本与趋势
-
-- Spring MVC 在 Spring 6 后同样迁移到 Jakarta Servlet API，过滤器、拦截器和异常处理链路仍是高频问题。
-- 接口治理重点包括统一错误码、参数校验、幂等、限流、链路追踪和访问日志。
-
-## 章节目录
-
-- [基础](01-基础.md)
-- [DispatcherServlet](02-dispatcherservlet.md)
-- [重点组件](03-重点组件.md)
-- [常用注解](04-常用注解.md)
-- [instantiate](05-instantiate.md)
+1. `DispatcherServlet` 接收请求。
+2. 通过 `HandlerMapping` 查找 Handler 和拦截器链。
+3. 通过 `HandlerAdapter` 调用 Controller 方法。
+4. 使用 `HandlerMethodArgumentResolver` 解析方法参数。
+5. 执行业务方法。
+6. 使用 `HandlerMethodReturnValueHandler` 处理返回值。
+7. 发生异常时交给 `HandlerExceptionResolver` 处理。
+8. 返回 `ModelAndView`、视图渲染结果或 HTTP 响应体。

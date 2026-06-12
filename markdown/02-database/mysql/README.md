@@ -1,31 +1,25 @@
 # MySQL
 
-> 来源：Mysql.xmind, 面试内容汇总/Mysql.xmind
+MySQL 目录按 InnoDB、索引、优化器、事务、锁、日志和运维排查整理。默认以 MySQL 8.0 和 InnoDB 为主，除非文档明确说明历史特性。
 
-## 核心认知
+## 学习主线
 
-- MySQL 学习主线是存储引擎、索引、事务、锁、日志和优化器。InnoDB 是重点。
-- SQL 性能问题通常由数据分布、索引选择、执行计划、锁等待或事务边界引起。
+- 连接层：服务启动、参数加载、认证、连接线程、SQL 解析与优化。
+- 存储层：InnoDB 记录格式、数据页、表空间、Buffer Pool、redo log、undo log。
+- 查询层：访问方法、连接算法、成本模型、统计信息、规则优化、`EXPLAIN`、`optimizer_trace`。
+- 并发层：事务、隔离级别、MVCC、行锁、表锁、间隙锁、死锁排查。
+- 工程实践：字符集治理、慢 SQL 分析、索引设计、查询缓存历史问题、常用诊断命令。
 
-## 面试重点
+## 关键检查点
 
-- B+Tree 索引、聚簇索引、覆盖索引、最左前缀、索引下推、回表。
-- MVCC、ReadView、隔离级别、当前读/快照读、间隙锁和临键锁。
-- redo log、undo log、binlog、两阶段提交、主从复制和 crash recovery。
-
-## 实践检查点
-
-- 能用 `EXPLAIN` 分析 type、key、rows、Extra，并给出索引或 SQL 改写方案。
-- 能说明慢 SQL 治理流程：定位、复现、看执行计划、改索引/SQL、压测验证。
-
-## 版本与趋势
-
-- MySQL 8.0 是当前主流版本，窗口函数、CTE、直方图、Invisible Index、Instant DDL 等能力值得掌握。
-- 生产治理重点从单 SQL 优化扩展到容量规划、慢查询治理、备份恢复、主从延迟和在线变更。
+- 能通过 `EXPLAIN FORMAT=JSON` 判断访问方法、驱动表、索引选择、回表和排序代价。
+- 能解释 InnoDB 在 RC/RR 下快照读、当前读、ReadView、undo 版本链和 next-key lock 的差异。
+- 能说明 redo log、undo log、binlog 在提交、回滚、崩溃恢复和复制中的职责边界。
+- 能用 `SHOW ENGINE INNODB STATUS`、`performance_schema`、慢日志定位锁等待、死锁和慢 SQL。
 
 ## 章节目录
 
-### Mysql.xmind
+### MySQL.xmind
 
 - [服务启动](01-服务启动.md)
 - [启动项和系统变量](02-启动项和系统变量.md)
@@ -34,7 +28,7 @@
 - [InnoDB数据页结构](05-innodb数据页结构.md)
 - [B+树索引](06-b树索引.md)
 - [B+树索引树的使用](07-b树索引树的使用.md)
-- [Mysql数据目录](08-mysql数据目录.md)
+- [MySQL数据目录](08-mysql数据目录.md)
 - [InnoDB表空间](09-innodb表空间.md)
 - [单表访问方法](10-单表访问方法.md)
 - [连接的原理](11-连接的原理.md)
@@ -50,7 +44,8 @@
 - [隔离级别和MVCC](21-隔离级别和mvcc.md)
 - [锁](22-锁.md)
 - [instantiate](23-instantiate.md)
-### 面试内容汇总/Mysql.xmind
+
+### 面试内容汇总/MySQL.xmind
 
 - [基本常识](24-基本常识.md)
 - [存储引擎(show engines)](25-存储引擎show-engines.md)

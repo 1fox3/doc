@@ -1,147 +1,310 @@
 # Unsafe
 
-> 专题：Java 语言基础
-> 来源：面试内容汇总/Java.xmind
+`sun.misc.Unsafe` 是 JDK 内部底层能力类，可直接操作内存、CAS、线程调度等，绕过 Java 部分安全检查。业务代码不应直接使用，是 `AtomicXxx`、`LockSupport`、`ConcurrentHashMap`、Netty 等底层组件的基础。JDK 17+ 路径迁移至 `jdk.internal.misc.Unsafe`。
 
-## 补充与实践
+## 获取实例
 
-- 补充：建议从问题背景、核心原理、适用场景、边界条件和生产案例五个维度整理该知识点。
-- 实践：学习时结合监控指标、日志、配置参数和故障复盘，避免只停留在概念记忆。
+构造器私有且有 Caller 检查，普通代码需通过反射获取：
 
-## 详细说明
+```java
+import sun.misc.Unsafe;
+import java.lang.reflect.Field;
 
-### 核心概念
+public class UnsafeHolder {
+    public static final Unsafe UNSAFE;
+    static {
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            UNSAFE = (Unsafe) f.get(null);
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+}
+```
 
-- `Unsafe` 是 JDK 内部提供的底层能力类，可以直接操作内存、对象字段、CAS、线程挂起恢复等。
-- 它绕过了 Java 的部分安全检查，因此名字叫 Unsafe。
+## 功能一：CAS 原子操作
 
-### 常见能力
+```java
+import sun.misc.Unsafe;
+import java.lang.reflect.Field;
 
-- 堆外内存分配和释放。
-- CAS 原子操作。
-- 按字段偏移量读写对象字段。
-- 线程 park/unpark。
-- 绕过构造器创建对象。
+public class AtomicCounter {
 
-### 实践建议
+    private static final Unsafe UNSAFE = UnsafeHolder.UNSAFE;
+    private static final long VALUE_OFFSET;
 
-- 业务代码不应直接使用 Unsafe。
-- 并发工具、Netty、序列化框架等底层组件可能间接使用它。
-- 现代 Java 更推荐使用 VarHandle、ByteBuffer、Foreign Function & Memory API 等替代方向。
+    static {
+        try {
+            VALUE_OFFSET = UNSAFE.objectFieldOffset(
+                    AtomicCounter.class.getDeclaredField("value"));
+        } catch (NoSuchFieldException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
-### 复习检查
+    private volatile int value;
 
-- 能用自己的话解释 `Unsafe`，而不是只复述标题。
-- 能说出至少一个生产场景、一个常见坑点和一个排查方向。
+    public int get() { return value; }
 
-## 脑图解读
+    public int getAndIncrement() {
+        int current;
+        do { current = value; }
+        while (!UNSAFE.compareAndSwapInt(this, VALUE_OFFSET, current, current + 1));
+        return current;
+    }
 
-- 本节脑图围绕 `Unsafe` 展开，属于 `Java 语言基础` 的复习范围。
-- 建议优先掌握：sun.misc.Unsafe, 单例实现, 获取unsafe实例, 相关功能。
-- 二级节点提示了主要拆分角度：通过反射, -Xbootclasspath/a:${path},将调用unsafe的jar包路径追加到默认的bootstrap路径中, 内存操作, 内存屏障, 对象操作, 数组操作, CAS操作, 线程调度, Class操作。
-- 三级节点通常对应具体细节、API、机制或易错点：allocateMemory, reallocateMemory, setMemory, copyMemory, freeMemory, loadFence, storeFence, fullFence, getObject, putObject。
+    public boolean compareAndSet(int expect, int update) {
+        return UNSAFE.compareAndSwapInt(this, VALUE_OFFSET, expect, update);
+    }
 
-### 复习追问
+    public static void main(String[] args) throws InterruptedException {
+        AtomicCounter counter = new AtomicCounter();
+        Thread[] threads = new Thread[10];
+        for (int i = 0; i < 10; i++) {
+            threads[i] = new Thread(() -> {
+                for (int j = 0; j < 1000; j++) counter.getAndIncrement();
+            });
+            threads[i].start();
+        }
+        for (Thread t : threads) t.join();
+        System.out.println("期望: 10000, 实际: " + counter.get()); // 10000
+    }
+}
+```
 
-- `sun.misc.Unsafe` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `单例实现` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `获取unsafe实例` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `相关功能` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
+| 方法 | 说明 |
+|------|------|
+| `compareAndSwapInt(obj, offset, expected, update)` | int 字段 CAS |
+| `compareAndSwapLong(obj, offset, expected, update)` | long 字段 CAS |
+| `compareAndSwapObject(obj, offset, expected, update)` | 引用字段 CAS |
+| `objectFieldOffset(Field)` | 获取字段相对于对象头的内存偏移量 |
 
-## 脑图内容
+## 功能二：堆外内存操作
 
-## Unsafe
+```java
+public class OffHeapBuffer {
 
-### sun.misc.Unsafe
+    private static final Unsafe UNSAFE = UnsafeHolder.UNSAFE;
 
-### 单例实现
+    private long address;
+    private final long capacity;
 
-### 获取unsafe实例
+    public OffHeapBuffer(long capacity) {
+        this.capacity = capacity;
+        this.address = UNSAFE.allocateMemory(capacity);
+        UNSAFE.setMemory(address, capacity, (byte) 0); // 清零，避免脏数据
+    }
 
-#### 通过反射
+    public void putLong(long index, long value) {
+        UNSAFE.putLong(address + index * Long.BYTES, value);
+    }
 
-#### -Xbootclasspath/a:${path},将调用unsafe的jar包路径追加到默认的bootstrap路径中
+    public long getLong(long index) {
+        return UNSAFE.getLong(address + index * Long.BYTES);
+    }
 
-### 相关功能
+    public void free() {
+        if (address != 0) {
+            UNSAFE.freeMemory(address); // 必须手动释放，否则内存泄漏
+            address = 0;
+        }
+    }
 
-#### 内存操作
+    public static void main(String[] args) {
+        OffHeapBuffer buf = new OffHeapBuffer(1024);
+        try {
+            buf.putLong(0, 42L);
+            buf.putLong(1, 100L);
+            System.out.println(buf.getLong(0)); // 42
+            System.out.println(buf.getLong(1)); // 100
+        } finally {
+            buf.free();
+        }
+    }
+}
+```
 
-- allocateMemory
+| 方法 | 说明 |
+|------|------|
+| `allocateMemory(bytes)` | 分配堆外内存，返回起始地址 |
+| `reallocateMemory(addr, bytes)` | 重新分配（类似 realloc） |
+| `freeMemory(addr)` | 释放堆外内存 |
+| `setMemory(addr, bytes, value)` | 批量填充字节（清零常用） |
+| `copyMemory(src, dst, bytes)` | 内存块拷贝 |
+| `putLong/getLong(addr, value)` | 按地址读写基本类型 |
 
-- reallocateMemory
+## 功能三：绕过构造器创建对象
 
-- setMemory
+```java
+public class InstanceCreation {
 
-- copyMemory
+    static class Config {
+        private final String host;
+        private final int port;
 
-- freeMemory
+        public Config(String host, int port) {
+            if (host == null || host.isBlank()) throw new IllegalArgumentException("host required");
+            this.host = host;
+            this.port = port;
+        }
 
-#### 内存屏障
+        @Override
+        public String toString() { return host + ":" + port; }
+    }
 
-- loadFence
+    public static void main(String[] args) throws Exception {
+        Unsafe unsafe = UnsafeHolder.UNSAFE;
 
-- storeFence
+        // 绕过构造器，字段均为默认值（null / 0）
+        Config config = (Config) unsafe.allocateInstance(Config.class);
+        System.out.println(config.host); // null
+        System.out.println(config.port); // 0
 
-- fullFence
+        // 反序列化场景：手动写入字段值
+        long hostOffset = unsafe.objectFieldOffset(Config.class.getDeclaredField("host"));
+        long portOffset = unsafe.objectFieldOffset(Config.class.getDeclaredField("port"));
 
-#### 对象操作
+        unsafe.putObject(config, hostOffset, "127.0.0.1");
+        unsafe.putInt(config, portOffset, 8080);
 
-- getObject
+        System.out.println(config); // 127.0.0.1:8080
+    }
+}
+```
 
-- putObject
+## 功能四：volatile 字段读写
 
-- getIntVolatile
+```java
+public class VolatileFieldAccess {
 
-- putIntVolatile
+    static class Node {
+        Object next; // 声明时非 volatile
+    }
 
-- putOrderedObject
+    private static final long NEXT_OFFSET;
+    private static final Unsafe UNSAFE = UnsafeHolder.UNSAFE;
 
-- putOrderedInt
+    static {
+        try {
+            NEXT_OFFSET = UNSAFE.objectFieldOffset(Node.class.getDeclaredField("next"));
+        } catch (NoSuchFieldException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
-- putOrderedLong
+    // 以 volatile 语义读取 next
+    public static Object getNextVolatile(Node node) {
+        return UNSAFE.getObjectVolatile(node, NEXT_OFFSET);
+    }
 
-- allocateInstance
-  - 创建对象是，不会调用类的构造方法
+    // 以 volatile 语义写入 next（有 StoreLoad 屏障）
+    public static void setNextVolatile(Node node, Object value) {
+        UNSAFE.putObjectVolatile(node, NEXT_OFFSET, value);
+    }
 
-#### 数组操作
+    // 有序写（Store-Store 屏障，比 volatile 写开销低）
+    public static void setNextOrdered(Node node, Object value) {
+        UNSAFE.putOrderedObject(node, NEXT_OFFSET, value);
+    }
+}
+```
 
-- arrayBaseOffset
+## 功能五：线程调度 park / unpark
 
-- arrayIndexScale
+```java
+public class ParkDemo {
 
-#### CAS操作
+    public static void main(String[] args) throws InterruptedException {
+        Unsafe unsafe = UnsafeHolder.UNSAFE;
 
-- compareAndSwapObject
+        Thread worker = new Thread(() -> {
+            System.out.println("worker: 开始 park");
+            unsafe.park(false, 0L); // 阻塞，直到 unpark 或线程中断
+            System.out.println("worker: 被唤醒");
+        });
 
-- compareAndSwapInt
+        worker.start();
+        Thread.sleep(500);
 
-- compareAndSwapLong
+        System.out.println("main: 发送 unpark");
+        unsafe.unpark(worker);
+        worker.join();
+    }
+}
+```
 
-#### 线程调度
+`park(isAbsolute, time)` 参数说明：
+- `isAbsolute=false, time=0`：无限等待
+- `isAbsolute=false, time=N`：相对超时，单位纳秒
+- `isAbsolute=true,  time=N`：绝对超时，Unix 毫秒时间戳
 
-- park
-  - 阻塞线程
+## 功能六：内存屏障（Java 9+）
 
-- unpark
+```java
+Unsafe unsafe = UnsafeHolder.UNSAFE;
 
-#### Class操作
+unsafe.loadFence();   // Load-Load + Load-Store，禁止读重排序
+unsafe.storeFence();  // Store-Store + Load-Store，禁止写重排序
+unsafe.fullFence();   // 完整屏障（等价于 volatile 写后的 StoreLoad）
+```
 
-- staticFieldOffset
+## 功能七：数组操作
 
-- staticFieldBase
+```java
+public class ArrayAccess {
 
-- shuouldBeInitialized
+    private static final Unsafe UNSAFE = UnsafeHolder.UNSAFE;
+    private static final int BASE  = UNSAFE.arrayBaseOffset(int[].class);
+    private static final int SCALE = UNSAFE.arrayIndexScale(int[].class);
 
-- defineClass
-  - ClassLoader
+    public static int getVolatile(int[] arr, int index) {
+        return UNSAFE.getIntVolatile(arr, (long) BASE + (long) index * SCALE);
+    }
 
-- defineAnonymousClass
-  - Lambda表达式
+    public static void setVolatile(int[] arr, int index, int value) {
+        UNSAFE.putIntVolatile(arr, (long) BASE + (long) index * SCALE, value);
+    }
 
-#### 系统信息
+    public static boolean casElement(int[] arr, int index, int expect, int update) {
+        return UNSAFE.compareAndSwapInt(arr, (long) BASE + (long) index * SCALE, expect, update);
+    }
 
-- addressSize
-  - 系统指针大小
+    public static void main(String[] args) {
+        int[] arr = new int[]{1, 2, 3};
+        System.out.println(getVolatile(arr, 1)); // 2
+        casElement(arr, 1, 2, 99);
+        System.out.println(getVolatile(arr, 1)); // 99
+    }
+}
+```
 
-- pageSize
-  - 内存页大小
+## 注意点
+
+- **堆外内存泄漏**：`allocateMemory` 必须对应 `freeMemory`，GC 不会自动回收，建议用 try-finally 或 Cleaner。
+- **字段偏移量不可硬编码**：不同 JVM/平台字段布局可能不同，必须运行时通过 `objectFieldOffset` 动态获取。
+- **内存越界导致 JVM crash**：堆外内存越界不抛异常，直接触发段错误（SIGSEGV），进程崩溃。
+- **`allocateInstance` 陷阱**：所有字段含 `final` 均为默认值，使用前必须手动赋值。
+- **ABA 问题**：CAS 只比较值，无法感知中间变化，需配合版本号（`AtomicStampedReference`）。
+- **JDK 9+ 模块化限制**：需要 `--add-opens java.base/sun.misc=ALL-UNNAMED`，否则反射报 `InaccessibleObjectException`。
+
+## 生产场景速查
+
+| 场景 | 框架/说明 |
+|------|-----------|
+| 原子类底层 | `AtomicInteger`、`AtomicReference` 等 CAS 实现 |
+| 锁实现 | `AQS` 的 state 字段 CAS |
+| 线程挂起 | `LockSupport.park/unpark` |
+| 堆外缓冲区 | `DirectByteBuffer`、Netty `PooledByteBuf` |
+| 反序列化 | Kryo、Hessian 用 `allocateInstance` 跳过构造器 |
+| 高性能队列 | Disruptor 用偏移量 + 内存屏障替代锁 |
+
+## 现代替代方案
+
+| Unsafe 用法 | 推荐替代 | 版本 |
+|-------------|----------|------|
+| CAS | `VarHandle` | Java 9+ |
+| 堆外内存 | `MemorySegment`（Foreign Memory API） | Java 21 GA |
+| 内存屏障 | `VarHandle.fullFence/acquireFence/releaseFence` | Java 9+ |
+| park/unpark | `LockSupport`（已封装） | 所有版本 |

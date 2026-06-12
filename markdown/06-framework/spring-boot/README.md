@@ -1,36 +1,28 @@
 # Spring Boot
 
-> 来源：面试内容汇总/SpringBoot.xmind
+Spring Boot 在 Spring Framework 之上提供应用启动、自动配置、外部化配置、内嵌容器、Starter 依赖管理和生产运维能力。理解 Spring Boot 的关键是把启动流程、自动配置导入、条件装配和配置属性绑定串起来。
 
-## 核心认知
+## 技术专题
 
-- Spring Boot 的价值是自动配置、约定优于配置、Starter 生态和生产可观测能力。
-- 理解自动配置要抓住条件注解、配置属性绑定和 `spring.factories`/AutoConfiguration imports。
+- [启动流程](01-startup.md)
+- [自动配置](02-auto-configuration.md)
+- [配置体系](03-configuration.md)
+- [Starter 与内嵌容器](04-starter-web.md)
+- [日志、Runner 与 Actuator](05-runtime-ops.md)
 
-## 面试重点
+## 核心链路
 
-- 启动流程、自动配置原理、Starter 设计、配置加载顺序、Actuator。
-- 内嵌 Servlet 容器、日志系统、Runner、Profile 和外部化配置。
+1. `SpringApplication.run()` 创建并准备环境。
+2. 推断应用类型，加载监听器和初始化器。
+3. 创建 `ApplicationContext`。
+4. 加载主配置类和自动配置类。
+5. 执行 Spring 容器 `refresh()`。
+6. 启动内嵌 Web 容器。
+7. 执行 `ApplicationRunner` 和 `CommandLineRunner`。
 
-## 实践检查点
+## 关键机制
 
-- 能写一个自定义 Starter，并保证默认配置可覆盖、Bean 可条件装配。
-- 能排查自动配置未生效：条件报告、Bean 冲突、配置属性绑定失败。
-
-## 版本与趋势
-
-- Spring Boot 3.x 基于 Spring 6 和 Java 17+，原生镜像、观测性、配置绑定和自动配置机制都有变化。
-- 老项目从 2.x 升级到 3.x 时，要重点处理 Jakarta 包名、依赖版本、Spring Security 和第三方 Starter 兼容性。
-
-## 章节目录
-
-- [基本信息](01-基本信息.md)
-- [核心模块](02-核心模块.md)
-- [最核心的注解](03-最核心的注解.md)
-- [自动配置](04-自动配置.md)
-- [Starters](05-starters.md)
-- [注册Servlet](06-注册servlet.md)
-- [Runner](07-runner.md)
-- [日志框架](08-日志框架.md)
-- [热部署方式](09-热部署方式.md)
-- [instantiate](10-instantiate.md)
+- 自动配置通过条件注解决定是否创建默认 Bean。
+- 配置属性通过 Binder 绑定到 `@ConfigurationProperties` 对象。
+- Starter 只负责依赖聚合，真正的默认行为来自 auto-configuration 模块。
+- 用户自定义 Bean 通常通过 `@ConditionalOnMissingBean` 覆盖默认配置。

@@ -1,129 +1,58 @@
 # 隔离级别和MVCC
 
-> 专题：MySQL
-> 来源：Mysql.xmind
+## 隔离级别
 
-## 补充与实践
+- `READ UNCOMMITTED`：可能读到未提交数据，实际生产很少使用。
+- `READ COMMITTED`：每次一致性读生成新的 ReadView，可避免脏读，但可能不可重复读。
+- `REPEATABLE READ`：事务第一次一致性读生成 ReadView，后续复用，可避免不可重复读，是 InnoDB 默认隔离级别。
+- `SERIALIZABLE`：读写串行化倾向更强，并发能力最低。
 
-- 补充：InnoDB 通过 undo log 和 ReadView 实现 MVCC，通过 redo log 保证崩溃恢复，通过 binlog 支持复制和归档。
-- 实践：长事务会拖住 undo 清理并影响版本链，线上应限制事务时长和交互式事务。
-- 误区：可重复读不等于完全不会幻读，InnoDB 通过 next-key lock 在当前读场景解决幻读。
+## ReadView
 
-## 详细说明
+- ReadView 记录创建时活跃事务 ID 列表、最小活跃事务 ID、下一个待分配事务 ID 和当前事务 ID。
+- 快照读根据行记录 `DB_TRX_ID` 与 ReadView 判断版本是否可见。
+- 当前读不使用快照版本，会读取最新已提交记录并加锁，例如 `SELECT ... FOR UPDATE`、`UPDATE`、`DELETE`。
 
-### 是什么
+## 幻读处理
 
-- `隔离级别和MVCC` 是 `MySQL` 体系中的一个具体知识点，建议先明确它解决的问题、参与的核心对象以及在整体链路中的位置。
-- 如果原脑图只记录了标题，复习时应补齐定义、适用场景、关键流程和边界条件，避免面试时只能说概念名。
+- 快照读通过 ReadView 保证同一事务中查询结果的一致性。
+- 当前读在 RR 下通过 record lock、gap lock、next-key lock 锁定记录和间隙，阻止符合范围的新记录插入。
+- RC 下通常不使用 gap lock 处理普通范围当前读，锁冲突更少，但幻读约束更弱。
 
-### 为什么重要
+## 实践要点
 
-- 这类知识点通常会连接到源码机制、工程实践或线上故障，面试官更关注你能否把概念落到实际问题。
-- 准备时不要只背结论，要能说明它和相邻知识点的区别、取舍以及常见误用。
+- 只读查询优先使用快照读，避免不必要的 `FOR UPDATE`。
+- 高并发写入场景可评估 RC 降低 gap lock 冲突，但要确认业务是否依赖 RR 语义。
+- 长事务会使 ReadView 长时间存在，导致 undo 无法清理。
 
-### 实践关注
+## 可见性判断简化规则
 
-- 整理至少一个业务或框架中的使用场景。
-- 补充常见坑点、异常表现、排查手段和优化方向。
-- 如果涉及配置或参数，记录默认值、调优依据和风险边界。
+- 如果行版本事务 ID 等于当前事务 ID，当前事务可见自己的修改。
+- 如果行版本事务 ID 小于 ReadView 最小活跃事务 ID，说明创建该版本的事务已提交，可见。
+- 如果行版本事务 ID 大于等于 ReadView 下一个事务 ID，说明是 ReadView 创建后才出现的版本，不可见。
+- 如果行版本事务 ID 在活跃事务列表中，说明创建该版本的事务当时未提交，不可见。
+- 其他情况表示创建版本的事务在 ReadView 创建前已提交，可见。
 
-### 面试表达
+## 示例场景
 
-- 回答 `隔离级别和MVCC` 时，可以按“定义 -> 原理/流程 -> 使用场景 -> 常见问题 -> 项目经验”的顺序展开。
-- 如果不确定细节，优先讲清边界和排查思路，不要把不同组件或不同版本的行为混在一起。
+```sql
+-- 事务 A，RR 隔离级别。
+START TRANSACTION;
+SELECT balance FROM account WHERE id = 1;
 
-### 复习检查
+-- 事务 B 更新并提交。
+UPDATE account SET balance = balance + 100 WHERE id = 1;
+COMMIT;
 
-- 能用自己的话解释 `隔离级别和MVCC`，而不是只复述标题。
-- 能说出至少一个生产场景、一个常见坑点和一个排查方向。
+-- 事务 A 再次普通 SELECT，仍看到第一次 ReadView 中可见的版本。
+SELECT balance FROM account WHERE id = 1;
 
-## 脑图解读
+-- 当前读会读取最新已提交版本并加锁。
+SELECT balance FROM account WHERE id = 1 FOR UPDATE;
+```
 
-- 本节脑图围绕 `隔离级别和MVCC` 展开，属于 `MySQL` 的复习范围。
-- 建议优先掌握：事务一致性问题, 隔离级别, MVCC, purge操作。
-- 二级节点提示了主要拆分角度：脏写, 脏读, 不可重复读, 幻读, READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE, 记录中的roll_pointer与undo日志中的roll_pointer连在一起，称为记录的版本链, ReadView(一致性视图)。
-- 三级节点通常对应具体细节、API、机制或易错点：一个事务修改了另一个未提交事务修改过的数据, 一个事务读到了另一个未提交事务修改过的数据, 一个事务修改了另一个未提交事务读取的数据, 如果一个事务根据某些搜索条件查询出一些记录，在该事务未提交时，另一个事务写入了一些符合那些搜索条件的记录, 构成, 记录某个版本的可见性判断, 创建时机, ReadView中的min_trx_id是否大于该页面的PAGE_MAX_TRX_ID属性值，如果大于，则整个页面可见，否则，回表之后再判断可见性。
+## RC 与 RR 的工程差异
 
-### 复习追问
-
-- `事务一致性问题` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `隔离级别` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `MVCC` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `purge操作` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-
-## 脑图内容
-
-## 隔离级别和MVCC
-
-### 事务一致性问题
-
-#### 脏写
-
-- 一个事务修改了另一个未提交事务修改过的数据
-
-#### 脏读
-
-- 一个事务读到了另一个未提交事务修改过的数据
-
-#### 不可重复读
-
-- 一个事务修改了另一个未提交事务读取的数据
-
-#### 幻读
-
-- 如果一个事务根据某些搜索条件查询出一些记录，在该事务未提交时，另一个事务写入了一些符合那些搜索条件的记录
-
-### 隔离级别
-
-#### READ UNCOMMITTED
-
-#### READ COMMITTED
-
-- 脏读
-
-#### REPEATABLE READ
-
-- 不可重复读
-
-#### SERIALIZABLE
-
-- 幻读
-
-### MVCC
-
-#### 记录中的roll_pointer与undo日志中的roll_pointer连在一起，称为记录的版本链
-
-#### ReadView(一致性视图)
-
-- 构成
-  - m_ids
-    - 在生成ReadView时，当前系统中活跃的读写事务id列表
-  - min_trx_id
-    - 在生成ReadView时，当前系统中活跃的读写事务中最小的事务id，也就是m_ids中的最小值
-  - max_trx_id
-    - 在生成ReadView时，系统应该分配给下一个事务的事务id值
-  - creator_trx_id
-    - 生成该ReadView的事务的事务id
-
-- 记录某个版本的可见性判断
-  - 版本中的trx_id等于creator_trx_id，可见
-  - 版本中的trx_id小于min_trx_id，可见
-  - 版本中的trx_id大于等于max_trx_id,不可见
-  - 版本中的trx_id在min_trx_id和max_trx_id之间
-    - 在m_ids中，不可见
-    - 不在m_ids中，可见
-
-- 创建时机
-  - READ COMMITTED
-    - 每次读取数据前都会生成一个ReadView
-  - REPEATABLE READ
-    - 在第一次读取数据时生成一个ReadView
-    - 当以START TRANSACTION WITH CONSISTENT SNAPSHOT 语句开启事务时，会在该语句执行后，立即生成一个ReadView
-
-#### 二级索引
-
-- ReadView中的min_trx_id是否大于该页面的PAGE_MAX_TRX_ID属性值，如果大于，则整个页面可见，否则，回表之后再判断可见性
-
-### purge操作
-
-#### 清除不需要的undo日志和打了删除标记的记录
+- RC 下每条语句读到的是语句开始前已提交版本，更贴近很多应用直觉。
+- RR 下事务内多次一致性读稳定，但长事务更容易拖住 undo。
+- RC 的 gap lock 使用更少，写入冲突可能降低，但范围约束需要业务或唯一索引兜底。

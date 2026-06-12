@@ -1,82 +1,55 @@
 # Optimizer Trace
 
-> 专题：MySQL
-> 来源：Mysql.xmind
+## 作用
 
-## 补充与实践
+- `optimizer_trace` 用于观察优化器如何生成候选计划、估算成本并选择最终执行计划。
+- 它适合排查“为什么没有走某个索引”“为什么选择这个连接顺序”“为什么使用全表扫描”。
 
-- 补充：建议从问题背景、核心原理、适用场景、边界条件和生产案例五个维度整理该知识点。
-- 实践：学习时结合监控指标、日志、配置参数和故障复盘，避免只停留在概念记忆。
+## 使用方式
 
-## 详细说明
+```sql
+SET optimizer_trace = 'enabled=on';
+SET optimizer_trace_max_mem_size = 1048576;
 
-### 是什么
+SELECT * FROM t WHERE a = 1 AND b > 10;
 
-- `Optimizer Trace` 是 `MySQL` 体系中的一个具体知识点，建议先明确它解决的问题、参与的核心对象以及在整体链路中的位置。
-- 如果原脑图只记录了标题，复习时应补齐定义、适用场景、关键流程和边界条件，避免面试时只能说概念名。
+SELECT trace
+FROM information_schema.optimizer_trace\G
 
-### 为什么重要
+SET optimizer_trace = 'enabled=off';
+```
 
-- 这类知识点通常会连接到源码机制、工程实践或线上故障，面试官更关注你能否把概念落到实际问题。
-- 准备时不要只背结论，要能说明它和相邻知识点的区别、取舍以及常见误用。
+## 关注内容
 
-### 实践关注
+- `join_preparation`：SQL 解析、视图展开、子查询准备。
+- `join_optimization`：条件处理、访问路径评估、索引选择、连接顺序选择。
+- `rows_estimation`：扫描行数和过滤率估算。
+- `considered_execution_plans`：候选计划及其成本。
 
-- 整理至少一个业务或框架中的使用场景。
-- 补充常见坑点、异常表现、排查手段和优化方向。
-- 如果涉及配置或参数，记录默认值、调优依据和风险边界。
+## 实践要点
 
-### 面试表达
+- Trace 内容较大，线上只应在单会话短时间开启。
+- 结合 `EXPLAIN FORMAT=JSON` 一起看，前者解释选择过程，后者展示最终计划。
+- 如果优化器估算明显偏差，优先检查统计信息、数据倾斜、直方图和条件是否可索引。
 
-- 回答 `Optimizer Trace` 时，可以按“定义 -> 原理/流程 -> 使用场景 -> 常见问题 -> 项目经验”的顺序展开。
-- 如果不确定细节，优先讲清边界和排查思路，不要把不同组件或不同版本的行为混在一起。
+## 典型排查问题
 
-### 复习检查
+- 预期索引没有被选择：查看 `range_analysis` 中各索引的扫描区间、估算行数和成本。
+- 连接顺序异常：查看 `considered_execution_plans` 中不同 join order 的累积成本。
+- 子查询性能差：查看子查询是否被半连接、物化或保持相关执行。
+- 排序代价高：查看优化器是否评估过可用于排序的索引，以及为什么放弃。
 
-- 能用自己的话解释 `Optimizer Trace`，而不是只复述标题。
-- 能说出至少一个生产场景、一个常见坑点和一个排查方向。
+## 使用注意
 
-## 脑图解读
+- `optimizer_trace` 是会话级开关，不要全局长期开启。
+- 对包含敏感 SQL 的环境，trace 可能记录原始语句和条件值，需要注意权限和留存。
+- 如果 trace 被截断，调大 `optimizer_trace_max_mem_size` 后重新执行目标 SQL。
 
-- 本节脑图围绕 `Optimizer Trace` 展开，属于 `MySQL` 的复习范围。
-- 建议优先掌握：开启, 查询执行计划生成过程, 3个阶段。
-- 二级节点提示了主要拆分角度：SET optimizer_trace=“enabled=on”, information_schema.OPTIMIZER_TRACE, prepare阶段, optimize阶段, execute阶段。
-- 三级节点通常对应具体细节、API、机制或易错点：QUERY, TRACE, MISSING)BYTES_BEYOND_MAX_MEM_SIZE, INSUFFICENT_PRIVILEGES。
+## 建议输出流程
 
-### 复习追问
-
-- `开启` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `查询执行计划生成过程` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-- `3个阶段` 解决什么问题？核心机制是什么？有什么常见坑或替代方案？
-
-## 脑图内容
-
-## Optimizer Trace
-
-### 开启
-
-#### SET optimizer_trace=“enabled=on”
-
-### 查询执行计划生成过程
-
-#### information_schema.OPTIMIZER_TRACE
-
-- QUERY
-  - 我们输入的查询语句
-
-- TRACE
-  - 表示优化过程的JSON格式的文本
-
-- MISSING)BYTES_BEYOND_MAX_MEM_SIZE
-  - 被忽略的文本字节数
-
-- INSUFFICENT_PRIVILEGES
-  - 是否有权限查看执行计划的生成过程
-
-### 3个阶段
-
-#### prepare阶段
-
-#### optimize阶段
-
-#### execute阶段
+```sql
+SET optimizer_trace = 'enabled=on';
+EXPLAIN FORMAT=JSON SELECT * FROM t WHERE a = 1 ORDER BY b LIMIT 10;
+SELECT trace FROM information_schema.optimizer_trace\G
+SET optimizer_trace = 'enabled=off';
+```
