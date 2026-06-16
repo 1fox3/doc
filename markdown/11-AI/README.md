@@ -1,6 +1,6 @@
 # AI 开发与应用面试复习
 
-本目录面向后端、全栈、平台工程师的 AI 开发与应用面试复习，重点覆盖大模型应用工程、RAG、Agent、LangChain、模型选择、Fine-tuning、Pretrain、Post-train、RL、部署和安全可靠性。
+本目录面向后端、全栈、平台工程师的 AI 开发与应用面试复习，重点覆盖大模型应用工程、LLM API 协议、RAG、Agent、LangChain、模型选择、Fine-tuning、Pretrain、Post-train、RL、部署和安全可靠性。
 
 ## 学习路径
 
@@ -12,7 +12,8 @@
 6. 理解模型训练路线：Pretrain、Continued Pretraining、SFT、DPO、RLHF、PPO、GRPO。
 7. 理解从 0 构建模型：tokenizer、dataset、Transformer、loss、训练循环、推理生成。
 8. 了解 Claude、Codex 和代码智能体：Tool Use、MCP、代码助手架构、测试验证闭环。
-9. 从工程角度补齐架构、成本、监控、安全、评估与部署。
+9. 掌握 LLM API 协议共性和 ChatGPT/OpenAI API：鉴权、消息、流式输出、工具调用、结构化输出。
+10. 从工程角度补齐架构、成本、监控、安全、评估与部署。
 
 ## 文件说明
 
@@ -32,6 +33,7 @@
 | [12-Pretrain-Posttrain-RL.md](./12-Pretrain-Posttrain-RL.md) | Pretrain、Post-train、SFT、DPO、RLHF、PPO、GRPO |
 | [13-从0构建一个模型.md](./13-从0构建一个模型.md) | PyTorch 从零实现小型 Transformer LM、工业级模型构建流程 |
 | [14-Claude与Codex代码智能体.md](./14-Claude与Codex代码智能体.md) | Claude API、Tool Use、MCP、Codex、代码智能体架构和 demo |
+| [15-LLM-API协议与ChatGPT接口.md](./15-LLM-API协议与ChatGPT接口.md) | LLM API 协议共性、ChatGPT/OpenAI Responses API、流式输出、工具调用 |
 
 ## 面试表达原则
 
@@ -45,3 +47,4 @@
 8. 遇到模型训练问题，要区分 Pretrain、Continued Pretraining、SFT、DPO 和 RLHF，不要把所有训练都叫微调。
 9. 遇到从 0 构建模型问题，要先区分教学级从零实现和工业级从零训练，再讲 tokenizer、模型结构、loss、训练、评估和部署。
 10. 遇到 Claude、Codex 或代码助手问题，要重点讲上下文工程、工具调用、权限边界、测试验证和审计，而不是只比较模型名字。
+11. 遇到 LLM API 协议问题，要先讲清楚 HTTP、JSON、鉴权、上下文、推理参数、流式输出、工具调用和 token 用量这些共性，再说明不同 Provider 的字段差异需要通过模型网关适配。
