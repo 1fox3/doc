@@ -20,18 +20,26 @@
 - [Java 语言基础](01-java/java/README.md)
 - [LTS 版本选型与升级](01-java/java-version-features/lts-upgrade.md)
 
+### 开发框架
+
+- [Framework 技术体系](02-framework/README.md)
+- [Spring](02-framework/spring/README.md)
+- [Spring MVC](02-framework/spring-mvc/README.md)
+- [Spring Boot](02-framework/spring-boot/README.md)
+- [Spring Boot 版本升级](02-framework/spring-boot-version-features/README.md)
+- [Spring Boot 2.x 关键变化](02-framework/spring-boot-version-features/01-spring-boot-2.md)
+- [Spring Boot 3.x 关键变化](02-framework/spring-boot-version-features/02-spring-boot-3.md)
+- [Spring Boot 升级检查项](02-framework/spring-boot-version-features/03-upgrade-checklist.md)
+- [MyBatis](02-framework/mybatis/README.md)
+
 ### 数据库
 
-- [MongoDB](02-database/mongodb.md)
-- [MySQL](02-database/mysql/README.md)
+- [MongoDB](03-database/mongodb.md)
+- [MySQL](03-database/mysql/README.md)
 
 ### 缓存
 
-- [Redis](03-cache/redis/README.md)
-
-### 搜索引擎
-
-- [Elasticsearch](04-search/elasticsearch/README.md)
+- [Redis](04-cache/redis/README.md)
 
 ### 消息队列
 
@@ -39,17 +47,9 @@
 - [RocketMQ](05-mq/rocketmq/README.md)
 - [消息队列总览](05-mq/mq-overview/README.md)
 
-### 开发框架
+### 搜索引擎
 
-- [Framework 技术体系](06-framework/README.md)
-- [Spring](06-framework/spring/README.md)
-- [Spring MVC](06-framework/spring-mvc/README.md)
-- [Spring Boot](06-framework/spring-boot/README.md)
-- [Spring Boot 版本升级](06-framework/spring-boot-version-features/README.md)
-- [Spring Boot 2.x 关键变化](06-framework/spring-boot-version-features/01-spring-boot-2.md)
-- [Spring Boot 3.x 关键变化](06-framework/spring-boot-version-features/02-spring-boot-3.md)
-- [Spring Boot 升级检查项](06-framework/spring-boot-version-features/03-upgrade-checklist.md)
-- [MyBatis](06-framework/mybatis/README.md)
+- [Elasticsearch](06-search/elasticsearch/README.md)
 
 ### 微服务
 

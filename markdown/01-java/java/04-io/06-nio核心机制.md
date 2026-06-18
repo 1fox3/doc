@@ -142,7 +142,18 @@ public class NioEchoServerDemo {
 
 ## Scatter 与 Gather
 
-Scatter 是从一个 Channel 读取数据到多个 Buffer；Gather 是从多个 Buffer 写入一个 Channel。它适合协议头和消息体分开处理的场景。
+Scatter 是从一个 `Channel` 读取数据到多个 `Buffer`；Gather 是从多个 `Buffer` 写入一个 `Channel`。它适合把一段连续数据拆成不同逻辑部分处理，例如“协议头 + 消息体”。
+
+可以把它理解成：
+
+| 操作 | 数据流向 | 说明 |
+| --- | --- | --- |
+| Scatter read | `Channel -> Buffer[]` | 读取时把数据依次分散到多个 Buffer |
+| Gather write | `Buffer[] -> Channel` | 写出时把多个 Buffer 的内容依次聚合到一个 Channel |
+
+Scatter 读取时，`Channel` 会先写满第一个 `Buffer`，再继续写第二个 `Buffer`。例如 `header` 容量是 8，`body` 容量是 1024，那么前 8 个字节进入 `header`，后面的字节进入 `body`。
+
+Gather 写出时，`Channel` 会先读取第一个 `Buffer` 的剩余内容，再读取第二个 `Buffer` 的剩余内容。因此写出前要把每个 `Buffer` 都切换到读模式，也就是调用 `flip()`。
 
 ```java
 import java.io.IOException;
@@ -159,9 +170,35 @@ public class ScatterGatherDemo {
         try (FileChannel channel = FileChannel.open(path, StandardOpenOption.READ)) {
             channel.read(new ByteBuffer[]{header, body});
         }
+
+        header.flip();
+        body.flip();
+
+        // 此时 header 中是前 8 个字节，body 中是后续内容。
+        System.out.println("header bytes: " + header.remaining());
+        System.out.println("body bytes: " + body.remaining());
+    }
+
+    public static void mergeWrite(Path path, byte[] headerBytes, byte[] bodyBytes) throws IOException {
+        ByteBuffer header = ByteBuffer.wrap(headerBytes);
+        ByteBuffer body = ByteBuffer.wrap(bodyBytes);
+
+        try (FileChannel channel = FileChannel.open(
+                path,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING)) {
+            channel.write(new ByteBuffer[]{header, body});
+        }
     }
 }
 ```
+
+注意：
+
+- Scatter/Gather 只是决定数据在多个 `Buffer` 之间的读写顺序，不会自动解析业务协议。
+- `read(ByteBuffer[])` 和 `write(ByteBuffer[])` 都可能只处理部分数据，网络编程中通常需要循环读写。
+- 如果用 `allocate()` 后手动 `put()` 写入 Buffer，写出前需要 `flip()`；如果用 `ByteBuffer.wrap(byte[])`，Buffer 默认已经处于可读状态，不需要再 `flip()`。
 
 ## NIO 实践关注
 
