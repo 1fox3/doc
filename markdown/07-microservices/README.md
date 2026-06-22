@@ -4,8 +4,8 @@
 
 ## 目录
 
-- [Spring Cloud](spring-cloud/README.md)：微服务架构、服务治理、调用网关、弹性可观测、安全、Spring Cloud Alibaba 生态。
-- [Nacos](nacos/README.md)：注册发现、配置中心、数据模型、通信机制、一致性、部署和安全治理。
+- [Spring Cloud](01-spring-cloud/README.md)：微服务架构、服务治理、调用网关、弹性可观测、安全、Spring Cloud Alibaba 生态。
+- [Nacos](02-nacos/README.md)：注册发现、配置中心、数据模型、通信机制、一致性、部署和安全治理。
 
 ## 使用建议
 

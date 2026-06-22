@@ -30,3 +30,4 @@
 - [多线程](03-多线程/README.md)
 - [IO](04-io/README.md)
 - [Instantiate](05-instantiate/README.md)
+- [Java 版本新特性](06-java-version-features/README.md)

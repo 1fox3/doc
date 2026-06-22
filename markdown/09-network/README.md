@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [Netty](netty/README.md)：I/O 模型、EventLoop、Channel、Pipeline、ByteBuf、编解码、内存池、零拷贝、背压和排障。
+- [Netty](01-netty/README.md)：I/O 模型、EventLoop、Channel、Pipeline、ByteBuf、编解码、内存池、零拷贝、背压和排障。
 
 ## 学习重点
 

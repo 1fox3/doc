@@ -4,9 +4,9 @@
 
 ## 目录
 
-- [Kafka](kafka/README.md)：分区日志、生产消费、副本 ISR、存储、KRaft、幂等事务和排障。
-- [RocketMQ](rocketmq/README.md)：NameServer、发送、存储、消费、重试死信、延迟、顺序、事务、高可用和 5.x。
-- [RabbitMQ](rabbitmq/README.md)：AMQP、Exchange/Queue/Binding、确认机制、QoS、持久化、死信延迟、队列类型和集群。
+- [Kafka](01-kafka/README.md)：分区日志、生产消费、副本 ISR、存储、KRaft、幂等事务和排障。
+- [RocketMQ](02-rocketmq/README.md)：NameServer、发送、存储、消费、重试死信、延迟、顺序、事务、高可用和 5.x。
+- [RabbitMQ](03-rabbitmq/README.md)：AMQP、Exchange/Queue/Binding、确认机制、QoS、持久化、死信延迟、队列类型和集群。
 
 ## 选型关注
 

@@ -4,8 +4,8 @@
 
 ## 目录
 
-- [Dubbo](dubbo/README.md)：RPC 框架内核、服务暴露与引用、协议通信、注册发现、集群容错、线程模型和生产治理。
-- [ZooKeeper](zookeeper/README.md)：一致性协调、ZNode、Session、Watcher、ACL、Leader 选举、ZAB、Curator 和运维排障。
+- [Dubbo](01-dubbo/README.md)：RPC 框架内核、服务暴露与引用、协议通信、注册发现、集群容错、线程模型和生产治理。
+- [ZooKeeper](02-zookeeper/README.md)：一致性协调、ZNode、Session、Watcher、ACL、Leader 选举、ZAB、Curator 和运维排障。
 
 ## 学习重点
 

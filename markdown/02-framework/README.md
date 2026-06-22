@@ -4,11 +4,11 @@
 
 ## 内容划分
 
-- [Spring 核心](spring/README.md)：IoC 容器、Bean 生命周期、AOP、事务、扩展点。
-- [Spring MVC](spring-mvc/README.md)：请求分发、参数绑定、返回值处理、异常处理、校验。
-- [Spring Boot](spring-boot/README.md)：启动流程、自动配置、配置体系、Starter、Actuator、日志。
-- [MyBatis](mybatis/README.md)：执行流程、映射体系、动态 SQL、缓存、事务、插件、生产实践。
-- [Spring Boot 版本升级](spring-boot-version-features/README.md)：2.x、3.x 核心变化和升级检查项。
+- [Spring 核心](01-spring/README.md)：IoC 容器、Bean 生命周期、AOP、事务、扩展点。
+- [Spring MVC](02-spring-mvc/README.md)：请求分发、参数绑定、返回值处理、异常处理、校验。
+- [Spring Boot](03-spring-boot/README.md)：启动流程、自动配置、配置体系、Starter、Actuator、日志。
+- [Spring Boot 版本升级](04-spring-boot-version-features/README.md)：2.x、3.x 核心变化和升级检查项。
+- [MyBatis](05-mybatis/README.md)：执行流程、映射体系、动态 SQL、缓存、事务、插件、生产实践。
 
 ## 学习顺序
 
