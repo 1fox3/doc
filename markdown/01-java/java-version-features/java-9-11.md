@@ -44,6 +44,63 @@ Map<String, Integer> map = Map.of("a", 1, "b", 2);
 
 JShell 是交互式 Java REPL 工具，适合快速验证代码片段。
 
+启动 JShell：
+
+```bash
+jshell
+```
+
+进入后可以直接输入 Java 表达式、变量、方法和类定义，不需要先创建 `.java` 文件，也不需要手写 `public static void main`。
+
+```text
+jshell> 1 + 2
+$1 ==> 3
+
+jshell> String name = "fox"
+name ==> "fox"
+
+jshell> name.toUpperCase()
+$3 ==> "FOX"
+```
+
+定义并调用方法：
+
+```text
+jshell> int add(int a, int b) {
+   ...>     return a + b;
+   ...> }
+|  created method add(int,int)
+
+jshell> add(10, 20)
+$5 ==> 30
+```
+
+使用集合和 Stream 快速验证代码：
+
+```text
+jshell> import java.util.*
+
+jshell> var names = List.of("Tom", "Jerry", "Spike")
+names ==> [Tom, Jerry, Spike]
+
+jshell> names.stream().filter(n -> n.length() > 3).toList()
+$8 ==> [Jerry, Spike]
+```
+
+查看当前已经输入过的片段：
+
+```text
+jshell> /list
+```
+
+退出 JShell：
+
+```text
+jshell> /exit
+```
+
+JShell 常用于验证 API 行为、测试简单表达式、演示语言特性。它适合快速试验，不适合替代正式项目中的单元测试或完整应用代码。
+
 ## Java 9：Stream/Optional 增强
 
 Stream 增强：

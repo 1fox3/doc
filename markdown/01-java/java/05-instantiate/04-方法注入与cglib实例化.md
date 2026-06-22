@@ -78,6 +78,34 @@ public class ReportTask {
 }
 ```
 
+## Scope 枚举值
+
+`@Scope` 的值本质上是字符串，Spring 在 `ConfigurableBeanFactory` 和 `WebApplicationContext` 中提供了常用 scope 常量。
+
+| 常量 | 字符串值 | 说明 |
+| --- | --- | --- |
+| `ConfigurableBeanFactory.SCOPE_SINGLETON` | `singleton` | 默认作用域。整个 Spring 容器中同名 Bean 只创建一个实例，后续获取都会复用该实例。 |
+| `ConfigurableBeanFactory.SCOPE_PROTOTYPE` | `prototype` | 原型作用域。每次从容器获取 Bean 时都会创建一个新实例，容器通常只负责创建和依赖注入，不负责完整销毁流程。 |
+| `WebApplicationContext.SCOPE_REQUEST` | `request` | Web 作用域。每个 HTTP request 创建并复用一个实例，请求结束后失效。 |
+| `WebApplicationContext.SCOPE_SESSION` | `session` | Web 作用域。每个 HTTP session 创建并复用一个实例，session 失效后销毁。 |
+| `WebApplicationContext.SCOPE_APPLICATION` | `application` | Web 作用域。每个 `ServletContext` 创建并复用一个实例，通常等价于当前 Web 应用级别的共享对象。 |
+| `WebApplicationContext.SCOPE_WEBSOCKET` | `websocket` | WebSocket 作用域。每个 WebSocket 会话创建并复用一个实例，会话结束后失效。 |
+
+使用常量可以避免手写字符串：
+
+```java
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class ReportTask {
+}
+```
+
+`request`、`session`、`application`、`websocket` 属于 Web 环境作用域，通常需要在 Web 应用上下文中使用；普通非 Web `ApplicationContext` 默认不支持这些 scope。
+
 ## replaced-method
 
 `replaced-method` 允许使用 `MethodReplacer` 替换方法实现。这个能力较老，生产代码中使用频率不高，但理解它有助于理解 `methodOverrides` 的来源。
