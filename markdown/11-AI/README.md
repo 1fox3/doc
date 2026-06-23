@@ -38,6 +38,8 @@
 | [15-LLM-API协议与ChatGPT接口.md](./15-LLM-API协议与ChatGPT接口.md) | LLM API 协议共性、ChatGPT/OpenAI Responses API、流式输出、工具调用 |
 | [16-Vector-DB向量数据库.md](./16-Vector-DB向量数据库.md) | Vector DB、Embedding、ANN 索引、metadata、混合检索、RAG 选型 |
 | [17-MCP模型上下文协议.md](./17-MCP模型上下文协议.md) | MCP 架构、Resources、Tools、Prompts、Function Calling 对比、Agent 集成和安全边界 |
+| [18-Phoenix-LLM可观测与评估.md](./18-Phoenix-LLM可观测与评估.md) | LLM 观测、Trace、评估集、实验对比 |
+| [19-LLM排障与工程案例.md](./19-LLM排障与工程案例.md) | RAG、Agent、模型 API、成本、延迟和安全排障案例 |
 
 ## 面试表达原则
 

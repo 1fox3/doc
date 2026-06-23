@@ -26,8 +26,10 @@
 ## 章节目录
 
 - [基础](01-基础/README.md)
-- [集合](02-集合.md)
+- [集合](02-集合/README.md)
 - [多线程](03-多线程/README.md)
 - [IO](04-io/README.md)
 - [Instantiate](05-instantiate/README.md)
 - [Java 版本新特性](06-java-version-features/README.md)
+- [面试重点](07-面试重点.md)
+- [实践排障案例](08-实践排障案例.md)

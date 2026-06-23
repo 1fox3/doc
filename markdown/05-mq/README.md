@@ -7,6 +7,8 @@
 - [Kafka](01-kafka/README.md)：分区日志、生产消费、副本 ISR、存储、KRaft、幂等事务和排障。
 - [RocketMQ](02-rocketmq/README.md)：NameServer、发送、存储、消费、重试死信、延迟、顺序、事务、高可用和 5.x。
 - [RabbitMQ](03-rabbitmq/README.md)：AMQP、Exchange/Queue/Binding、确认机制、QoS、持久化、死信延迟、队列类型和集群。
+- [面试重点](04-面试重点.md)：MQ 通用语义、Kafka、RocketMQ、RabbitMQ 高频问题。
+- [排障案例](05-排障案例.md)：消息丢失、重复、堆积、顺序错乱、延迟抖动等场景。
 
 ## 选型关注
 

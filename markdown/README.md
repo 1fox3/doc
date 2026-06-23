@@ -6,12 +6,15 @@
 
 - Java 后端方向建议依次阅读 Java/JVM、数据库、缓存、消息队列、Spring、微服务、分布式协调与网络通信。
 - 专题 `README.md` 提供全局框架和版本趋势，章节文档提供补充实践建议和脑图原始内容整理。
+- 找工作复习建议按“主线机制 -> 高频面试题 -> 线上排障案例 -> 项目表达”推进，每个技术域都要能讲清楚原理、边界、取舍和故障定位。
 
 ## 目录
 
 ### Java 与 JVM
 
 - [Java 语言基础](01-java/01-java/README.md)
+- [Java 面试重点](01-java/01-java/07-面试重点.md)
+- [Java 实践排障案例](01-java/01-java/08-实践排障案例.md)
 - [JVM](01-java/02-jvm/README.md)
 - [Java 版本新特性总览](01-java/01-java/06-java-version-features/README.md)
 - [Java 8 新特性](01-java/01-java/06-java-version-features/java-8.md)
@@ -23,6 +26,8 @@
 ### 开发框架
 
 - [Framework 技术体系](02-framework/README.md)
+- [Framework 面试重点](02-framework/06-面试重点.md)
+- [Framework 排障案例](02-framework/07-排障案例.md)
 - [Spring](02-framework/01-spring/README.md)
 - [Spring MVC](02-framework/02-spring-mvc/README.md)
 - [Spring Boot](02-framework/03-spring-boot/README.md)
@@ -35,36 +40,51 @@
 ### 数据库
 
 - [MySQL](03-database/01-mysql/README.md)
+- [MySQL 面试重点](03-database/01-mysql/28-面试重点.md)
+- [MySQL 排障案例](03-database/01-mysql/29-排障案例.md)
 - [MongoDB](03-database/02-mongodb/README.md)
+- [MongoDB 面试重点](03-database/02-mongodb/09-面试重点.md)
 
 ### 缓存
 
 - [Redis](04-cache/01-redis/README.md)
+- [Redis 面试重点](04-cache/01-redis/09-面试重点.md)
+- [Redis 排障案例](04-cache/01-redis/10-排障案例.md)
 
 ### 消息队列
 
 - [Kafka](05-mq/01-kafka/README.md)
 - [RocketMQ](05-mq/02-rocketmq/README.md)
 - [RabbitMQ](05-mq/03-rabbitmq/README.md)
+- [MQ 面试重点](05-mq/04-面试重点.md)
+- [MQ 排障案例](05-mq/05-排障案例.md)
 
 ### 搜索引擎
 
 - [Elasticsearch](06-search/01-elasticsearch/README.md)
+- [Elasticsearch 面试重点](06-search/01-elasticsearch/09-面试重点.md)
+- [Elasticsearch 排障案例](06-search/01-elasticsearch/10-排障案例.md)
 
 ### 微服务
 
 - [Spring Cloud](07-microservices/01-spring-cloud/README.md)
 - [Spring Cloud Alibaba](07-microservices/01-spring-cloud/06-spring-cloud-alibaba.md)
 - [Nacos](07-microservices/02-nacos/README.md)
+- [微服务面试重点](07-microservices/03-面试重点.md)
+- [微服务排障案例](07-microservices/04-排障案例.md)
 
 ### 分布式协调与 RPC
 
 - [Dubbo](08-distributed/01-dubbo/README.md)
 - [ZooKeeper](08-distributed/02-zookeeper/README.md)
+- [分布式面试重点](08-distributed/03-面试重点.md)
+- [分布式排障案例](08-distributed/04-排障案例.md)
 
 ### 网络通信
 
 - [Netty](09-network/01-netty/README.md)
+- [Netty 面试重点](09-network/01-netty/06-面试重点.md)
+- [Netty 排障案例](09-network/01-netty/07-排障案例.md)
 
 ### 大数据
 
@@ -82,3 +102,10 @@
 - [OLAP 查询与数据服务：ClickHouse、Doris、Trino、HBase](10-bigdata/05-olap-serving/olap-engines-and-serving.md)
 - [数据治理与平台能力](10-bigdata/06-governance-platform/governance-and-platform.md)
 - [性能优化与线上排障](10-bigdata/07-optimization-operations/performance-and-troubleshooting.md)
+- [大数据面试重点与案例](10-bigdata/08-interview-and-cases.md)
+
+### AI
+
+- [AI 开发与应用](11-AI/README.md)
+- [AI 面试高频问答](11-AI/09-AI面试高频问答.md)
+- [LLM 排障与工程案例](11-AI/19-LLM排障与工程案例.md)

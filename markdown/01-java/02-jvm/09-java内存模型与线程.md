@@ -33,6 +33,13 @@ Java 内存模型 JMM 定义线程之间如何通过内存交互，以及 JVM、
 - 禁止特定类型的指令重排序。
 - 单次读写具有原子性，但复合操作如 `i++` 不具备原子性。
 - 写 `volatile` 变量前的普通写，对之后读到该 `volatile` 的线程可见。
+- `volatile` 适合状态标记、发布引用和单写多读场景，不适合替代锁保护复合不变量。
+
+### volatile 屏障语义
+
+- volatile 写前通常需要 StoreStore，写后需要 StoreLoad，防止前面的普通写被重排到 volatile 写之后，也防止后续读写越过 volatile 写。
+- volatile 读后通常需要 LoadLoad 和 LoadStore，防止后续普通读写被重排到 volatile 读之前。
+- 具体屏障映射取决于 CPU 架构，JMM 约束的是 Java 程序可观察语义。
 
 ## 内存屏障
 
@@ -53,11 +60,52 @@ Java 内存模型 JMM 定义线程之间如何通过内存交互，以及 JVM、
 - 线程中断规则：调用 `interrupt()` 先行发生于被中断线程检测到中断。
 - 对象终结规则：对象构造完成先行发生于 `finalize()` 执行。
 
+### happens-before 理解
+
+- happens-before 不等于物理时间先后，而是 JMM 定义的可见性和有序性关系。
+- 如果两个操作之间没有 happens-before，JVM 和 CPU 可以在不破坏单线程语义的前提下重排序，读到旧值也是允许的。
+- 正确并发程序应通过锁、volatile、线程启动/终止、并发工具类等建立明确的 happens-before。
+
 ## final 语义
 
 - 构造函数中对 `final` 字段的写，正常构造完成后对其他线程可见。
 - 如果构造期间 `this` 逸出，`final` 安全保证可能被破坏。
 - `final` 引用保证引用本身初始化可见，不保证引用对象内部可变字段不可变。
+
+## CAS 与内存语义
+
+- CAS 成功通常同时具备读和写的内存语义，失败也至少读取了当前值。
+- `Atomic*`、AQS、并发队列和锁实现大量依赖 CAS 和 volatile 字段配合。
+- VarHandle 提供 plain、opaque、acquire、release、volatile 等不同访问模式，可按需要选择更精确的内存语义。
+
+## synchronized 内存语义
+
+- 进入 synchronized 块相当于 acquire，退出 synchronized 块相当于 release。
+- 对同一把锁，前一次 unlock happens-before 后一次 lock。
+- synchronized 同时提供互斥、可见性和有序性约束，volatile 只适合单变量可见性和有序性场景。
+
+## DCL 单例
+
+```java
+class Singleton {
+    private static volatile Singleton instance;
+
+    static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+- `volatile` 防止对象引用赋值与构造过程相关写入发生不安全重排序。
+- 外层判空减少加锁开销，内层判空保证并发下只创建一次。
+- 更简单的写法是静态内部类或枚举单例，利用类初始化的线程安全保证。
 
 ## 指令重排序
 
@@ -82,3 +130,9 @@ Java 内存模型 JMM 定义线程之间如何通过内存交互，以及 JVM、
 - 使用锁保护对象发布和访问。
 - 使用线程安全容器发布对象。
 - 避免构造函数中启动线程、注册回调或把 `this` 暴露给其他对象。
+
+## 常见并发错误
+
+- 双重检查锁如果没有 `volatile`，可能因对象引用发布早于构造完成而读到半初始化对象。
+- 只用 `volatile` 保护多个字段时，不能保证跨字段不变量一致。
+- 依赖 `sleep()` 或时间等待建立可见性是不可靠的，应使用锁、volatile、CountDownLatch、Future 等同步机制。

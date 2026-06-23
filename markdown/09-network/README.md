@@ -5,6 +5,8 @@
 ## 目录
 
 - [Netty](01-netty/README.md)：I/O 模型、EventLoop、Channel、Pipeline、ByteBuf、编解码、内存池、零拷贝、背压和排障。
+- [Netty 面试重点](01-netty/06-面试重点.md)：I/O 模型、Reactor、Pipeline、ByteBuf 和高性能点。
+- [Netty 排障案例](01-netty/07-排障案例.md)：EventLoop 阻塞、直接内存泄漏、粘包半包和写缓冲堆积。
 
 ## 学习重点
 

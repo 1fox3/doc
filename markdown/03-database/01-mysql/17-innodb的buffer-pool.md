@@ -49,3 +49,17 @@ SHOW VARIABLES LIKE 'innodb_buffer_pool%';
 - 脏页刷盘抖动时，检查 redo 容量、`innodb_io_capacity`、磁盘延迟和 checkpoint age。
 - 大量 `Free buffers` 很低不一定是问题，Buffer Pool 正常会尽量用满；关键看是否频繁等待 free page。
 - 多实例混部时，不要让多个实例 Buffer Pool 总和接近物理内存，避免 OS swap。
+
+## 关键状态指标
+
+- `Innodb_buffer_pool_read_requests` 表示逻辑读请求。
+- `Innodb_buffer_pool_reads` 表示需要从磁盘读取的次数。
+- `Innodb_buffer_pool_pages_dirty` 表示脏页数量。
+- `Innodb_buffer_pool_wait_free` 如果持续增长，说明申请空闲页时发生等待。
+
+## 问题判断
+
+- 逻辑读很高但磁盘读低，说明主要命中内存，瓶颈可能在 CPU 或 SQL 执行效率。
+- 磁盘读持续高，说明工作集超过缓存或存在大扫描。
+- 脏页高且写入抖动，检查刷盘能力、redo checkpoint 和存储延迟。
+- Buffer Pool 不是越大越好，过大可能挤压 OS、连接线程和其他进程内存。

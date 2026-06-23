@@ -6,6 +6,8 @@
 
 - [Dubbo](01-dubbo/README.md)：RPC 框架内核、服务暴露与引用、协议通信、注册发现、集群容错、线程模型和生产治理。
 - [ZooKeeper](02-zookeeper/README.md)：一致性协调、ZNode、Session、Watcher、ACL、Leader 选举、ZAB、Curator 和运维排障。
+- [面试重点](03-面试重点.md)：RPC、注册发现、一致性、CAP、幂等、分布式锁和协调模型。
+- [排障案例](04-排障案例.md)：RPC 超时、注册异常、ZK 会话抖动、Watcher 风暴和脑裂风险。
 
 ## 学习重点
 

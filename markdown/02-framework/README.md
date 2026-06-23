@@ -9,6 +9,8 @@
 - [Spring Boot](03-spring-boot/README.md)：启动流程、自动配置、配置体系、Starter、Actuator、日志。
 - [Spring Boot 版本升级](04-spring-boot-version-features/README.md)：2.x、3.x 核心变化和升级检查项。
 - [MyBatis](05-mybatis/README.md)：执行流程、映射体系、动态 SQL、缓存、事务、插件、生产实践。
+- [面试重点](06-面试重点.md)：Spring、Spring MVC、Spring Boot、MyBatis 高频问题和回答主线。
+- [排障案例](07-排障案例.md)：事务失效、循环依赖、启动慢、接口 404、MyBatis 慢查询等场景。
 
 ## 学习顺序
 

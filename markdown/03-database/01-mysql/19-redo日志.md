@@ -49,3 +49,16 @@ SHOW ENGINE INNODB STATUS\G
 - `innodb_flush_log_at_trx_commit=1` 搭配 `sync_binlog=1` 是强持久组合，但 fsync 压力更大。
 - 对极端写入性能场景可放宽刷盘策略，但必须接受崩溃丢失事务的风险。
 - 云盘或 RAID 控制器缓存策略会影响 fsync 真实可靠性，不能只看数据库参数。
+
+## 观察指标
+
+- `SHOW ENGINE INNODB STATUS` 中的 Log sequence number 表示当前 LSN。
+- Log flushed up to 表示已经刷到 redo 文件的位置。
+- Pages flushed up to 或 checkpoint 相关信息反映 checkpoint 推进。
+- LSN 增长速度可以粗略反映写入压力。
+
+## 常见问题
+
+- redo 空间压力大时，写入线程可能等待 checkpoint。
+- 大事务会占用 redo 空间，提交和恢复成本都更高。
+- 刷盘策略放宽后，数据库正常关闭通常不丢数据，但操作系统崩溃或断电风险会增加。

@@ -28,6 +28,7 @@
 11. [OLAP 查询与数据服务：ClickHouse、Doris、Trino、HBase](05-olap-serving/olap-engines-and-serving.md)
 12. [数据治理与平台能力](06-governance-platform/governance-and-platform.md)
 13. [性能优化与线上排障](07-optimization-operations/performance-and-troubleshooting.md)
+14. [面试重点与案例](08-interview-and-cases.md)
 
 ## 按技术组件阅读
 
@@ -45,6 +46,7 @@
 - Flink CDC/Canal/Debezium/DataX：阅读 [数据采集、同步与 CDC](03-ingestion/data-ingestion-and-cdc.md)。
 - Kafka 在大数据链路中的使用：阅读 [数据采集、同步与 CDC](03-ingestion/data-ingestion-and-cdc.md) 和 [流计算：Flink 状态、窗口与一致性](02-compute/stream-compute-flink.md)。
 - 调度、元数据、血缘、质量、权限：阅读 [数据治理与平台能力](06-governance-platform/governance-and-platform.md)。
+- 面试复习和项目表达：阅读 [面试重点与案例](08-interview-and-cases.md)。
 
 ## 技术主线
 
