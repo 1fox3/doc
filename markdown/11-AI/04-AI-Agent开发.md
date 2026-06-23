@@ -810,11 +810,331 @@ print(results)
 3. Prompt、模型、检索参数变更后要跑回归评估。
 4. 不要只看平均分，还要看失败样本和错误类型。
 
+### Phoenix 版本：数据集实验评估
+
+Phoenix 里对应 LangSmith dataset evaluation 的概念是 Dataset + Experiment。基本流程是：先创建数据集，再定义 task 函数，最后用 evaluators 跑实验并在 Phoenix UI 中查看每条样本和汇总分数。
+
+先启动 Phoenix：
+
+```bash
+phoenix serve
+```
+
+安装依赖：
+
+```bash
+pip install arize-phoenix arize-phoenix-client arize-phoenix-otel openinference-instrumentation-langchain pandas langchain langchain-ollama
+```
+
+示例代码：
+
+```python
+import pandas as pd
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
+from openinference.instrumentation.langchain import LangChainInstrumentor
+from phoenix.client import Client
+from phoenix.client.experiments import create_evaluator, run_experiment
+from phoenix.otel import register
+
+
+client = Client(base_url="http://localhost:6006")
+
+dataset_df = pd.DataFrame([
+    {
+        "question": "Agent 和普通 Chatbot 有什么区别？",
+        "answer_keywords": ["多步骤", "工具调用", "目标驱动"],
+    },
+    {
+        "question": "生产环境如何控制 Agent 风险？",
+        "answer_keywords": ["权限", "最大步骤", "审计", "人工确认"],
+    },
+])
+
+dataset = client.datasets.create_dataset(
+    name="agent-interview-qa-phoenix",
+    dataframe=dataset_df,
+    input_keys=["question"],
+    output_keys=["answer_keywords"],
+)
+
+tracer_provider = register(
+    project_name="evaluators",
+    endpoint="http://localhost:6006/v1/traces",
+)
+LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是 AI Agent 面试教练，回答要覆盖关键点。"),
+    ("user", "{question}"),
+])
+
+chain = prompt | ChatOllama(model="llama3.2", temperature=0) | StrOutputParser()
+
+
+def target_task(input: dict) -> str:
+    return chain.invoke(input)
+
+
+@create_evaluator(kind="CODE", name="keyword_recall")
+def keyword_recall(output: str, expected: dict) -> dict:
+    keywords = expected["answer_keywords"]
+    hit_count = sum(1 for keyword in keywords if keyword in output)
+    score = hit_count / len(keywords)
+    return {
+        "score": score,
+        "explanation": f"hit {hit_count}/{len(keywords)} keywords",
+    }
+
+
+experiment = run_experiment(
+    dataset=dataset,
+    task=target_task,
+    evaluators=[keyword_recall],
+    experiment_name="agent-interview-chain-phoenix",
+    experiment_description="Agent 面试问答关键字召回评估",
+)
+
+print(experiment)
+```
+
+执行后在 Phoenix UI 中查看：
+
+1. 打开 `http://localhost:6006`。
+2. 进入 `Datasets`，找到 `agent-interview-qa-phoenix`。
+3. 打开对应 experiment，查看每条样本的输出和 `keyword_recall` 分数。
+4. 点击失败样本关联的 trace，检查 prompt、模型输出、耗时和错误。
+
+这个 Phoenix 版本和 LangSmith 版本的对应关系：
+
+| LangSmith | Phoenix |
+| --- | --- |
+| Dataset | Dataset |
+| Example | Example |
+| target function | task function |
+| evaluator | evaluator |
+| evaluate | run_experiment |
+| Experiment | Experiment |
+
+如果只想本地 dry run，不写入 Phoenix，可以先执行：
+
+```python
+experiment = run_experiment(
+    dataset=dataset,
+    task=target_task,
+    evaluators=[keyword_recall],
+    dry_run=2,
+)
+```
+
 ## LangSmith 面试讲法
 
 可以这样回答：
 
 > LangSmith 主要解决 LLM 应用的可观测和评估问题。做 Agent 时我会记录每一步模型调用、工具调用、检索结果、token、延迟和错误，并把线上 bad case 沉淀成评估集。每次改 Prompt、换模型或调整 RAG 参数，都用评估集做回归测试，避免只凭主观感觉上线。
+
+## 自托管 LLM 可观测方案
+
+LangSmith 的 self-hosted 通常需要企业授权。如果只是想快速自建 LLM tracing、调试和评估能力，可以优先考虑 Phoenix 或 Langfuse。
+
+选择建议：
+
+| 方案 | 定位 | 适合场景 |
+| --- | --- | --- |
+| Arize Phoenix | 本地调试和轻量 tracing | 个人开发、RAG 排查、快速观察 trace |
+| Langfuse | 团队级 LLM observability 平台 | 多项目、Prompt 管理、评估、线上观测 |
+
+生产注意点：
+
+1. 输入输出可能包含敏感信息，必须考虑脱敏、采样和权限隔离。
+2. Trace ID 要能和业务日志、请求 ID 串起来。
+3. 观测系统不要影响主链路，失败时要降级或异步上报。
+4. 长期存储要控制成本，尤其是完整 Prompt、response 和检索结果。
+
+## Demo 11：Phoenix 本地追踪 LangChain
+
+Phoenix 适合快速本地自托管。它能记录 LLM 调用、Chain、Tool、Retriever 的 trace，常用于开发阶段排查 Agent 和 RAG 链路。
+
+安装依赖：
+
+```bash
+pip install arize-phoenix openinference-instrumentation-langchain
+```
+
+启动 Phoenix：
+
+```bash
+phoenix serve
+```
+
+默认访问地址：
+
+```text
+http://localhost:6006
+```
+
+如果使用 Docker，也可以这样启动：
+
+```bash
+docker run -p 6006:6006 -p 4317:4317 -p 4318:4318 arizephoenix/phoenix:latest
+```
+
+LangChain 接入示例：
+
+```python
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
+from openinference.instrumentation.langchain import LangChainInstrumentor
+from phoenix.otel import register
+
+
+tracer_provider = register(
+    project_name="agent-demo",
+    endpoint="http://localhost:6006/v1/traces",
+)
+
+LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个资深 AI Agent 工程师，回答要具体。"),
+    ("user", "请解释：{question}"),
+])
+
+chain = prompt | ChatOllama(model="llama3.2", temperature=0.2) | StrOutputParser()
+
+result = chain.invoke({
+    "question": "为什么 Agent 需要 tracing？"
+})
+
+print(result)
+```
+
+验证方式：
+
+1. 打开 `http://localhost:6006`。
+2. 查看项目 `agent-demo`。
+3. 确认能看到 prompt、model call、latency、input、output 和错误信息。
+
+Phoenix 适合：
+
+1. 本地开发调试。
+2. RAG 检索链路排查。
+3. Agent 工具调用过程分析。
+4. 快速复现 bad case。
+
+Phoenix 不适合直接承担复杂生产平台能力。如果需要团队权限、Prompt 管理、长期线上观测和评估平台，优先看 Langfuse 或 LangSmith。
+
+## Demo 12：Langfuse 自托管和 LangChain 接入
+
+Langfuse 是更完整的开源 LLM observability 平台，支持 traces、sessions、scores、datasets、evals 和 prompt management。它适合团队内部自建观测平台。
+
+快速启动：
+
+```bash
+git clone https://github.com/langfuse/langfuse.git
+cd langfuse
+docker compose up -d
+```
+
+默认访问地址：
+
+```text
+http://localhost:3000
+```
+
+首次进入后操作：
+
+1. 注册管理员账号。
+2. 创建 organization。
+3. 创建 project。
+4. 在 project settings 中创建 API keys。
+5. 记录 `public_key` 和 `secret_key`。
+
+应用环境变量：
+
+```bash
+export LANGFUSE_PUBLIC_KEY="pk_..."
+export LANGFUSE_SECRET_KEY="sk_..."
+export LANGFUSE_HOST="http://localhost:3000"
+```
+
+LangChain 接入示例：
+
+```python
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_ollama import ChatOllama
+from langfuse.callback import CallbackHandler
+
+
+langfuse_handler = CallbackHandler()
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "你是一个资深 AI Agent 工程师，回答要结构化。"),
+    ("user", "请解释：{question}"),
+])
+
+chain = prompt | ChatOllama(model="llama3.2", temperature=0.2) | StrOutputParser()
+
+result = chain.invoke(
+    {"question": "Agent tracing 应该记录哪些信息？"},
+    config={"callbacks": [langfuse_handler]},
+)
+
+print(result)
+```
+
+如果不是 LangChain，也可以直接用 Langfuse SDK 手动记录：
+
+```python
+from langfuse import Langfuse
+
+
+langfuse = Langfuse()
+
+trace = langfuse.trace(
+    name="manual-agent-trace",
+    input={"question": "什么是 Agent observability？"},
+)
+
+generation = trace.generation(
+    name="llm-call",
+    model="llama3.2",
+    input="什么是 Agent observability？",
+)
+
+generation.end(
+    output="Agent observability 是记录和分析模型调用、工具调用、检索结果、延迟、成本和错误的能力。",
+    usage={
+        "input": 20,
+        "output": 30,
+        "total": 50,
+    },
+)
+
+langfuse.flush()
+```
+
+本地验证：
+
+1. 打开 `http://localhost:3000`。
+2. 进入对应 project。
+3. 查看 `Traces`。
+4. 确认能看到调用输入、输出、模型、延迟、token usage 和错误信息。
+
+生产部署建议：
+
+1. 不要直接使用默认 compose 配置上线。
+2. 使用外部 PostgreSQL、ClickHouse、Redis 和对象存储。
+3. 配置 `NEXTAUTH_SECRET`、`SALT`、`ENCRYPTION_KEY` 等密钥。
+4. 接入 HTTPS、反向代理、备份和监控。
+5. 对 trace 内容做脱敏、采样和保留周期控制。
+
+Langfuse 面试讲法：
+
+> Langfuse 是开源的 LLM observability 平台，适合团队自建。接入后可以记录 Agent 的模型调用、工具调用、检索结果、输入输出、token、延迟和错误，也可以做 Prompt 管理和评估。生产中我会重点处理脱敏、采样、权限隔离、异步上报和数据保留周期，避免观测系统影响主业务链路。
 
 ## LangServe 重点实战
 
@@ -829,7 +1149,7 @@ LangServe 适合：
 
 LangServe 不等于完整生产网关。生产环境仍然需要额外处理鉴权、租户隔离、限流、审计、超时、降级和敏感信息脱敏。
 
-## Demo 11：LangServe 发布 LCEL Chain
+## Demo 13：LangServe 发布 LCEL Chain
 
 创建 `server.py`：
 
@@ -885,7 +1205,7 @@ LangServe 常见接口：
 | `/stream_log` | 流式返回中间步骤和日志 |
 | `/playground` | 浏览器调试页面 |
 
-## Demo 12：LangServe 发布 Agent
+## Demo 14：LangServe 发布 Agent
 
 下面示例把前面的工具调用 Agent 发布成 HTTP API。
 
@@ -983,7 +1303,7 @@ Deep Agents 常见能力：
 3. 高风险自动执行动作。
 4. 简单分类、抽取、改写任务。
 
-## Demo 13：Deep Agents 研究助手
+## Demo 15：Deep Agents 研究助手
 
 下面示例构建一个简单研究助手，用工具查询资料，再输出 Markdown 报告。
 
@@ -1036,7 +1356,7 @@ print(result["messages"][-1].content)
 3. Deep Agent 负责规划、调用工具和组织最终报告。
 4. 真实项目中工具可以替换为搜索、RAG、数据库、代码仓库分析等能力。
 
-## Demo 14：Deep Agents 子 Agent 分工
+## Demo 16：Deep Agents 子 Agent 分工
 
 复杂任务可以拆给不同子 Agent，例如研究员、写作者、审稿人。
 
