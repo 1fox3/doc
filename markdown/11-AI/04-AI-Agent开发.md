@@ -1248,11 +1248,16 @@ curl http://localhost:8000/agent/invoke \
   -d '{
     "input": {
       "messages": [
-        ["user", "帮我查一下订单 A1001 的状态。"]
+        {
+          "type": "human",
+          "content": "帮我查一下订单 A1001 的状态。"
+        }
       ]
     }
   }'
 ```
+
+注意：Python 代码里可以用 `("user", "...")` 或 `["user", "..."]` 这类消息简写，但通过 LangServe HTTP 接口传 JSON 时，`messages` 需要使用标准 message object，并带上 `type` 字段。否则会出现 `Expected either a dictionary with a 'type' key` 这类 Pydantic 校验错误。
 
 生产建议：
 
@@ -1309,6 +1314,7 @@ Deep Agents 常见能力：
 
 ```python
 from deepagents import create_deep_agent
+from deepagents.middleware.subagents import SubAgent
 from langchain_core.tools import tool
 from langchain_ollama import ChatOllama
 
@@ -1325,7 +1331,7 @@ def search_internal_docs(query: str) -> str:
     return "\n".join(matched) or "没有找到相关文档。"
 
 
-instructions = """
+system_prompt = """
 你是 AI 应用研究助手。
 工作方式：
 1. 先理解用户目标并制定简短计划。
@@ -1337,7 +1343,7 @@ instructions = """
 agent = create_deep_agent(
     model=ChatOllama(model="llama3.2", temperature=0.2),
     tools=[search_internal_docs],
-    instructions=instructions,
+    system_prompt=system_prompt,
 )
 
 result = agent.invoke({
@@ -1351,7 +1357,7 @@ print(result["messages"][-1].content)
 
 这个 demo 的重点：
 
-1. `instructions` 定义长任务的工作方式。
+1. `system_prompt` 定义长任务的工作方式。
 2. `tools` 提供外部资料入口。
 3. Deep Agent 负责规划、调用工具和组织最终报告。
 4. 真实项目中工具可以替换为搜索、RAG、数据库、代码仓库分析等能力。
@@ -1372,23 +1378,27 @@ def search_policy_docs(query: str) -> str:
     return "退款政策：普通订单 7 天内可退，虚拟商品不支持退款。发票政策：订单完成后 30 天内可申请电子发票。"
 
 
-subagents = [
+subagents: list[SubAgent] = [
     {
         "name": "researcher",
         "description": "负责查询资料、提炼事实，不负责最终写作。",
-        "prompt": "你是资料研究员。只基于工具结果总结事实，避免扩展猜测。",
+        "system_prompt": "你是资料研究员。只基于工具结果总结事实，避免扩展猜测。",
+        "tools": [search_policy_docs],
+        "model": ChatOllama(model="llama3.2", temperature=0),
     },
     {
         "name": "reviewer",
         "description": "负责检查最终答案是否遗漏约束、是否有编造。",
-        "prompt": "你是审核员。检查回答是否基于事实、是否包含风险提示。",
+        "system_prompt": "你是审核员。检查回答是否基于事实、是否包含风险提示。",
+        "tools": [],
+        "model": ChatOllama(model="llama3.2", temperature=0),
     },
 ]
 
 agent = create_deep_agent(
     model=ChatOllama(model="llama3.2", temperature=0),
     tools=[search_policy_docs],
-    instructions="你是客服知识库分析助手。先研究资料，再生成给客服团队使用的 SOP。",
+    system_prompt="你是客服知识库分析助手。先研究资料，再生成给客服团队使用的 SOP。",
     subagents=subagents,
 )
 
