@@ -48,7 +48,7 @@
 - [ ] [57. Insert Interval（中等）](https://leetcode.cn/problems/insert-interval/)
 - [ ] [152. Maximum Product Subarray（中等）](https://leetcode.cn/problems/maximum-product-subarray/)
 - [ ] [238. Product of Array Except Self（中等）](https://leetcode.cn/problems/product-of-array-except-self/)
-- [ ] [304. Range Sum Query 2D - Immutable（中等）](https://leetcode.cn/problems/range-sum-query-2d-immutable/)
+- [ ] [1480. Running Sum of 1d Array（简单）](https://leetcode.cn/problems/running-sum-of-1d-array/)
 - [ ] [435. Non-overlapping Intervals（中等）](https://leetcode.cn/problems/non-overlapping-intervals/)
 - [ ] [724. Find Pivot Index（简单）](https://leetcode.cn/problems/find-pivot-index/)
 - [ ] [1288. Remove Covered Intervals（中等）](https://leetcode.cn/problems/remove-covered-intervals/)
@@ -172,14 +172,14 @@
 - 复盘：
 
 ## Day 14（BST 与 LCA：有序性利用）
-- [ ] [270. Closest Binary Search Tree Value（简单）](https://leetcode.cn/problems/closest-binary-search-tree-value/)
-- [ ] [700. Search in a Binary Search Tree（简单）](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
-- [ ] [98. Validate Binary Search Tree（中等）](https://leetcode.cn/problems/validate-binary-search-tree/)
-- [ ] [173. Binary Search Tree Iterator（中等）](https://leetcode.cn/problems/binary-search-tree-iterator/)
-- [ ] [230. Kth Smallest Element in a BST（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
+- [ ] [653. Two Sum IV - Input is a BST（简单）](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
+- [x] [700. Search in a Binary Search Tree（简单）](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
+- [x] [98. Validate Binary Search Tree（中等）](https://leetcode.cn/problems/validate-binary-search-tree/)
+- [x] [450. Delete Node in a BST（中等）](https://leetcode.cn/problems/delete-node-in-a-bst/)
+- [x] [230. Kth Smallest Element in a BST（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
 - [ ] [235. Lowest Common Ancestor of a Binary Search Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 - [ ] [236. Lowest Common Ancestor of a Binary Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
-- [ ] [285. Inorder Successor in BST（中等）](https://leetcode.cn/problems/inorder-successor-in-bst/)
+- [ ] [501. Find Mode in Binary Search Tree（简单）](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
 - [ ] [538. Convert BST to Greater Tree（中等）](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
 - [ ] [701. Insert into a Binary Search Tree（中等）](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
 - 复盘：
@@ -206,8 +206,8 @@
 - [ ] [692. Top K Frequent Words（中等）](https://leetcode.cn/problems/top-k-frequent-words/)
 - [ ] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
 - [ ] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
-- [ ] [502. IPO（困难）](https://leetcode.cn/problems/ipo/)
-- [ ] [632. Smallest Range Covering Elements from K Lists（困难）](https://leetcode.cn/problems/smallest-range-covering-elements-from-k-lists/)
+- [ ] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
+- [ ] [973. K Closest Points to Origin（中等）](https://leetcode.cn/problems/k-closest-points-to-origin/)
 - 复盘：
 
 ## Day 17（回溯基础：排列、子集、组合）
@@ -218,7 +218,7 @@
 - [ ] [77. Combinations（中等）](https://leetcode.cn/problems/combinations/)
 - [ ] [78. Subsets（中等）](https://leetcode.cn/problems/subsets/)
 - [ ] [90. Subsets II（中等）](https://leetcode.cn/problems/subsets-ii/)
-- [ ] [1079. Letter Tile Possibilities（中等）](https://leetcode.cn/problems/letter-tile-possibilities/)
+- [ ] [60. Permutation Sequence（中等）](https://leetcode.cn/problems/permutation-sequence/)
 - [ ] [216. Combination Sum III（中等）](https://leetcode.cn/problems/combination-sum-iii/)
 - [ ] [784. Letter Case Permutation（中等）](https://leetcode.cn/problems/letter-case-permutation/)
 - 复盘：
@@ -238,15 +238,15 @@
 
 ## Day 19（Trie：前缀树建模与检索）
 - [ ] [208. Implement Trie (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
-- [ ] [211. Design Add and Search Words Data Structure（中等）](https://leetcode.cn/problems/design-add-and-search-words-data-structure/)
-- [ ] [648. Replace Words（中等）](https://leetcode.cn/problems/replace-words/)
+- [ ] [720. Longest Word in Dictionary（简单）](https://leetcode.cn/problems/longest-word-in-dictionary/)
+- [ ] [140. Word Break II（困难）](https://leetcode.cn/problems/word-break-ii/)
 - [ ] [677. Map Sum Pairs（中等）](https://leetcode.cn/problems/map-sum-pairs/)
-- [ ] [1268. Search Suggestions System（中等）](https://leetcode.cn/problems/search-suggestions-system/)
-- [ ] [1804. Implement Trie II (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-ii-prefix-tree/)
+- [ ] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
+- [ ] [820. Short Encoding of Words（中等）](https://leetcode.cn/problems/short-encoding-of-words/)
 - [ ] [212. Word Search II（困难）](https://leetcode.cn/problems/word-search-ii/)
-- [ ] [336. Palindrome Pairs（困难）](https://leetcode.cn/problems/palindrome-pairs/)
-- [ ] [472. Concatenated Words（困难）](https://leetcode.cn/problems/concatenated-words/)
-- [ ] [1032. Stream of Characters（困难）](https://leetcode.cn/problems/stream-of-characters/)
+- [ ] [421. Maximum XOR of Two Numbers in an Array（中等）](https://leetcode.cn/problems/maximum-xor-of-two-numbers-in-an-array/)
+- [ ] [524. Longest Word in Dictionary through Deleting（中等）](https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/)
+- [ ] [1268. Search Suggestions System（中等）](https://leetcode.cn/problems/search-suggestions-system/)
 - 复盘：
 
 ## Day 20（复习日：树/图/回溯错题回炉）
@@ -280,24 +280,24 @@
 - [ ] [122. Best Time to Buy and Sell Stock II（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
 - [ ] [198. House Robber（中等）](https://leetcode.cn/problems/house-robber/)
 - [ ] [213. House Robber II（中等）](https://leetcode.cn/problems/house-robber-ii/)
-- [ ] [256. Paint House（中等）](https://leetcode.cn/problems/paint-house/)
+- [ ] [309. Best Time to Buy and Sell Stock with Cooldown（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 - [ ] [337. House Robber III（中等）](https://leetcode.cn/problems/house-robber-iii/)
 - [ ] [740. Delete and Earn（中等）](https://leetcode.cn/problems/delete-and-earn/)
 - [ ] [123. Best Time to Buy and Sell Stock III（困难）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/)
-- [ ] [265. Paint House II（困难）](https://leetcode.cn/problems/paint-house-ii/)
-- [ ] [1473. Paint House III（困难）](https://leetcode.cn/problems/paint-house-iii/)
+- [ ] [64. Minimum Path Sum（中等）](https://leetcode.cn/problems/minimum-path-sum/)
+- [ ] [931. Minimum Falling Path Sum（中等）](https://leetcode.cn/problems/minimum-falling-path-sum/)
 - 复盘：
 
 ## Day 23（序列 DP：LIS/LCS/编辑距离）
 - [ ] [674. Longest Continuous Increasing Subsequence（简单）](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)
-- [ ] [712. Minimum ASCII Delete Sum for Two Strings（中等）](https://leetcode.cn/problems/minimum-ascii-delete-sum-for-two-strings/)
+- [ ] [1035. Uncrossed Lines（中等）](https://leetcode.cn/problems/uncrossed-lines/)
 - [ ] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
 - [ ] [300. Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/longest-increasing-subsequence/)
-- [ ] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
+- [ ] [673. Number of Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/number-of-longest-increasing-subsequence/)
 - [ ] [718. Maximum Length of Repeated Subarray（中等）](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)
-- [ ] [664. Strange Printer（困难）](https://leetcode.cn/problems/strange-printer/)
-- [ ] [87. Scramble String（困难）](https://leetcode.cn/problems/scramble-string/)
-- [ ] [354. Russian Doll Envelopes（困难）](https://leetcode.cn/problems/russian-doll-envelopes/)
+- [ ] [368. Largest Divisible Subset（中等）](https://leetcode.cn/problems/largest-divisible-subset/)
+- [ ] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
+- [ ] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
 - [ ] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
 - 复盘：
 
@@ -309,7 +309,7 @@
 - [ ] [474. Ones and Zeroes（中等）](https://leetcode.cn/problems/ones-and-zeroes/)
 - [ ] [494. Target Sum（中等）](https://leetcode.cn/problems/target-sum/)
 - [ ] [518. Coin Change II（中等）](https://leetcode.cn/problems/coin-change-ii/)
-- [ ] [638. Shopping Offers（中等）](https://leetcode.cn/problems/shopping-offers/)
+- [ ] [956. Tallest Billboard（困难）](https://leetcode.cn/problems/tallest-billboard/)
 - [ ] [1049. Last Stone Weight II（中等）](https://leetcode.cn/problems/last-stone-weight-ii/)
 - [ ] [879. Profitable Schemes（困难）](https://leetcode.cn/problems/profitable-schemes/)
 - 复盘：
@@ -322,7 +322,7 @@
 - [ ] [647. Palindromic Substrings（中等）](https://leetcode.cn/problems/palindromic-substrings/)
 - [ ] [1143. Longest Common Subsequence（中等）](https://leetcode.cn/problems/longest-common-subsequence/)
 - [ ] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
-- [ ] [44. Wildcard Matching（困难）](https://leetcode.cn/problems/wildcard-matching/)
+- [ ] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
 - [ ] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
 - [ ] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 - 复盘：
@@ -372,7 +372,7 @@
 - [ ] [705. Design HashSet（简单）](https://leetcode.cn/problems/design-hashset/)
 - [ ] [706. Design HashMap（简单）](https://leetcode.cn/problems/design-hashmap/)
 - [ ] [146. LRU Cache（中等）](https://leetcode.cn/problems/lru-cache/)
-- [ ] [1206. Design Skiplist（困难）](https://leetcode.cn/problems/design-skiplist/)
+- [ ] [707. Design Linked List（中等）](https://leetcode.cn/problems/design-linked-list/)
 - [ ] [981. Time Based Key-Value Store（中等）](https://leetcode.cn/problems/time-based-key-value-store/)
 - [ ] [622. Design Circular Queue（中等）](https://leetcode.cn/problems/design-circular-queue/)
 - [ ] [641. Design Circular Deque（中等）](https://leetcode.cn/problems/design-circular-deque/)
