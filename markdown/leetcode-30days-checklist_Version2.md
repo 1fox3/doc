@@ -38,19 +38,19 @@
 - [x] [567. Permutation in String（中等）](https://leetcode.cn/problems/permutation-in-string/)
 - [x] [904. Fruit Into Baskets（中等）](https://leetcode.cn/problems/fruit-into-baskets/)
 - [x] [76. Minimum Window Substring（困难）](https://leetcode.cn/problems/minimum-window-substring/)
-- [ ] [239. Sliding Window Maximum（困难）](https://leetcode.cn/problems/sliding-window-maximum/)
+- [x] [239. Sliding Window Maximum（困难）](https://leetcode.cn/problems/sliding-window-maximum/)
 - 复盘：560 第一次失败了，可以多练习前缀和 + 哈希表的组合使用，注意前缀和的计算和哈希表的更新。
 
 ## Day 4（数组技巧：前缀思想与区间处理）
 - [x] [303. Range Sum Query - Immutable（简单）](https://leetcode.cn/problems/range-sum-query-immutable/)
+- [x] [724. Find Pivot Index（简单）](https://leetcode.cn/problems/find-pivot-index/)
+- [x] [1480. Running Sum of 1d Array（简单）](https://leetcode.cn/problems/running-sum-of-1d-array/)
 - [x] [53. Maximum Subarray（中等）](https://leetcode.cn/problems/maximum-subarray/)
 - [x] [56. Merge Intervals（中等）](https://leetcode.cn/problems/merge-intervals/)
-- [ ] [57. Insert Interval（中等）](https://leetcode.cn/problems/insert-interval/)
-- [ ] [152. Maximum Product Subarray（中等）](https://leetcode.cn/problems/maximum-product-subarray/)
-- [ ] [238. Product of Array Except Self（中等）](https://leetcode.cn/problems/product-of-array-except-self/)
-- [ ] [1480. Running Sum of 1d Array（简单）](https://leetcode.cn/problems/running-sum-of-1d-array/)
-- [ ] [435. Non-overlapping Intervals（中等）](https://leetcode.cn/problems/non-overlapping-intervals/)
-- [ ] [724. Find Pivot Index（简单）](https://leetcode.cn/problems/find-pivot-index/)
+- [x] [57. Insert Interval（中等）](https://leetcode.cn/problems/insert-interval/)
+- [x] [152. Maximum Product Subarray（中等）](https://leetcode.cn/problems/maximum-product-subarray/)
+- [x] [238. Product of Array Except Self（中等）](https://leetcode.cn/problems/product-of-array-except-self/)
+- [x] [435. Non-overlapping Intervals（中等）](https://leetcode.cn/problems/non-overlapping-intervals/)
 - [ ] [1288. Remove Covered Intervals（中等）](https://leetcode.cn/problems/remove-covered-intervals/)
 - 复盘：
 
@@ -172,7 +172,7 @@
 - 复盘：
 
 ## Day 14（BST 与 LCA：有序性利用）
-- [ ] [653. Two Sum IV - Input is a BST（简单）](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
+- [x] [653. Two Sum IV - Input is a BST（简单）](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
 - [x] [700. Search in a Binary Search Tree（简单）](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
 - [x] [98. Validate Binary Search Tree（中等）](https://leetcode.cn/problems/validate-binary-search-tree/)
 - [x] [450. Delete Node in a BST（中等）](https://leetcode.cn/problems/delete-node-in-a-bst/)
@@ -185,11 +185,11 @@
 - 复盘：
 
 ## Day 15（图搜索：DFS/BFS 岛屿类问题）
-- [ ] [463. Island Perimeter（简单）](https://leetcode.cn/problems/island-perimeter/)
-- [ ] [733. Flood Fill（简单）](https://leetcode.cn/problems/flood-fill/)
-- [ ] [130. Surrounded Regions（中等）](https://leetcode.cn/problems/surrounded-regions/)
-- [ ] [200. Number of Islands（中等）](https://leetcode.cn/problems/number-of-islands/)
-- [ ] [417. Pacific Atlantic Water Flow（中等）](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
+- [x] [463. Island Perimeter（简单）](https://leetcode.cn/problems/island-perimeter/)
+- [x] [733. Flood Fill（简单）](https://leetcode.cn/problems/flood-fill/)
+- [x] [130. Surrounded Regions（中等）](https://leetcode.cn/problems/surrounded-regions/)
+- [x] [200. Number of Islands（中等）](https://leetcode.cn/problems/number-of-islands/)
+- [x] [417. Pacific Atlantic Water Flow（中等）](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
 - [ ] [547. Number of Provinces（中等）](https://leetcode.cn/problems/number-of-provinces/)
 - [ ] [695. Max Area of Island（中等）](https://leetcode.cn/problems/max-area-of-island/)
 - [ ] [994. Rotting Oranges（中等）](https://leetcode.cn/problems/rotting-oranges/)
