@@ -205,9 +205,9 @@
 - [ ] [264. Ugly Number II（中等）](https://leetcode.cn/problems/ugly-number-ii/)
 - [ ] [692. Top K Frequent Words（中等）](https://leetcode.cn/problems/top-k-frequent-words/)
 - [ ] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
-- [ ] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
 - [ ] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
 - [ ] [973. K Closest Points to Origin（中等）](https://leetcode.cn/problems/k-closest-points-to-origin/)
+- [ ] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
 - 复盘：
 
 ## Day 17（回溯基础：排列、子集、组合）
@@ -237,16 +237,16 @@
 - 复盘：
 
 ## Day 19（Trie：前缀树建模与检索）
-- [ ] [208. Implement Trie (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
 - [ ] [720. Longest Word in Dictionary（简单）](https://leetcode.cn/problems/longest-word-in-dictionary/)
-- [ ] [140. Word Break II（困难）](https://leetcode.cn/problems/word-break-ii/)
+- [ ] [208. Implement Trie (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
 - [ ] [677. Map Sum Pairs（中等）](https://leetcode.cn/problems/map-sum-pairs/)
 - [ ] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
 - [ ] [820. Short Encoding of Words（中等）](https://leetcode.cn/problems/short-encoding-of-words/)
-- [ ] [212. Word Search II（困难）](https://leetcode.cn/problems/word-search-ii/)
 - [ ] [421. Maximum XOR of Two Numbers in an Array（中等）](https://leetcode.cn/problems/maximum-xor-of-two-numbers-in-an-array/)
 - [ ] [524. Longest Word in Dictionary through Deleting（中等）](https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/)
 - [ ] [1268. Search Suggestions System（中等）](https://leetcode.cn/problems/search-suggestions-system/)
+- [ ] [140. Word Break II（困难）](https://leetcode.cn/problems/word-break-ii/)
+- [ ] [212. Word Search II（困难）](https://leetcode.cn/problems/word-search-ii/)
 - 复盘：
 
 ## Day 20（复习日：树/图/回溯错题回炉）
@@ -283,22 +283,23 @@
 - [ ] [309. Best Time to Buy and Sell Stock with Cooldown（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 - [ ] [337. House Robber III（中等）](https://leetcode.cn/problems/house-robber-iii/)
 - [ ] [740. Delete and Earn（中等）](https://leetcode.cn/problems/delete-and-earn/)
-- [ ] [123. Best Time to Buy and Sell Stock III（困难）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/)
 - [ ] [64. Minimum Path Sum（中等）](https://leetcode.cn/problems/minimum-path-sum/)
 - [ ] [931. Minimum Falling Path Sum（中等）](https://leetcode.cn/problems/minimum-falling-path-sum/)
+- [ ] [123. Best Time to Buy and Sell Stock III（困难）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/)
 - 复盘：
 
 ## Day 23（序列 DP：LIS/LCS/编辑距离）
 - [ ] [674. Longest Continuous Increasing Subsequence（简单）](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)
 - [ ] [1035. Uncrossed Lines（中等）](https://leetcode.cn/problems/uncrossed-lines/)
-- [ ] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
 - [ ] [300. Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/longest-increasing-subsequence/)
 - [ ] [673. Number of Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/number-of-longest-increasing-subsequence/)
 - [ ] [718. Maximum Length of Repeated Subarray（中等）](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)
 - [ ] [368. Largest Divisible Subset（中等）](https://leetcode.cn/problems/largest-divisible-subset/)
 - [ ] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
 - [ ] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
+- [ ] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
 - [ ] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
+- 
 - 复盘：
 
 ## Day 24（背包 DP：可达性与最值）
@@ -309,8 +310,8 @@
 - [ ] [474. Ones and Zeroes（中等）](https://leetcode.cn/problems/ones-and-zeroes/)
 - [ ] [494. Target Sum（中等）](https://leetcode.cn/problems/target-sum/)
 - [ ] [518. Coin Change II（中等）](https://leetcode.cn/problems/coin-change-ii/)
-- [ ] [956. Tallest Billboard（困难）](https://leetcode.cn/problems/tallest-billboard/)
 - [ ] [1049. Last Stone Weight II（中等）](https://leetcode.cn/problems/last-stone-weight-ii/)
+- [ ] [956. Tallest Billboard（困难）](https://leetcode.cn/problems/tallest-billboard/)
 - [ ] [879. Profitable Schemes（困难）](https://leetcode.cn/problems/profitable-schemes/)
 - 复盘：
 
@@ -321,8 +322,8 @@
 - [ ] [516. Longest Palindromic Subsequence（中等）](https://leetcode.cn/problems/longest-palindromic-subsequence/)
 - [ ] [647. Palindromic Substrings（中等）](https://leetcode.cn/problems/palindromic-substrings/)
 - [ ] [1143. Longest Common Subsequence（中等）](https://leetcode.cn/problems/longest-common-subsequence/)
-- [ ] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
 - [ ] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
+- [ ] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
 - [ ] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
 - [ ] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 - 复盘：
@@ -368,7 +369,6 @@
 
 ## Day 29（设计题：数据结构综合实现）
 - [ ] [933. Number of Recent Calls（简单）](https://leetcode.cn/problems/number-of-recent-calls/)
-- [ ] [1670. Design Front Middle Back Queue（中等）](https://leetcode.cn/problems/design-front-middle-back-queue/)
 - [ ] [705. Design HashSet（简单）](https://leetcode.cn/problems/design-hashset/)
 - [ ] [706. Design HashMap（简单）](https://leetcode.cn/problems/design-hashmap/)
 - [ ] [146. LRU Cache（中等）](https://leetcode.cn/problems/lru-cache/)
@@ -376,6 +376,7 @@
 - [ ] [981. Time Based Key-Value Store（中等）](https://leetcode.cn/problems/time-based-key-value-store/)
 - [ ] [622. Design Circular Queue（中等）](https://leetcode.cn/problems/design-circular-queue/)
 - [ ] [641. Design Circular Deque（中等）](https://leetcode.cn/problems/design-circular-deque/)
+- [ ] [1670. Design Front Middle Back Queue（中等）](https://leetcode.cn/problems/design-front-middle-back-queue/)
 - [ ] [460. LFU Cache（困难）](https://leetcode.cn/problems/lfu-cache/)
 - 复盘：
 
