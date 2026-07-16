@@ -198,11 +198,11 @@
 - 复盘：
 
 ## Day 16（拓扑排序 + 堆：课程表与第 K 大）
-- [ ] [703. Kth Largest Element in a Stream（简单）](https://leetcode.cn/problems/kth-largest-element-in-a-stream/)
-- [ ] [207. Course Schedule（中等）](https://leetcode.cn/problems/course-schedule/)
-- [ ] [210. Course Schedule II（中等）](https://leetcode.cn/problems/course-schedule-ii/)
-- [ ] [215. Kth Largest Element in an Array（中等）](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
-- [ ] [264. Ugly Number II（中等）](https://leetcode.cn/problems/ugly-number-ii/)
+- [x] [703. Kth Largest Element in a Stream（简单）](https://leetcode.cn/problems/kth-largest-element-in-a-stream/)
+- [x] [207. Course Schedule（中等）](https://leetcode.cn/problems/course-schedule/)
+- [x] [210. Course Schedule II（中等）](https://leetcode.cn/problems/course-schedule-ii/)
+- [x] [215. Kth Largest Element in an Array（中等）](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+- [x] [264. Ugly Number II（中等）](https://leetcode.cn/problems/ugly-number-ii/)
 - [ ] [692. Top K Frequent Words（中等）](https://leetcode.cn/problems/top-k-frequent-words/)
 - [ ] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
 - [ ] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
