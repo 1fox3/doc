@@ -51,15 +51,15 @@
 - [x] [152. Maximum Product Subarray（中等）](https://leetcode.cn/problems/maximum-product-subarray/)
 - [x] [238. Product of Array Except Self（中等）](https://leetcode.cn/problems/product-of-array-except-self/)
 - [x] [435. Non-overlapping Intervals（中等）](https://leetcode.cn/problems/non-overlapping-intervals/)
-- [ ] [1288. Remove Covered Intervals（中等）](https://leetcode.cn/problems/remove-covered-intervals/)
+- [x] [1288. Remove Covered Intervals（中等）](https://leetcode.cn/problems/remove-covered-intervals/)
 - 复盘：
 
 ## Day 5（矩阵：坐标变换与模拟）
 - [x] [661. Image Smoother（简单）](https://leetcode.cn/problems/image-smoother/)
 - [x] [36. Valid Sudoku（中等）](https://leetcode.cn/problems/valid-sudoku/)
 - [x] [48. Rotate Image（中等）](https://leetcode.cn/problems/rotate-image/)
-- [ ] [54. Spiral Matrix（中等）](https://leetcode.cn/problems/spiral-matrix/)
-- [ ] [59. Spiral Matrix II（中等）](https://leetcode.cn/problems/spiral-matrix-ii/)
+- [x] [54. Spiral Matrix（中等）](https://leetcode.cn/problems/spiral-matrix/)
+- [x] [59. Spiral Matrix II（中等）](https://leetcode.cn/problems/spiral-matrix-ii/)
 - [ ] [73. Set Matrix Zeroes（中等）](https://leetcode.cn/problems/set-matrix-zeroes/)
 - [ ] [74. Search a 2D Matrix（中等）](https://leetcode.cn/problems/search-a-2d-matrix/)
 - [ ] [240. Search a 2D Matrix II（中等）](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
