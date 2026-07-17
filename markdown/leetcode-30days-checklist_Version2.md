@@ -211,11 +211,11 @@
 - 复盘：
 
 ## Day 17（回溯基础：排列、子集、组合）
-- [ ] [17. Letter Combinations of a Phone Number（中等）](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
-- [ ] [491. Non-decreasing Subsequences（中等）](https://leetcode.cn/problems/non-decreasing-subsequences/)
-- [ ] [46. Permutations（中等）](https://leetcode.cn/problems/permutations/)
-- [ ] [47. Permutations II（中等）](https://leetcode.cn/problems/permutations-ii/)
-- [ ] [77. Combinations（中等）](https://leetcode.cn/problems/combinations/)
+- [x] [17. Letter Combinations of a Phone Number（中等）](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+- [x] [491. Non-decreasing Subsequences（中等）](https://leetcode.cn/problems/non-decreasing-subsequences/)
+- [x] [46. Permutations（中等）](https://leetcode.cn/problems/permutations/)
+- [x] [47. Permutations II（中等）](https://leetcode.cn/problems/permutations-ii/)
+- [x] [77. Combinations（中等）](https://leetcode.cn/problems/combinations/)
 - [ ] [78. Subsets（中等）](https://leetcode.cn/problems/subsets/)
 - [ ] [90. Subsets II（中等）](https://leetcode.cn/problems/subsets-ii/)
 - [ ] [60. Permutation Sequence（中等）](https://leetcode.cn/problems/permutation-sequence/)
