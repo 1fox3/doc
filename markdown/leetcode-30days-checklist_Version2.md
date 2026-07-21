@@ -224,11 +224,11 @@
 - 复盘：
 
 ## Day 18（回溯进阶：剪枝与路径搜索）
-- [ ] [22. Generate Parentheses（中等）](https://leetcode.cn/problems/generate-parentheses/)
-- [ ] [39. Combination Sum（中等）](https://leetcode.cn/problems/combination-sum/)
-- [ ] [40. Combination Sum II（中等）](https://leetcode.cn/problems/combination-sum-ii/)
-- [ ] [79. Word Search（中等）](https://leetcode.cn/problems/word-search/)
-- [ ] [93. Restore IP Addresses（中等）](https://leetcode.cn/problems/restore-ip-addresses/)
+- [x] [22. Generate Parentheses（中等）](https://leetcode.cn/problems/generate-parentheses/)
+- [x] [39. Combination Sum（中等）](https://leetcode.cn/problems/combination-sum/)
+- [x] [40. Combination Sum II（中等）](https://leetcode.cn/problems/combination-sum-ii/)
+- [x] [79. Word Search（中等）](https://leetcode.cn/problems/word-search/)
+- [x] [93. Restore IP Addresses（中等）](https://leetcode.cn/problems/restore-ip-addresses/)
 - [ ] [131. Palindrome Partitioning（中等）](https://leetcode.cn/problems/palindrome-partitioning/)
 - [ ] [698. Partition to K Equal Sum Subsets（中等）](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
 - [ ] [51. N-Queens（困难）](https://leetcode.cn/problems/n-queens/)
@@ -237,11 +237,11 @@
 - 复盘：
 
 ## Day 19（Trie：前缀树建模与检索）
-- [ ] [720. Longest Word in Dictionary（简单）](https://leetcode.cn/problems/longest-word-in-dictionary/)
-- [ ] [208. Implement Trie (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
-- [ ] [677. Map Sum Pairs（中等）](https://leetcode.cn/problems/map-sum-pairs/)
-- [ ] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
-- [ ] [820. Short Encoding of Words（中等）](https://leetcode.cn/problems/short-encoding-of-words/)
+- [x] [720. Longest Word in Dictionary（中等）](https://leetcode.cn/problems/longest-word-in-dictionary/)
+- [x] [208. Implement Trie (Prefix Tree)（中等）](https://leetcode.cn/problems/implement-trie-prefix-tree/)
+- [x] [677. Map Sum Pairs（中等）](https://leetcode.cn/problems/map-sum-pairs/)
+- [x] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
+- [x] [820. Short Encoding of Words（中等）](https://leetcode.cn/problems/short-encoding-of-words/)
 - [ ] [421. Maximum XOR of Two Numbers in an Array（中等）](https://leetcode.cn/problems/maximum-xor-of-two-numbers-in-an-array/)
 - [ ] [524. Longest Word in Dictionary through Deleting（中等）](https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/)
 - [ ] [1268. Search Suggestions System（中等）](https://leetcode.cn/problems/search-suggestions-system/)
@@ -263,16 +263,16 @@
 - 复盘：
 
 ## Day 21（DP 入门：一维状态转移）
-- [ ] [70. Climbing Stairs（简单）](https://leetcode.cn/problems/climbing-stairs/)
-- [ ] [119. Pascal's Triangle II（简单）](https://leetcode.cn/problems/pascals-triangle-ii/)
-- [ ] [509. Fibonacci Number（简单）](https://leetcode.cn/problems/fibonacci-number/)
-- [ ] [746. Min Cost Climbing Stairs（简单）](https://leetcode.cn/problems/min-cost-climbing-stairs/)
-- [ ] [1137. N-th Tribonacci Number（简单）](https://leetcode.cn/problems/n-th-tribonacci-number/)
-- [ ] [62. Unique Paths（中等）](https://leetcode.cn/problems/unique-paths/)
-- [ ] [63. Unique Paths II（中等）](https://leetcode.cn/problems/unique-paths-ii/)
-- [ ] [91. Decode Ways（中等）](https://leetcode.cn/problems/decode-ways/)
-- [ ] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
-- [ ] [343. Integer Break（中等）](https://leetcode.cn/problems/integer-break/)
+- [x] [70. Climbing Stairs（简单）](https://leetcode.cn/problems/climbing-stairs/)
+- [x] [119. Pascal's Triangle II（简单）](https://leetcode.cn/problems/pascals-triangle-ii/)
+- [x] [509. Fibonacci Number（简单）](https://leetcode.cn/problems/fibonacci-number/)
+- [x] [746. Min Cost Climbing Stairs（简单）](https://leetcode.cn/problems/min-cost-climbing-stairs/)
+- [x] [1137. N-th Tribonacci Number（简单）](https://leetcode.cn/problems/n-th-tribonacci-number/)
+- [x] [62. Unique Paths（中等）](https://leetcode.cn/problems/unique-paths/)
+- [x] [63. Unique Paths II（中等）](https://leetcode.cn/problems/unique-paths-ii/)
+- [x] [91. Decode Ways（中等）](https://leetcode.cn/problems/decode-ways/)
+- [x] [139. Word Break（中等）](https://leetcode.cn/problems/word-break/)
+- [x] [343. Integer Break（中等）](https://leetcode.cn/problems/integer-break/)
 - 复盘：
 
 ## Day 22（打家劫舍系列：线性/环形/树形 DP）
