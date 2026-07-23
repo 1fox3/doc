@@ -290,18 +290,17 @@
 - 复盘：
 
 ## Day 23（序列 DP：LIS/LCS/编辑距离）
-- [ ] [674. Longest Continuous Increasing Subsequence（简单）](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)
-- [ ] [1035. Uncrossed Lines（中等）](https://leetcode.cn/problems/uncrossed-lines/)
-- [ ] [300. Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/longest-increasing-subsequence/)
-- [ ] [673. Number of Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/number-of-longest-increasing-subsequence/)
-- [ ] [718. Maximum Length of Repeated Subarray（中等）](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)
-- [ ] [368. Largest Divisible Subset（中等）](https://leetcode.cn/problems/largest-divisible-subset/)
-- [ ] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
-- [ ] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
+- [x] [674. Longest Continuous Increasing Subsequence（简单）](https://leetcode.cn/problems/longest-continuous-increasing-subsequence/)
+- [x] [1035. Uncrossed Lines（中等）](https://leetcode.cn/problems/uncrossed-lines/)
+- [x] [300. Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/longest-increasing-subsequence/)
+- [x] [673. Number of Longest Increasing Subsequence（中等）](https://leetcode.cn/problems/number-of-longest-increasing-subsequence/)
+- [x] [718. Maximum Length of Repeated Subarray（中等）](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)
+- [x] [368. Largest Divisible Subset（中等）](https://leetcode.cn/problems/largest-divisible-subset/)
+- [x] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
+- [x] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
 - [ ] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
 - [ ] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
-- 
-- 复盘：
+- 复盘：最长公共子序列
 
 ## Day 24（背包 DP：可达性与最值）
 - [ ] [279. Perfect Squares（中等）](https://leetcode.cn/problems/perfect-squares/)
