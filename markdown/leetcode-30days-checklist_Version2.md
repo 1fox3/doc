@@ -303,16 +303,16 @@
 - 复盘：最长公共子序列
 
 ## Day 24（背包 DP：可达性与最值）
-- [ ] [279. Perfect Squares（中等）](https://leetcode.cn/problems/perfect-squares/)
-- [ ] [322. Coin Change（中等）](https://leetcode.cn/problems/coin-change/)
-- [ ] [377. Combination Sum IV（中等）](https://leetcode.cn/problems/combination-sum-iv/)
-- [ ] [416. Partition Equal Subset Sum（中等）](https://leetcode.cn/problems/partition-equal-subset-sum/)
-- [ ] [474. Ones and Zeroes（中等）](https://leetcode.cn/problems/ones-and-zeroes/)
-- [ ] [494. Target Sum（中等）](https://leetcode.cn/problems/target-sum/)
-- [ ] [518. Coin Change II（中等）](https://leetcode.cn/problems/coin-change-ii/)
-- [ ] [1049. Last Stone Weight II（中等）](https://leetcode.cn/problems/last-stone-weight-ii/)
-- [ ] [956. Tallest Billboard（困难）](https://leetcode.cn/problems/tallest-billboard/)
-- [ ] [879. Profitable Schemes（困难）](https://leetcode.cn/problems/profitable-schemes/)
+- [x] [279. Perfect Squares（中等）](https://leetcode.cn/problems/perfect-squares/)
+- [x] [322. Coin Change（中等）](https://leetcode.cn/problems/coin-change/)
+- [x] [377. Combination Sum IV（中等）](https://leetcode.cn/problems/combination-sum-iv/)
+- [x] [416. Partition Equal Subset Sum（中等）](https://leetcode.cn/problems/partition-equal-subset-sum/)
+- [x] [474. Ones and Zeroes（中等）](https://leetcode.cn/problems/ones-and-zeroes/)
+- [x] [494. Target Sum（中等）](https://leetcode.cn/problems/target-sum/)
+- [x] [518. Coin Change II（中等）](https://leetcode.cn/problems/coin-change-ii/)
+- [x] [1049. Last Stone Weight II（中等）](https://leetcode.cn/problems/last-stone-weight-ii/)
+- [x] [956. Tallest Billboard（困难）](https://leetcode.cn/problems/tallest-billboard/)
+- [x] [879. Profitable Schemes（困难）](https://leetcode.cn/problems/profitable-schemes/)
 - 复盘：
 
 ## Day 25（字符串 DP：回文与匹配）
