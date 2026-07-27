@@ -316,29 +316,29 @@
 - 复盘：
 
 ## Day 25（字符串 DP：回文与匹配）
-- [ ] [5. Longest Palindromic Substring（中等）](https://leetcode.cn/problems/longest-palindromic-substring/)
-- [ ] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
-- [ ] [97. Interleaving String（中等）](https://leetcode.cn/problems/interleaving-string/)
-- [ ] [516. Longest Palindromic Subsequence（中等）](https://leetcode.cn/problems/longest-palindromic-subsequence/)
-- [ ] [647. Palindromic Substrings（中等）](https://leetcode.cn/problems/palindromic-substrings/)
-- [ ] [1143. Longest Common Subsequence（中等）](https://leetcode.cn/problems/longest-common-subsequence/)
-- [ ] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
+- [x] [5. Longest Palindromic Substring（中等）](https://leetcode.cn/problems/longest-palindromic-substring/)
+- [x] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
+- [x] [97. Interleaving String（中等）](https://leetcode.cn/problems/interleaving-string/)
+- [x] [516. Longest Palindromic Subsequence（中等）](https://leetcode.cn/problems/longest-palindromic-subsequence/)
+- [x] [647. Palindromic Substrings（中等）](https://leetcode.cn/problems/palindromic-substrings/)
+- [x] [1143. Longest Common Subsequence（中等）](https://leetcode.cn/problems/longest-common-subsequence/)
+- [x] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
 - [ ] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
 - [ ] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
 - [ ] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 - 复盘：
 
 ## Day 26（贪心：局部最优到全局最优）
-- [ ] [392. Is Subsequence（简单）](https://leetcode.cn/problems/is-subsequence/)
-- [ ] [455. Assign Cookies（简单）](https://leetcode.cn/problems/assign-cookies/)
-- [ ] [605. Can Place Flowers（简单）](https://leetcode.cn/problems/can-place-flowers/)
-- [ ] [860. Lemonade Change（简单）](https://leetcode.cn/problems/lemonade-change/)
-- [ ] [45. Jump Game II（中等）](https://leetcode.cn/problems/jump-game-ii/)
-- [ ] [55. Jump Game（中等）](https://leetcode.cn/problems/jump-game/)
-- [ ] [452. Minimum Number of Arrows to Burst Balloons（中等）](https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/)
-- [ ] [134. Gas Station（中等）](https://leetcode.cn/problems/gas-station/)
-- [ ] [406. Queue Reconstruction by Height（中等）](https://leetcode.cn/problems/queue-reconstruction-by-height/)
-- [ ] [763. Partition Labels（中等）](https://leetcode.cn/problems/partition-labels/)
+- [x] [392. Is Subsequence（简单）](https://leetcode.cn/problems/is-subsequence/)
+- [x] [455. Assign Cookies（简单）](https://leetcode.cn/problems/assign-cookies/)
+- [x] [605. Can Place Flowers（简单）](https://leetcode.cn/problems/can-place-flowers/)
+- [x] [860. Lemonade Change（简单）](https://leetcode.cn/problems/lemonade-change/)
+- [x] [55. Jump Game（中等）](https://leetcode.cn/problems/jump-game/)
+- [x] [45. Jump Game II（中等）](https://leetcode.cn/problems/jump-game-ii/)
+- [x] [452. Minimum Number of Arrows to Burst Balloons（中等）](https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/)
+- [x] [134. Gas Station（中等）](https://leetcode.cn/problems/gas-station/)
+- [x] [406. Queue Reconstruction by Height（中等）](https://leetcode.cn/problems/queue-reconstruction-by-height/)
+- [x] [763. Partition Labels（中等）](https://leetcode.cn/problems/partition-labels/)
 - 复盘：
 
 ## Day 27（技巧题：数学/排列/快慢指针）
