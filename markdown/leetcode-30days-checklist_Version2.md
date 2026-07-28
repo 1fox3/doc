@@ -342,16 +342,16 @@
 - 复盘：
 
 ## Day 27（技巧题：数学/排列/快慢指针）
-- [ ] [231. Power of Two（简单）](https://leetcode.cn/problems/power-of-two/)
-- [ ] [169. Majority Element（简单）](https://leetcode.cn/problems/majority-element/)
-- [ ] [342. Power of Four（简单）](https://leetcode.cn/problems/power-of-four/)
-- [ ] [448. Find All Numbers Disappeared in an Array（简单）](https://leetcode.cn/problems/find-all-numbers-disappeared-in-an-array/)
-- [ ] [645. Set Mismatch（简单）](https://leetcode.cn/problems/set-mismatch/)
-- [ ] [31. Next Permutation（中等）](https://leetcode.cn/problems/next-permutation/)
-- [ ] [75. Sort Colors（中等）](https://leetcode.cn/problems/sort-colors/)
-- [ ] [137. Single Number II（中等）](https://leetcode.cn/problems/single-number-ii/)
-- [ ] [318. Maximum Product of Word Lengths（中等）](https://leetcode.cn/problems/maximum-product-of-word-lengths/)
-- [ ] [287. Find the Duplicate Number（中等）](https://leetcode.cn/problems/find-the-duplicate-number/)
+- [x] [231. Power of Two（简单）](https://leetcode.cn/problems/power-of-two/)
+- [x] [169. Majority Element（简单）](https://leetcode.cn/problems/majority-element/)
+- [x] [342. Power of Four（简单）](https://leetcode.cn/problems/power-of-four/)
+- [x] [448. Find All Numbers Disappeared in an Array（简单）](https://leetcode.cn/problems/find-all-numbers-disappeared-in-an-array/)
+- [x] [645. Set Mismatch（简单）](https://leetcode.cn/problems/set-mismatch/)
+- [x] [31. Next Permutation（中等）](https://leetcode.cn/problems/next-permutation/)
+- [x] [75. Sort Colors（中等）](https://leetcode.cn/problems/sort-colors/)
+- [x] [137. Single Number II（中等）](https://leetcode.cn/problems/single-number-ii/)
+- [x] [318. Maximum Product of Word Lengths（中等）](https://leetcode.cn/problems/maximum-product-of-word-lengths/)
+- [x] [287. Find the Duplicate Number（中等）](https://leetcode.cn/problems/find-the-duplicate-number/)
 - 复盘：
 
 ## Day 28（位运算：异或与位计数）
