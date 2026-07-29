@@ -355,16 +355,16 @@
 - 复盘：
 
 ## Day 28（位运算：异或与位计数）
-- [ ] [136. Single Number（简单）](https://leetcode.cn/problems/single-number/)
-- [ ] [190. Reverse Bits（简单）](https://leetcode.cn/problems/reverse-bits/)
-- [ ] [191. Number of 1 Bits（简单）](https://leetcode.cn/problems/number-of-1-bits/)
-- [ ] [268. Missing Number（简单）](https://leetcode.cn/problems/missing-number/)
-- [ ] [338. Counting Bits（简单）](https://leetcode.cn/problems/counting-bits/)
-- [ ] [461. Hamming Distance（简单）](https://leetcode.cn/problems/hamming-distance/)
-- [ ] [89. Gray Code（中等）](https://leetcode.cn/problems/gray-code/)
-- [ ] [201. Bitwise AND of Numbers Range（中等）](https://leetcode.cn/problems/bitwise-and-of-numbers-range/)
-- [ ] [260. Single Number III（中等）](https://leetcode.cn/problems/single-number-iii/)
-- [ ] [371. Sum of Two Integers（中等）](https://leetcode.cn/problems/sum-of-two-integers/)
+- [x] [136. Single Number（简单）](https://leetcode.cn/problems/single-number/)
+- [x] [190. Reverse Bits（简单）](https://leetcode.cn/problems/reverse-bits/)
+- [x] [191. Number of 1 Bits（简单）](https://leetcode.cn/problems/number-of-1-bits/)
+- [x] [268. Missing Number（简单）](https://leetcode.cn/problems/missing-number/)
+- [x] [338. Counting Bits（简单）](https://leetcode.cn/problems/counting-bits/)
+- [x] [461. Hamming Distance（简单）](https://leetcode.cn/problems/hamming-distance/)
+- [x] [89. Gray Code（中等）](https://leetcode.cn/problems/gray-code/)
+- [x] [201. Bitwise AND of Numbers Range（中等）](https://leetcode.cn/problems/bitwise-and-of-numbers-range/)
+- [x] [260. Single Number III（中等）](https://leetcode.cn/problems/single-number-iii/)
+- [x] [371. Sum of Two Integers（中等）](https://leetcode.cn/problems/sum-of-two-integers/)
 - 复盘：
 
 ## Day 29（设计题：数据结构综合实现）
