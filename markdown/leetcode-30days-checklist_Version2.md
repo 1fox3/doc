@@ -368,16 +368,16 @@
 - 复盘：
 
 ## Day 29（设计题：数据结构综合实现）
-- [ ] [933. Number of Recent Calls（简单）](https://leetcode.cn/problems/number-of-recent-calls/)
-- [ ] [705. Design HashSet（简单）](https://leetcode.cn/problems/design-hashset/)
-- [ ] [706. Design HashMap（简单）](https://leetcode.cn/problems/design-hashmap/)
-- [ ] [146. LRU Cache（中等）](https://leetcode.cn/problems/lru-cache/)
-- [ ] [707. Design Linked List（中等）](https://leetcode.cn/problems/design-linked-list/)
-- [ ] [981. Time Based Key-Value Store（中等）](https://leetcode.cn/problems/time-based-key-value-store/)
-- [ ] [622. Design Circular Queue（中等）](https://leetcode.cn/problems/design-circular-queue/)
-- [ ] [641. Design Circular Deque（中等）](https://leetcode.cn/problems/design-circular-deque/)
-- [ ] [1670. Design Front Middle Back Queue（中等）](https://leetcode.cn/problems/design-front-middle-back-queue/)
-- [ ] [460. LFU Cache（困难）](https://leetcode.cn/problems/lfu-cache/)
+- [x] [933. Number of Recent Calls（简单）](https://leetcode.cn/problems/number-of-recent-calls/)
+- [x] [705. Design HashSet（简单）](https://leetcode.cn/problems/design-hashset/)
+- [x] [706. Design HashMap（简单）](https://leetcode.cn/problems/design-hashmap/)
+- [x] [146. LRU Cache（中等）](https://leetcode.cn/problems/lru-cache/)
+- [x] [707. Design Linked List（中等）](https://leetcode.cn/problems/design-linked-list/)
+- [x] [981. Time Based Key-Value Store（中等）](https://leetcode.cn/problems/time-based-key-value-store/)
+- [x] [622. Design Circular Queue（中等）](https://leetcode.cn/problems/design-circular-queue/)
+- [x] [641. Design Circular Deque（中等）](https://leetcode.cn/problems/design-circular-deque/)
+- [x] [1670. Design Front Middle Back Queue（中等）](https://leetcode.cn/problems/design-front-middle-back-queue/)
+- [x] [460. LFU Cache（困难）](https://leetcode.cn/problems/lfu-cache/)
 - 复盘：
 
 ## Day 30（模拟面试：限时实战与表达）
