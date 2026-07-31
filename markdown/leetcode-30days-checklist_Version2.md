@@ -381,15 +381,15 @@
 - 复盘：
 
 ## Day 30（模拟面试：限时实战与表达）
-- [ ] [14. Longest Common Prefix（简单）](https://leetcode.cn/problems/longest-common-prefix/)
-- [ ] [58. Length of Last Word（简单）](https://leetcode.cn/problems/length-of-last-word/)
-- [ ] [876. Middle of the Linked List（简单）](https://leetcode.cn/problems/middle-of-the-linked-list/)
-- [ ] [918. Maximum Sum Circular Subarray（中等）](https://leetcode.cn/problems/maximum-sum-circular-subarray/)
-- [ ] [120. Triangle（中等）](https://leetcode.cn/problems/triangle/)
-- [ ] [103. Binary Tree Zigzag Level Order Traversal（中等）](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
-- [ ] [133. Clone Graph（中等）](https://leetcode.cn/problems/clone-graph/)
-- [ ] [310. Minimum Height Trees（中等）](https://leetcode.cn/problems/minimum-height-trees/)
-- [ ] [221. Maximal Square（中等）](https://leetcode.cn/problems/maximal-square/)
+- [x] [14. Longest Common Prefix（简单）](https://leetcode.cn/problems/longest-common-prefix/)
+- [x] [58. Length of Last Word（简单）](https://leetcode.cn/problems/length-of-last-word/)
+- [x] [876. Middle of the Linked List（简单）](https://leetcode.cn/problems/middle-of-the-linked-list/)
+- [x] [918. Maximum Sum Circular Subarray（中等）](https://leetcode.cn/problems/maximum-sum-circular-subarray/)
+- [x] [120. Triangle（中等）](https://leetcode.cn/problems/triangle/)
+- [x] [103. Binary Tree Zigzag Level Order Traversal（中等）](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
+- [x] [133. Clone Graph（中等）](https://leetcode.cn/problems/clone-graph/)
+- [x] [310. Minimum Height Trees（中等）](https://leetcode.cn/problems/minimum-height-trees/)
+- [x] [221. Maximal Square（中等）](https://leetcode.cn/problems/maximal-square/)
 - [ ] [407. Trapping Rain Water II（困难）](https://leetcode.cn/problems/trapping-rain-water-ii/)
 - 复盘：
 
