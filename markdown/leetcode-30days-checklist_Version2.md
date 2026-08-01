@@ -60,11 +60,11 @@
 - [x] [48. Rotate Image（中等）](https://leetcode.cn/problems/rotate-image/)
 - [x] [54. Spiral Matrix（中等）](https://leetcode.cn/problems/spiral-matrix/)
 - [x] [59. Spiral Matrix II（中等）](https://leetcode.cn/problems/spiral-matrix-ii/)
-- [ ] [73. Set Matrix Zeroes（中等）](https://leetcode.cn/problems/set-matrix-zeroes/)
-- [ ] [74. Search a 2D Matrix（中等）](https://leetcode.cn/problems/search-a-2d-matrix/)
-- [ ] [240. Search a 2D Matrix II（中等）](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
-- [ ] [289. Game of Life（中等）](https://leetcode.cn/problems/game-of-life/)
-- [ ] [378. Kth Smallest Element in a Sorted Matrix（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
+- [x] [73. Set Matrix Zeroes（中等）](https://leetcode.cn/problems/set-matrix-zeroes/)
+- [x] [74. Search a 2D Matrix（中等）](https://leetcode.cn/problems/search-a-2d-matrix/)
+- [x] [240. Search a 2D Matrix II（中等）](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
+- [x] [289. Game of Life（中等）](https://leetcode.cn/problems/game-of-life/)
+- [x] [378. Kth Smallest Element in a Sorted Matrix（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-sorted-matrix/)
 - 复盘：
 
 ## Day 6（链表基础：反转、合并、判环）
