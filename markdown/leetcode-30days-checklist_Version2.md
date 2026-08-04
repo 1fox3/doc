@@ -103,7 +103,7 @@
 - [x] [316. Remove Duplicate Letters（中等）](https://leetcode.cn/problems/remove-duplicate-letters/)
 - [x] [394. Decode String（中等）](https://leetcode.cn/problems/decode-string/)
 - [x] [1019. Next Greater Node In Linked List（中等）](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
-- [ ] [456. 132 Pattern（中等）](https://leetcode.cn/problems/132-pattern/)
+- [x] [456. 132 Pattern（中等）](https://leetcode.cn/problems/132-pattern/)
 - 复盘：
 
 ## Day 9（单调栈：下一个更大元素与面积问题）
