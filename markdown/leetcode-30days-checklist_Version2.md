@@ -87,22 +87,22 @@
 - [x] [92. Reverse Linked List II（中等）](https://leetcode.cn/problems/reverse-linked-list-ii/)
 - [x] [138. Copy List with Random Pointer（中等）](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 - [x] [142. Linked List Cycle II（中等）](https://leetcode.cn/problems/linked-list-cycle-ii/)
-- [ ] [143. Reorder List（中等）](https://leetcode.cn/problems/reorder-list/)
-- [ ] [147. Insertion Sort List（中等）](https://leetcode.cn/problems/insertion-sort-list/)
-- [ ] [445. Add Two Numbers II（中等）](https://leetcode.cn/problems/add-two-numbers-ii/)
-- [ ] [328. Odd Even Linked List（中等）](https://leetcode.cn/problems/odd-even-linked-list/)
+- [x] [143. Reorder List（中等）](https://leetcode.cn/problems/reorder-list/)
+- [x] [147. Insertion Sort List（中等）](https://leetcode.cn/problems/insertion-sort-list/)
+- [x] [445. Add Two Numbers II（中等）](https://leetcode.cn/problems/add-two-numbers-ii/)
+- [x] [328. Odd Even Linked List（中等）](https://leetcode.cn/problems/odd-even-linked-list/)
 - 复盘：
 
 ## Day 8（栈基础：括号匹配与最小栈）
 - [x] [20. Valid Parentheses（简单）](https://leetcode.cn/problems/valid-parentheses/)
 - [x] [225. Implement Stack using Queues（简单）](https://leetcode.cn/problems/implement-stack-using-queues/)
-- [ ] [232. Implement Queue using Stacks（简单）](https://leetcode.cn/problems/implement-queue-using-stacks/)
-- [ ] [1475. Final Prices With a Special Discount in a Shop（简单）](https://leetcode.cn/problems/final-prices-with-a-special-discount-in-a-shop/)
-- [ ] [1047. Remove All Adjacent Duplicates In String（简单）](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/)
+- [x] [232. Implement Queue using Stacks（简单）](https://leetcode.cn/problems/implement-queue-using-stacks/)
+- [x] [1475. Final Prices With a Special Discount in a Shop（简单）](https://leetcode.cn/problems/final-prices-with-a-special-discount-in-a-shop/)
+- [x] [1047. Remove All Adjacent Duplicates In String（简单）](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/)
 - [x] [155. Min Stack（中等）](https://leetcode.cn/problems/min-stack/)
 - [x] [316. Remove Duplicate Letters（中等）](https://leetcode.cn/problems/remove-duplicate-letters/)
-- [ ] [394. Decode String（中等）](https://leetcode.cn/problems/decode-string/)
-- [ ] [1019. Next Greater Node In Linked List（中等）](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
+- [x] [394. Decode String（中等）](https://leetcode.cn/problems/decode-string/)
+- [x] [1019. Next Greater Node In Linked List（中等）](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
 - [ ] [456. 132 Pattern（中等）](https://leetcode.cn/problems/132-pattern/)
 - 复盘：
 
