@@ -164,7 +164,7 @@
 - [x] [96. Unique Binary Search Trees（中等）](https://leetcode.cn/problems/unique-binary-search-trees/)
 - [x] [95. Unique Binary Search Trees II（中等）](https://leetcode.cn/problems/unique-binary-search-trees-ii/)
 - [x] [99. Recover Binary Search Tree（中等）](https://leetcode.cn/problems/recover-binary-search-tree/)
-- [ ] [105. Construct Binary Tree from Preorder and Inorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+- [x] [105. Construct Binary Tree from Preorder and Inorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 - [ ] [106. Construct Binary Tree from Inorder and Postorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 - [ ] [109. Convert Sorted List to Binary Search Tree（中等）](https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/)
 - [ ] [114. Flatten Binary Tree to Linked List（中等）](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
