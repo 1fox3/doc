@@ -172,6 +172,7 @@
 - 复盘：
 
 ## Day 14（BST 与 LCA：有序性利用）
+- [ ] [501. Find Mode in Binary Search Tree（简单）](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
 - [x] [653. Two Sum IV - Input is a BST（简单）](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
 - [x] [700. Search in a Binary Search Tree（简单）](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
 - [x] [98. Validate Binary Search Tree（中等）](https://leetcode.cn/problems/validate-binary-search-tree/)
@@ -179,7 +180,6 @@
 - [x] [230. Kth Smallest Element in a BST（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
 - [ ] [235. Lowest Common Ancestor of a Binary Search Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 - [ ] [236. Lowest Common Ancestor of a Binary Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
-- [ ] [501. Find Mode in Binary Search Tree（简单）](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
 - [ ] [538. Convert BST to Greater Tree（中等）](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
 - [ ] [701. Insert into a Binary Search Tree（中等）](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
 - 复盘：
