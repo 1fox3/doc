@@ -180,8 +180,8 @@
 - [x] [230. Kth Smallest Element in a BST（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
 - [x] [235. Lowest Common Ancestor of a Binary Search Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 - [x] [236. Lowest Common Ancestor of a Binary Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
-- [ ] [538. Convert BST to Greater Tree（中等）](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
-- [ ] [701. Insert into a Binary Search Tree（中等）](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
+- [x] [538. Convert BST to Greater Tree（中等）](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
+- [x] [701. Insert into a Binary Search Tree（中等）](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
 - 复盘：
 
 ## Day 15（图搜索：DFS/BFS 岛屿类问题）
