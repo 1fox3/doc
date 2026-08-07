@@ -165,21 +165,21 @@
 - [x] [95. Unique Binary Search Trees II（中等）](https://leetcode.cn/problems/unique-binary-search-trees-ii/)
 - [x] [99. Recover Binary Search Tree（中等）](https://leetcode.cn/problems/recover-binary-search-tree/)
 - [x] [105. Construct Binary Tree from Preorder and Inorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
-- [ ] [106. Construct Binary Tree from Inorder and Postorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
-- [ ] [109. Convert Sorted List to Binary Search Tree（中等）](https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/)
-- [ ] [114. Flatten Binary Tree to Linked List（中等）](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
-- [ ] [889. Construct Binary Tree from Preorder and Postorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+- [x] [106. Construct Binary Tree from Inorder and Postorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+- [x] [109. Convert Sorted List to Binary Search Tree（中等）](https://leetcode.cn/problems/convert-sorted-list-to-binary-search-tree/)
+- [x] [114. Flatten Binary Tree to Linked List（中等）](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
+- [x] [889. Construct Binary Tree from Preorder and Postorder Traversal（中等）](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 - 复盘：
 
 ## Day 14（BST 与 LCA：有序性利用）
-- [ ] [501. Find Mode in Binary Search Tree（简单）](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
+- [x] [501. Find Mode in Binary Search Tree（简单）](https://leetcode.cn/problems/find-mode-in-binary-search-tree/)
 - [x] [653. Two Sum IV - Input is a BST（简单）](https://leetcode.cn/problems/two-sum-iv-input-is-a-bst/)
 - [x] [700. Search in a Binary Search Tree（简单）](https://leetcode.cn/problems/search-in-a-binary-search-tree/)
 - [x] [98. Validate Binary Search Tree（中等）](https://leetcode.cn/problems/validate-binary-search-tree/)
 - [x] [450. Delete Node in a BST（中等）](https://leetcode.cn/problems/delete-node-in-a-bst/)
 - [x] [230. Kth Smallest Element in a BST（中等）](https://leetcode.cn/problems/kth-smallest-element-in-a-bst/)
-- [ ] [235. Lowest Common Ancestor of a Binary Search Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
-- [ ] [236. Lowest Common Ancestor of a Binary Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
+- [x] [235. Lowest Common Ancestor of a Binary Search Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+- [x] [236. Lowest Common Ancestor of a Binary Tree（中等）](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
 - [ ] [538. Convert BST to Greater Tree（中等）](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
 - [ ] [701. Insert into a Binary Search Tree（中等）](https://leetcode.cn/problems/insert-into-a-binary-search-tree/)
 - 复盘：
