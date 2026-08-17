@@ -190,11 +190,11 @@
 - [x] [130. Surrounded Regions（中等）](https://leetcode.cn/problems/surrounded-regions/)
 - [x] [200. Number of Islands（中等）](https://leetcode.cn/problems/number-of-islands/)
 - [x] [417. Pacific Atlantic Water Flow（中等）](https://leetcode.cn/problems/pacific-atlantic-water-flow/)
-- [ ] [547. Number of Provinces（中等）](https://leetcode.cn/problems/number-of-provinces/)
-- [ ] [695. Max Area of Island（中等）](https://leetcode.cn/problems/max-area-of-island/)
-- [ ] [994. Rotting Oranges（中等）](https://leetcode.cn/problems/rotting-oranges/)
-- [ ] [1020. Number of Enclaves（中等）](https://leetcode.cn/problems/number-of-enclaves/)
-- [ ] [1254. Number of Closed Islands（中等）](https://leetcode.cn/problems/number-of-closed-islands/)
+- [x] [547. Number of Provinces（中等）](https://leetcode.cn/problems/number-of-provinces/)
+- [x] [695. Max Area of Island（中等）](https://leetcode.cn/problems/max-area-of-island/)
+- [x] [994. Rotting Oranges（中等）](https://leetcode.cn/problems/rotting-oranges/)
+- [x] [1020. Number of Enclaves（中等）](https://leetcode.cn/problems/number-of-enclaves/)
+- [x] [1254. Number of Closed Islands（中等）](https://leetcode.cn/problems/number-of-closed-islands/)
 - 复盘：
 
 ## Day 16（拓扑排序 + 堆：课程表与第 K 大）
