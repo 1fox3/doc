@@ -203,10 +203,10 @@
 - [x] [210. Course Schedule II（中等）](https://leetcode.cn/problems/course-schedule-ii/)
 - [x] [215. Kth Largest Element in an Array（中等）](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
 - [x] [264. Ugly Number II（中等）](https://leetcode.cn/problems/ugly-number-ii/)
-- [ ] [692. Top K Frequent Words（中等）](https://leetcode.cn/problems/top-k-frequent-words/)
-- [ ] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
-- [ ] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
-- [ ] [973. K Closest Points to Origin（中等）](https://leetcode.cn/problems/k-closest-points-to-origin/)
+- [x] [692. Top K Frequent Words（中等）](https://leetcode.cn/problems/top-k-frequent-words/)
+- [x] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
+- [x] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
+- [x] [973. K Closest Points to Origin（中等）](https://leetcode.cn/problems/k-closest-points-to-origin/)
 - [ ] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
 - 复盘：
 
@@ -216,12 +216,13 @@
 - [x] [46. Permutations（中等）](https://leetcode.cn/problems/permutations/)
 - [x] [47. Permutations II（中等）](https://leetcode.cn/problems/permutations-ii/)
 - [x] [77. Combinations（中等）](https://leetcode.cn/problems/combinations/)
-- [ ] [78. Subsets（中等）](https://leetcode.cn/problems/subsets/)
-- [ ] [90. Subsets II（中等）](https://leetcode.cn/problems/subsets-ii/)
-- [ ] [60. Permutation Sequence（中等）](https://leetcode.cn/problems/permutation-sequence/)
-- [ ] [216. Combination Sum III（中等）](https://leetcode.cn/problems/combination-sum-iii/)
-- [ ] [784. Letter Case Permutation（中等）](https://leetcode.cn/problems/letter-case-permutation/)
+- [x] [78. Subsets（中等）](https://leetcode.cn/problems/subsets/)
+- [x] [90. Subsets II（中等）](https://leetcode.cn/problems/subsets-ii/)
+- [x] [216. Combination Sum III（中等）](https://leetcode.cn/problems/combination-sum-iii/)
+- [x] [784. Letter Case Permutation（中等）](https://leetcode.cn/problems/letter-case-permutation/)
+- [ ] [60. Permutation Sequence（困难）](https://leetcode.cn/problems/permutation-sequence/)
 - 复盘：
+  - 90: 遇到存在重复元素需要去重时，若发现没有选择上一个元素，切当前元素和上一个元素相同，则跳过当前元素。
 
 ## Day 18（回溯进阶：剪枝与路径搜索）
 - [x] [22. Generate Parentheses（中等）](https://leetcode.cn/problems/generate-parentheses/)
@@ -229,7 +230,7 @@
 - [x] [40. Combination Sum II（中等）](https://leetcode.cn/problems/combination-sum-ii/)
 - [x] [79. Word Search（中等）](https://leetcode.cn/problems/word-search/)
 - [x] [93. Restore IP Addresses（中等）](https://leetcode.cn/problems/restore-ip-addresses/)
-- [ ] [131. Palindrome Partitioning（中等）](https://leetcode.cn/problems/palindrome-partitioning/)
+- [x] [131. Palindrome Partitioning（中等）](https://leetcode.cn/problems/palindrome-partitioning/)
 - [ ] [698. Partition to K Equal Sum Subsets（中等）](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
 - [ ] [51. N-Queens（困难）](https://leetcode.cn/problems/n-queens/)
 - [ ] [52. N-Queens II（困难）](https://leetcode.cn/problems/n-queens-ii/)
