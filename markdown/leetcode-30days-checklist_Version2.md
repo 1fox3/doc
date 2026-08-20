@@ -114,9 +114,9 @@
 - [x] [901. Online Stock Span（中等）](https://leetcode.cn/problems/online-stock-span/)
 - [x] [907. Sum of Subarray Minimums（中等）](https://leetcode.cn/problems/sum-of-subarray-minimums/)
 - [x] [962. Maximum Width Ramp（中等）](https://leetcode.cn/problems/maximum-width-ramp/)
-- [ ] [42. Trapping Rain Water（困难）](https://leetcode.cn/problems/trapping-rain-water/)
-- [ ] [84. Largest Rectangle in Histogram（困难）](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
-- [ ] [85. Maximal Rectangle（困难）](https://leetcode.cn/problems/maximal-rectangle/)
+- [x] [42. Trapping Rain Water（困难）](https://leetcode.cn/problems/trapping-rain-water/)
+- [x] [84. Largest Rectangle in Histogram（困难）](https://leetcode.cn/problems/largest-rectangle-in-histogram/)
+- [x] [85. Maximal Rectangle（困难）](https://leetcode.cn/problems/maximal-rectangle/)
 - 复盘：
 
 ## Day 10（二分查找：边界与旋转数组）
@@ -251,16 +251,16 @@
 - 复盘：
 
 ## Day 20（复习日：树/图/回溯错题回炉）
-- [ ] 重刷 Day 1-3：哈希 / 双指针 / 滑动窗口各 1 题
-- [ ] 重刷 Day 4-5：数组 / 矩阵各 1 题
-- [ ] 重刷 Day 6-7：链表各 1 题
-- [ ] 重刷 Day 8-9：栈 / 单调栈各 1 题
-- [ ] 重刷 Day 10：二分 1 题
-- [ ] 重刷 Day 11-12：二叉树各 2 题
-- [ ] 重刷 Day 13-14：构造 / BST / LCA 各 1 题
-- [ ] 重刷 Day 15-16：图 / 堆各 1 题
-- [ ] 重刷 Day 17-19：回溯 / Trie 各 1 题
-- [ ] 限时模拟：从前 19 天错题里随机抽 2 题
+- [x] 重刷 Day 1-3：哈希 / 双指针 / 滑动窗口各 1 题
+- [x] 重刷 Day 4-5：数组 / 矩阵各 1 题
+- [x] 重刷 Day 6-7：链表各 1 题
+- [x] 重刷 Day 8-9：栈 / 单调栈各 1 题
+- [x] 重刷 Day 10：二分 1 题
+- [x] 重刷 Day 11-12：二叉树各 2 题
+- [x] 重刷 Day 13-14：构造 / BST / LCA 各 1 题
+- [x] 重刷 Day 15-16：图 / 堆各 1 题
+- [x] 重刷 Day 17-19：回溯 / Trie 各 1 题
+- [x] 限时模拟：从前 19 天错题里随机抽 2 题
 - 复盘：
 
 ## Day 21（DP 入门：一维状态转移）
