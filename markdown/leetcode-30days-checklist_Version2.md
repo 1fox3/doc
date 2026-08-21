@@ -129,7 +129,7 @@
 - [x] [34. Find First and Last Position of Element in Sorted Array（中等）](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
 - [x] [153. Find Minimum in Rotated Sorted Array（中等）](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
 - [x] [162. Find Peak Element（中等）](https://leetcode.cn/problems/find-peak-element/)
-- [ ] [4. Median of Two Sorted Arrays（困难）](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
+- [x] [4. Median of Two Sorted Arrays（困难）](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
 - 复盘：
 
 ## Day 11（二叉树遍历：递归与层序）
@@ -155,7 +155,7 @@
 - [x] [965. Univalued Binary Tree（简单）](https://leetcode.cn/problems/univalued-binary-tree/)
 - [x] [129. Sum Root to Leaf Numbers（中等）](https://leetcode.cn/problems/sum-root-to-leaf-numbers/)
 - [x] [687. Longest Univalue Path（中等）](https://leetcode.cn/problems/longest-univalue-path/)
-- [ ] [124. Binary Tree Maximum Path Sum（困难）](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+- [x] [124. Binary Tree Maximum Path Sum（困难）](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
 - 复盘：
 
 ## Day 13（二叉树构造：由遍历序列还原）
@@ -207,7 +207,7 @@
 - [x] [373. Find K Pairs with Smallest Sums（中等）](https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/)
 - [x] [621. Task Scheduler（中等）](https://leetcode.cn/problems/task-scheduler/)
 - [x] [973. K Closest Points to Origin（中等）](https://leetcode.cn/problems/k-closest-points-to-origin/)
-- [ ] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
+- [x] [295. Find Median from Data Stream（困难）](https://leetcode.cn/problems/find-median-from-data-stream/)
 - 复盘：
 
 ## Day 17（回溯基础：排列、子集、组合）
