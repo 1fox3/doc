@@ -220,7 +220,7 @@
 - [x] [90. Subsets II（中等）](https://leetcode.cn/problems/subsets-ii/)
 - [x] [216. Combination Sum III（中等）](https://leetcode.cn/problems/combination-sum-iii/)
 - [x] [784. Letter Case Permutation（中等）](https://leetcode.cn/problems/letter-case-permutation/)
-- [ ] [60. Permutation Sequence（困难）](https://leetcode.cn/problems/permutation-sequence/)
+- [x] [60. Permutation Sequence（困难）](https://leetcode.cn/problems/permutation-sequence/)
 - 复盘：
   - 90: 遇到存在重复元素需要去重时，若发现没有选择上一个元素，切当前元素和上一个元素相同，则跳过当前元素。
 
@@ -232,9 +232,9 @@
 - [x] [93. Restore IP Addresses（中等）](https://leetcode.cn/problems/restore-ip-addresses/)
 - [x] [131. Palindrome Partitioning（中等）](https://leetcode.cn/problems/palindrome-partitioning/)
 - [x] [698. Partition to K Equal Sum Subsets（中等）](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
-- [ ] [51. N-Queens（困难）](https://leetcode.cn/problems/n-queens/)
-- [ ] [52. N-Queens II（困难）](https://leetcode.cn/problems/n-queens-ii/)
-- [ ] [37. Sudoku Solver（困难）](https://leetcode.cn/problems/sudoku-solver/)
+- [x] [51. N-Queens（困难）](https://leetcode.cn/problems/n-queens/)
+- [x] [52. N-Queens II（困难）](https://leetcode.cn/problems/n-queens-ii/)
+- [x] [37. Sudoku Solver（困难）](https://leetcode.cn/problems/sudoku-solver/)
 - 复盘：
 
 ## Day 19（Trie：前缀树建模与检索）
