@@ -246,8 +246,8 @@
 - [x] [421. Maximum XOR of Two Numbers in an Array（中等）](https://leetcode.cn/problems/maximum-xor-of-two-numbers-in-an-array/)
 - [x] [524. Longest Word in Dictionary through Deleting（中等）](https://leetcode.cn/problems/longest-word-in-dictionary-through-deleting/)
 - [x] [1268. Search Suggestions System（中等）](https://leetcode.cn/problems/search-suggestions-system/)
-- [ ] [140. Word Break II（困难）](https://leetcode.cn/problems/word-break-ii/)
-- [ ] [212. Word Search II（困难）](https://leetcode.cn/problems/word-search-ii/)
+- [x] [140. Word Break II（困难）](https://leetcode.cn/problems/word-break-ii/)
+- [x] [212. Word Search II（困难）](https://leetcode.cn/problems/word-search-ii/)
 - 复盘：
 
 ## Day 20（复习日：树/图/回溯错题回炉）
@@ -299,7 +299,7 @@
 - [x] [368. Largest Divisible Subset（中等）](https://leetcode.cn/problems/largest-divisible-subset/)
 - [x] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
 - [x] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
-- [ ] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
+- [x] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
 - [ ] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
 - 复盘：最长公共子序列
 
