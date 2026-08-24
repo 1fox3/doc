@@ -300,7 +300,7 @@
 - [x] [72. Edit Distance（中等）](https://leetcode.cn/problems/edit-distance/)
 - [x] [646. Maximum Length of Pair Chain（中等）](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
 - [x] [132. Palindrome Partitioning II（困难）](https://leetcode.cn/problems/palindrome-partitioning-ii/)
-- [ ] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
+- [x] [1092. Shortest Common Supersequence（困难）](https://leetcode.cn/problems/shortest-common-supersequence/)
 - 复盘：最长公共子序列
 
 ## Day 24（背包 DP：可达性与最值）
@@ -324,8 +324,8 @@
 - [x] [647. Palindromic Substrings（中等）](https://leetcode.cn/problems/palindromic-substrings/)
 - [x] [1143. Longest Common Subsequence（中等）](https://leetcode.cn/problems/longest-common-subsequence/)
 - [x] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
-- [ ] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
-- [ ] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
+- [x] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
+- [x] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
 - [ ] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 - 复盘：
 
