@@ -326,7 +326,7 @@
 - [x] [583. Delete Operation for Two Strings（中等）](https://leetcode.cn/problems/delete-operation-for-two-strings/)
 - [x] [10. Regular Expression Matching（困难）](https://leetcode.cn/problems/regular-expression-matching/)
 - [x] [115. Distinct Subsequences（困难）](https://leetcode.cn/problems/distinct-subsequences/)
-- [ ] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
+- [x] [1312. Minimum Insertion Steps to Make a String Palindrome（困难）](https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
 - 复盘：
 
 ## Day 26（贪心：局部最优到全局最优）
@@ -391,7 +391,7 @@
 - [x] [133. Clone Graph（中等）](https://leetcode.cn/problems/clone-graph/)
 - [x] [310. Minimum Height Trees（中等）](https://leetcode.cn/problems/minimum-height-trees/)
 - [x] [221. Maximal Square（中等）](https://leetcode.cn/problems/maximal-square/)
-- [ ] [407. Trapping Rain Water II（困难）](https://leetcode.cn/problems/trapping-rain-water-ii/)
+- [x] [407. Trapping Rain Water II（困难）](https://leetcode.cn/problems/trapping-rain-water-ii/)
 - 复盘：
 
 ---
