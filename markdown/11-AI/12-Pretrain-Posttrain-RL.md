@@ -384,6 +384,18 @@ for prompt in prompts:
 
 DPO 是 Direct Preference Optimization。它不需要显式训练 Reward Model，也不需要 PPO 那样复杂的 RL 过程，直接用 chosen/rejected 偏好数据优化模型。
 
+| 分类维度 | 子类别 | 代表算法 | 备注 |
+| --- | --- | --- | --- |
+| 环境模型 | 基于模型 (Model-Based) | Dyna, PILCO, World Models, I2A, MBMF, PETS, PlaNet, MBPO, Dreamer, MuZero, AlphaGo/AlphaZero | 学习或利用环境模型进行规划。样本效率高，但模型可能不准确。 |
+| 环境模型 | 无模型 (Model-Free) | Q-learning, SARSA, DQN, Policy Gradient, PPO, DDPG | 直接从与环境的交互中学习。通用性强，但样本效率低。 |
+| 学习目标 | 基于价值 (Value-Based) | Q-learning, SARSA, DQN, Double DQN, Dueling DQN, Rainbow | 学习价值函数来指导策略。适合离散动作空间。 |
+| 学习目标 | 基于策略 (Policy-Based) | REINFORCE, TRPO, PPO, DDPG | 直接学习策略。适合连续动作空间。 |
+| 学习目标 | 演员-评论家 (Actor-Critic) | A2C, A3C, DDPG, TD3, SAC, PPO, TRPO | 结合了基于价值和基于策略的方法。兼具稳定性和灵活性。 |
+| 更新方式 | 同轨策略 (On-Policy) | SARSA, REINFORCE, VPG, TRPO, PPO, A2C/A3C | 用当前策略产生的数据来更新。更稳定但样本效率低。 |
+| 更新方式 | 离轨策略 (Off-Policy) | Q-learning, DQN, DDPG, TD3, SAC | 可以用任何策略（包括历史）产生的数据来更新。样本效率高。 |
+| 学习过程 | 在线学习 (Online Learning) | Q-learning, SARSA, DQN, PPO, DDPG, A3C 等几乎所有算法 | 学习的同时与环境实时交互。 |
+| 学习过程 | 离线学习 (Offline Learning) | 行为克隆 (Behavioral Cloning), BCQ, IQL, BRAC | 仅使用预先收集的静态数据集进行学习。 |
+
 DPO 输入数据：
 
 ```json
