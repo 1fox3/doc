@@ -24,3 +24,17 @@
 
 ## 最长无重复字符子串
 - [x] [3. Longest Substring Without Repeating Characters（中等）](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+## 股票买卖问题
+- [x] [121. Best Time to Buy and Sell Stock（简单）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
+- [x] [122. Best Time to Buy and Sell Stock II（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+- [x] [309. Best Time to Buy and Sell Stock with Cooldown（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+- [x] [714. Best Time to Buy and Sell Stock with Transaction Fee（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+- [ ] [123. Best Time to Buy and Sell Stock III（困难）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/)
+- [ ] [188. Best Time to Buy and Sell Stock IV（困难）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/)
+
+## Path Sum（二叉树路径和）
+- [x] [112. Path Sum（简单）](https://leetcode.cn/problems/path-sum/)
+- [x] [113. Path Sum II（中等）](https://leetcode.cn/problems/path-sum-ii/)
+- [ ] [437. Path Sum III（中等）](https://leetcode.cn/problems/path-sum-iii/)
+- [ ] [124. Binary Tree Maximum Path Sum（困难）](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)

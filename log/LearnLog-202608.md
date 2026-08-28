@@ -4,7 +4,12 @@
 ### English
  - Duolingo Phase 6: 55 - 56 two units
 ### Algorithm
-- 
+- [121. Best Time to Buy and Sell Stock（简单）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
+- [122. Best Time to Buy and Sell Stock II（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/)
+- [309. Best Time to Buy and Sell Stock with Cooldown（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+- [714. Best Time to Buy and Sell Stock with Transaction Fee（中等）](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+- [112. Path Sum（简单）](https://leetcode.cn/problems/path-sum/)
+- [113. Path Sum II（中等）](https://leetcode.cn/problems/path-sum-ii/)
 ### Knowledge Base
 #### Milvus
 - [Milvus Doc](https://milvus.io/docs/zh/overview.md)
@@ -14,10 +19,9 @@
   - Architecture
   - Concepts
 - [Agent 10连问](https://www.youtube.com/watch?v=x-s1Dbp4BE4)
-- Java Guide
-  - 
 ### Interview
-- 
+- ByteDance OD 2面
+  - LeetCode 69
 
 ## 2026-08-27
 ### English
@@ -39,6 +43,7 @@
   - 2.3 多线程
 ### Interview
 - 浦银1面
+  - 纯聊业务
 
 ## 2026-08-26
 ### English
